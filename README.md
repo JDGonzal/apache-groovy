@@ -269,3 +269,49 @@ ventana.
 2. Puedo añadir varios comando y luego seklecciono en el menú
 "Script" -> "Run":  
 ![goovyConsole](images/section02-step_14-groovyConsole.PNG)
+
+
+## Paso 15. Hello, IntelliJ
+>[!NOTE]  
+> Del sitio [IntelliJ IDEA](https://www.jetbrains.com/idea/download/?section=windows)
+>Instlar la versión **Community Edition**
+>![Community Edition](images/section02-step_15-CommunityVersion.PNG)
+
+1. Selecciona "New Project"
+2. Seleccionamos "Groovy" de la lista de la derecha
+3. Seleccione la version de java que tengo instalada por el 
+`sdkman` (Que fue con este comando: `sdk install java 8.0.412-tem`).
+La ruta la puede buscar con:  
+`$SDKMAN_CANDIDATES_DIR/java/current/bin`.
+3. Seleccionamos la version de groovy tmabién instalada con 
+`sdkman` (Que fue con este comando: `sdk install groovy 4.0.16`).
+La ruta a mbuscar es:  
+`$SDKMAN_CANDIDATES_DIR/groovy/current/bin`.
+4. La ruta es donde tengo de forma local este reporosiorio
+(`.../groovy/apache-groovy`).
+5. El nombre del proyecto sera **HelloWorld**
+6. Y se abre el contenido en el programa `IntelliJ`, con una estructura similiar a esta:  
+![Project Intellij](images/section02-step_15-Project-Intellij.PNG).
+7. En la carpeta "src" damos click derecho y seleccionamos 
+"New"->"Package" y de nombre **com.section02**
+8. Damos click derecho en la carpeta "com.section02" y seleccionamos
+"New"->"Groovy Script" y de nombre "hello".
+
+>[!TIP]  
+>Si pregunta por hacer algo relacionado con el **Git**, le decimos q
+>que NO, que no pregunte de nuevo, pues nos encargaremos de forma
+>manual.
+
+9. Añadimos este texto `println "Hello, world"`
+
+Así va el proyecto hasta el momento:  
+![Hello World](images/section02-step_15-Project-Intellij2.PNG).
+
+10. Podemos ejecutar de varias formas, la mas simple en el menú 
+superior, selccionamos "Run"->"Run hello.groovy".
+
+![Running Hello World](images/section02-step_15-Project-Intellij3.PNG).
+
+11. Si abrimos el archivo **hello.class** en la ruta
+"HelloWorld/out/production/HelloWorld/com/section02", el editor
+lo "decompila" y podemos ver su contenido.
