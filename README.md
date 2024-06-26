@@ -329,9 +329,9 @@ lo "decompila" y podemos ver su contenido.
 >Good Luck!
 
 ## Paso 17. [Exercise Review] 3 ways to Hello, Groovy
-### Usando un Editor, compliando y corriendo 
-1. Crea un arhico llamado **HelloWorld_.groovy**,
-2. Poner esto en el codigo `println "Hello, world"`
+### Usando un Editor, compilando y corriendo 
+1. Crea un arhivo llamado **HelloWorld_.groovy**,
+2. Poner esto en el codigo `println "Hello, world"`.
 3. Grabar y salir del editor.
 4. En una `TERMINAL` cualquiera el comando es 
 `groovyc HelloWorld_.groovy`, esto va a generar el archivo
@@ -370,3 +370,23 @@ groovyConsole HelloWorld_.groovy
 derecha del archivo presionamos al trángulo a aparece a modo de 
 "play" ⏯️ .
 4. El resultado aprece abajo en `OUTPUT`.
+
+## Paso 18. From Java to Groovy
+>[!NOTE]  
+>Explicación teórica con algunos archivos de ejemplo:
+>
+>![](images/section02-step_18-java_in_groovy1.PNG)
+>
+>![](images/section02-step_18-java_in_groovy2.PNG)
+>
+>![](images/section02-step_18-java_in_groovy3.PNG)
+>
+>![](images/section02-step_18-java_in_groovy4.PNG)
+>
+>![](images/section02-step_18-java_in_groovy5.PNG)
+>
+>![](images/section02-step_18-java_in_groovy6.PNG)
+>
+>![](images/section02-step_18-java_in_groovy7.PNG)
+>
+>![](images/section02-step_18-java_in_groovy8.PNG)
