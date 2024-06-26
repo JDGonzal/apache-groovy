@@ -315,3 +315,58 @@ superior, selccionamos "Run"->"Run hello.groovy".
 11. Si abrimos el archivo **hello.class** en la ruta
 "HelloWorld/out/production/HelloWorld/com/section02", el editor
 lo "decompila" y podemos ver su contenido.
+
+## Paso 16. [Exercise] 3 ways to Hello Groovy
+
+>[!NOTE]  
+> ## [Exercise] 3 ways to Hello Groovy
+>In this exercise, you going to take what you learned in this section and write your own Hello World script. Instead of just writing a single script I want you to use what you have learned and write it 3 different ways.
+>
+> * Using a text editor, compile and run
+> * Using Groovy Console
+> * IntelliJ
+>
+>Good Luck!
+
+## Paso 17. [Exercise Review] 3 ways to Hello, Groovy
+### Usando un Editor, compliando y corriendo 
+1. Crea un arhico llamado **HelloWorld_.groovy**,
+2. Poner esto en el codigo `println "Hello, world"`
+3. Grabar y salir del editor.
+4. En una `TERMINAL` cualquiera el comando es 
+`groovyc HelloWorld_.groovy`, esto va a generar el archivo
+**HelloWorld_.class**.
+5. Solo basta correr el comando `groovy HelloWorld_` y listo.
+>[!TIP]  
+>Lo del guión bajo (`_`), es para q no lo confunda con el 
+>directorio.
+
+### Usando la consola de Groovy
+1. en una `TERMINAL` cualquiera escribe el comando:
+```bash
+groovyConsole HelloWorld_.groovy
+```
+![groovyConsole](images/section02-step_17-groovyConsole.png)
+2. Click en el botón de "Execute Groovy Script" y ver el resultado.
+
+### "Intellij"
+>[!NOTE]  
+>Eso ya lo vimos en el paso 15.
+1. Crear un Proyecto nuevo "New Project".
+2. Seleccionamos "Groovy" a la izquierda 
+3. Verificamos la versión de Java a 1.8 y la de Groovy a 4.x
+![New Project](images/section02-step_17-intellij1.PNG)
+3. El nombre sería `HelloIntellij`.
+4. En la carpeta "src" creamos un "Groovy Script" con el nombre 
+**HelloWorld**
+5. Poner esto en el codigo `println "Hello, world"`.
+6. Ejecutar simplemente este código y ver el resultado.
+
+### Uno mas: usando "Visual Studio Code"
+1. Se instala la extensión en "Visual Studio Code" llamada
+"Code Runner" de *Jun Han*.
+2. Para la prueba borremos el archivo **HelloWorld_.class**.
+3. Abrimos el archivo **HelloWorld_.groovy** y en la parte superior
+derecha del archivo presionamos al trángulo a aparece a modo de 
+"play" ⏯️ .
+4. El resultado aprece abajo en `OUTPUT`.
