@@ -390,3 +390,52 @@ derecha del archivo presionamos al trángulo a aparece a modo de
 >![](images/section02-step_18-java_in_groovy7.PNG)
 >
 >![](images/section02-step_18-java_in_groovy8.PNG)
+
+# Section 3: Groovy Basics
+
+## Paso 19. Intro
+>[!NOTE]  
+>Hola, chicos. Bienvenido de nuevo. Espero que se hayan divertido en la segunda sección. Ahora estamos en la sección tres y esto es groovy básico. Así que ahora que nuestro entorno de desarrollo está configurado, vamos a empezar a escribir algo de código. No vamos a empezar a correr todavía. Vamos a empezar a caminar primero.
+>
+>Hay un montón de conceptos básicos que vamos a cubrir en esto. Si vienes de otros idiomas, algunas de ellas pueden ser aburridas, ya sabes, cosas como importaciones y palabras clave, pero es bueno aprenderlas. Así que procure no saltárselo todo. Si ya conoces, sabes, los comentarios y realmente no te interesa aprenderlo, entonces sigue adelante y pásalo por alto. Pero te sugiero que aguantes todo lo que puedas.
+>
+>Prometo que será más emocionante a medida que avancemos. Así que realmente estamos hablando de palabras clave y comentarios y afirmaciones. Si eres de Java, quédate a verlo. Las afirmaciones son diferentes. En Groovy, vamos a hablar de los fundamentos de un script en clases groovy. Luego veremos un ejercicio de cómo crear tu propia clase.
+>
+>Hablaremos de números, de lo básico de lo que es una estructura de control groovy control. A continuación, veremos otro ejercicio para utilizar como transformaciones. De nuevo, esto es sólo una especie de introducción a estas cosas. Vamos a tratar todas estas cosas más a fondo a medida que avance el curso. Como las transformaciones, hay una sección entera sobre metaprogramación en tiempo de compilación, así que vamos a cubrir un montón de ellos y luego vamos a ver sólo algunos operadores básicos y hay una prueba rápida al final.
+>
+>Así que hay mucho que consumir en esta sección. Si quieres, toma notas y vuelve a ver los vídeos. Pero, de nuevo, avíseme si encuentra algo que no entienda. Lo más probable es que alguien más tenga esa misma pregunta. Así que con eso, vamos a entrar en lo básico groovy.
+
+## Paso 20. Imports
+>[!NOTE]  
+>[Default imports](https://groovy-lang.org/structure.html#_default_imports):  
+>
+>Default imports are the imports that Groovy language provides by default. For example look at the following code:
+>
+>`new Date()`
+>
+>The same code in Java needs an import statement to `Date` class like this: import java.util.Date. Groovy by default imports these classes for you.
+>
+>The below imports are added by groovy for you:
+>```groovy
+>import java.lang.*
+>import java.util.*
+>import java.io.*
+>import java.net.*
+>import groovy.lang.*
+>import groovy.util.*
+>import java.math.BigInteger
+>import java.math.BigDecimal
+>```
+>This is done because the classes from these packages are most commonly used. By importing these boilerplate code is reduced.
+
+1. Ejecute en una `TERMINAL` el comando `groovyConsole`.
+2. Coloque este código y ejecute: `def xml = new MarkupBuilder()`.
+Aparece el error `unable to resolve class MarkupBuilder`.
+3. El error es porque no sabe como manejar el tema y requiere una 
+importación. Añade esta lína de primera, por encima de la anterior
+`import groovy.xml.MarkupBuilder` y ejecuta.  
+El resultado es sin errores.
+4. Tambíen se puede importar el paquete completo con la línea:
+`import groovy.xml.*`.
+5. en Intellij, sería lo mismo, con la ventaja que este lo 
+importa de foma automática.
