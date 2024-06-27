@@ -407,7 +407,7 @@ derecha del archivo presionamos al trángulo a aparece a modo de
 
 ## Paso 20. Imports
 >[!NOTE]  
->[Default imports](https://groovy-lang.org/structure.html#_default_imports):  
+>### [Default imports](https://groovy-lang.org/structure.html#_default_imports):  
 >
 >Default imports are the imports that Groovy language provides by default. For example look at the following code:
 >
@@ -439,3 +439,136 @@ El resultado es sin errores.
 `import groovy.xml.*`.
 5. en Intellij, sería lo mismo, con la ventaja que este lo 
 importa de foma automática.
+
+## Paso 21. Keywords
+>[!NOTE]  
+>### [Java Language Keywords](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html)
+>
+>Here is a list of keywords in the Java programming language. You cannot use any of the following as identifiers in your programs. The keywords const and goto are reserved, even though they are not currently used. true, false, and null might seem like keywords, but they are actually literals; you cannot use them as identifiers in your programs.
+>
+>| | | | | |
+>|---|---|---|---|---|
+>|abstract|	continue|	for|	new|	switch|
+>|assert***|	default|	goto*|	package|	synchronized|
+>|boolean|	do|	if|	private|	this|
+>|break|	double|	implements|	protected|	throw
+>|byte|	else|	import|	public|	throws
+>|case|	enum****|	instanceof|	return|	transient
+>|catch|	extends|	int|	short|	try
+>|char|	final|	interface|	static|	void
+>|class|	finally|	long|	strictfp**|	volatile
+>|const*|	float|	native|	super|	while
+>```
+>*	 	not used
+>**	 	added in 1.2
+>***	 	added in 1.4
+>****	 	added in 5.0
+>```
+>
+>### [Groovy Keywords](https://groovy-lang.org/syntax.html#_keywords)
+>
+>| | | | |
+>|--|--|--|--|
+>|abstract| assert| break| case|
+>|catch| class| const| continue|
+>|def| default| do| else|
+>|enum| extends| final| finally|
+>|for| goto| if| implements|
+>|import| instanceof| interface| native |
+>|new| null| non-sealed| package|
+>|public| protected| private| return|
+>|static| strictfp| super| switch|
+>|synchronized| this| threadsafe| throw|
+>|throws| transient| try| while|
+
+## Paso 22. Comments
+>[!NOTE]  
+>### [Groovy Comments](https://groovy-lang.org/syntax.html#_single_line_comment)
+>#### 22.1. Single-line comment
+>Single-line comments start with // and can be found at any position in the line. The characters following //, until the end of the line, are considered part of the comment.
+>```groovy
+>// a standalone single line comment
+>println "hello" // a comment till the end of the line
+>```
+>#### 22.2. Multiline comment
+>A multiline comment starts with /* and can be found at any position in the line. The characters following /* will be considered part of the comment, including new line characters, up to the first */ closing the comment. Multiline comments can thus be put at the end of a statement, or even inside a statement.
+>```groovy
+>/* a standalone multiline comment
+>   spanning two lines */
+>println "hello" /* a multiline comment starting
+>                   at the end of a statement */
+>println 1 /* one */ + 2 /* two */
+>```
+>#### 22.3. Groovydoc comment
+>Similarly to multiline comments, Groovydoc comments are multiline, but start with /** and end with */. Lines following the first Groovydoc comment line can optionally start with a star *. Those comments are associated with:
+>
+>* type definitions (classes, interfaces, enums, annotations),
+>* fields and properties definitions
+>* methods definitions
+>
+>Although the compiler will not complain about Groovydoc comments not being associated with the above language elements, you should prepend those constructs with the comment right before it.
+>```groovy
+>/**
+> * A Class description
+> */
+>class Person {
+>    /** the name of the person */
+>    String name
+>
+>    /**
+>     * Creates a greeting method for a certain person.
+>     *
+>     * @param otherPerson the person to greet
+>     * @return a greeting message
+>     */
+>    String greet(String otherPerson) {
+>       "Hello ${otherPerson}"
+>    }
+>}
+>```
+>Groovydoc follows the same conventions as Java’s own Javadoc. So you’ll be able to use the same tags as with Javadoc.
+>
+>In addition, Groovy supports Runtime Groovydoc since 3.0.0, i.e. Groovydoc can be retained at runtime.
+>
+>Runtime Groovydoc is disabled by default. It can be enabled by adding JVM option -Dgroovy.attach.runtime.groovydoc=true
+>The Runtime Groovydoc starts with /**@ and ends with */, for example:
+>```groovy
+>/**@
+> * Some class groovydoc for Foo
+> */
+>class Foo {
+>    /**@
+>     * Some method groovydoc for bar
+>     */
+>    void bar() {
+>    }
+>}
+>
+>assert Foo.class.groovydoc.content.contains('Some class groovydoc for Foo') 
+>assert Foo.class.getMethod('bar', new >Class[0]).groovydoc.content.contains('Some method groovydoc for bar')
+>``` 
+>Get the runtime groovydoc for class Foo
+>Get the runtime groovydoc for method bar
+>#### 22.4. Shebang line
+>Beside the single-line comment, there is a special line comment, often called the shebang line understood by UNIX systems which allows scripts to be run directly from the command-line, provided you have installed the Groovy distribution and the groovy command is available on the PATH.
+>```groovy
+>#!/usr/bin/env groovy
+>println "Hello from the shebang line"
+>```
+>The # character must be the first character of the file. Any indentation would yield a compilation error.
+
+>[!TIP]  
+>### [The Evolution of a Software Engineer](https://medium.com/@webseanhickey/the-evolution-of-a-software-engineer-db854689243#.5zm1hn71e)
+>Tengo este artículo realmente genial y voy a enlazar a esto en los recursos adicionales, pero es la evolución de un ingeniero de software. Estoy cerrando el círculo y esto me ha hecho mucha gracia porque es exactamente lo que me pasó a mí. Y, y no sé, quizás si has hecho algo de programación a lo largo de los años, incluso en otros lenguajes, esto también te parezca divertido.
+>
+>Pero básicamente el primer año que echamos un vistazo a escribir código, sólo, ya sabes, todo lo que nos preocupa es escribir el código. Así que primero aprendemos a escribir código, ¿no? Entonces empezamos a aprender que a medida que entramos en equipos de desarrollo más grandes e incluso para nosotros mismos, sólo para que en caso de que alguien más se encuentra con nuestro código más tarde, los comentarios pueden ser realmente útiles.
+>
+>Así que queremos comentar nuestro código para asegurarnos de que otras personas que vengan o incluso nosotros, ya sabes, dentro de cinco años entiendan lo que hace este código y lo que estamos pensando.En el momento en que escribimos un método en particular, luego llegas al tercer año y empiezas a volverte loco, ¿verdad?
+>
+>Como tengo todos estos, como estos javadocs aquí o hay comentarios de Java en mi clase tiene todo tipo de cosas como que el autor es la versión. Y luego básicamente he comentado cada una de las propiedades y métodos de la clase. Luego en el quinto año tenemos, ya sabes, tenemos como una licencia en la parte superior. Y de nuevo, nos hemos vuelto más locos. Y, ya sabes, esto es algo excesivo.
+>
+>Quiero decir, tal vez no excesivo. Algo de esto es, ya sabes, dar alguna información útil sobre nuestros métodos es definitivamente algo bueno. Pero luego llegamos hasta el décimo año y acaba de acostumbrarse a mostrar la frase Hola mundo en una consola.
+>
+>Así que me pareció un artículo divertido y lo comparto con vosotros. Sólo un poco de la evolución de, de donde usted sabe, de donde vienes como programador cuando se trata de comentarios.Creo que hay un término medio.
+>
+>Una vez más, no hay duda de que debes utilizar los comentarios a tu favor cuando tengan sentido, pero no abuses de ellos.
