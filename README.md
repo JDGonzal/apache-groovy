@@ -572,3 +572,142 @@ importa de foma automática.
 >Así que me pareció un artículo divertido y lo comparto con vosotros. Sólo un poco de la evolución de, de donde usted sabe, de donde vienes como programador cuando se trata de comentarios.Creo que hay un término medio.
 >
 >Una vez más, no hay duda de que debes utilizar los comentarios a tu favor cuando tengan sentido, pero no abuses de ellos.
+
+## Paso 23. Assertions
+>[!NOTE]
+>### [Power assertion](https://groovy-lang.org/semantics.html#_power_assertion)
+>Unlike Java with which Groovy shares the assert keyword, the latter in Groovy behaves very differently. First of all, an assertion in Groovy is always executed, independently of the -ea flag of the JVM. It makes this a first class choice for unit tests. The notion of "power asserts" is directly related to how the Groovy assert behaves.
+>
+>A power assertion is decomposed into 3 parts:
+>```groovy
+>assert [left expression] == [right expression] : (optional message)
+>```
+>The result of the assertion is very different from what you would get in Java. If the assertion is true, then nothing happens. If the assertion is false, then it provides a visual representation of the value of each sub-expressions of the expression being asserted. For example:
+>```groovy
+>assert 1+1 == 3
+>```
+>Will yield:
+>```groovy
+>Caught: Assertion failed:
+>
+>assert 1+1 == 3
+>        |  |
+>        2  false
+>```
+>Power asserts become very interesting when the expressions are more complex, like in the next example:
+>```groovy
+>def x = 2
+>def y = 7
+>def z = 5
+>def calc = { a,b -> a*b+1 }
+>assert calc(x,y) == [x,z].sum()
+>```
+>Which will print the value for each sub-expression:
+>```groovy
+>assert calc(x,y) == [x,z].sum()
+>       |    | |  |   | |  |
+>       15   2 7  |   2 5  7
+>                 false
+>```
+>In case you don’t want a pretty printed error message like above, you can fall back to a custom error message by changing the optional message part of the assertion, like in this example:
+>```groovy
+>def x = 2
+>def y = 7
+>def z = 5
+>def calc = { a,b -> a*b+1 }
+>assert calc(x,y) == z*z : 'Incorrect computation result'
+>```
+>Which will print the following error message:
+>```groovy
+>Incorrect computation result. Expression: (calc.call(x, y) == (z * z)). Values: z = 5, z = 5
+>```
+1. Crear el archivo **Assertions.groovy**.
+2. Ejecutar en la `TERMINAL` el comando:  
+`groovyConsole Assertions.groovy`.
+3. Colocar este código en el script:
+```groovy
+// you must provide an assetion an expression that evaluates to true 
+assert true
+
+// we can provide a full expression on the right hand side
+// note that unlike Java and more like Ruby or Scala == is equality
+assert 1 == 1
+
+// like the example above we are evaluating an expression 
+def x = 1
+assert x == 1
+
+// what happens when the expression doesn't evaluate to true?
+assert false
+
+// The power assertion output shows evaluation results from the outer to the inner expression 
+assert 1 == 2
+
+// complex debug output
+assert 1 == (3 + 10) * 100 / 5 * 20
+```
+4. Puedo seleccionar porciones del código y dar click derecho y
+seleccionar "Run Selection (Shift + Ctrl + R)".
+
+Y el resultado será similar a este:
+```groovy
+groovy> // you must provide an assetion an expression that evaluates to true  
+groovy> assert true 
+ 
+groovy> // we can provide a full expression on the right hand side 
+groovy> // note that unlike Java and more like Ruby or Scala == is equality 
+groovy> assert 1 == 1 
+ 
+groovy> // like the example above we are evaluating an expression  
+groovy> def x = 1 
+groovy> assert x == 1 
+ 
+groovy> // what happens when the expression doesn't evaluate to true? 
+groovy> assert false 
+ 
+Exception thrown
+
+Assertion failed: 
+
+
+
+assert false
+
+
+
+
+	at Assertions.run(Assertions.groovy:3)
+groovy> // The power assertion output shows evaluation results from the outer to the inner expression  
+groovy> assert 1 == 2 
+ 
+Exception thrown
+
+Assertion failed: 
+
+
+
+assert 1 == 2
+         |
+         false
+
+
+
+	at Assertions.run(Assertions.groovy:3)
+groovy> // complex debug output 
+groovy> assert 1 == (3 + 10) * 100 / 5 * 20 
+ 
+Exception thrown
+
+Assertion failed: 
+
+
+
+assert 1 == (3 + 10) * 100 / 5 * 20
+         |     |     |     |   |
+         false 13    1300  260 5200
+
+
+
+	at Assertions.run(Assertions.groovy:3)
+```
+5. Cerremos y guardemos el código de `groovyConsole`.
