@@ -711,3 +711,59 @@ assert 1 == (3 + 10) * 100 / 5 * 20
 	at Assertions.run(Assertions.groovy:3)
 ```
 5. Cerremos y guardemos el código de `groovyConsole`.
+
+## Paso 24. Scripts
+>[!NOTE]  
+>### [Script class](https://groovy-lang.org/structure.html#_script_class)
+>A groovy.lang.Script is always compiled into a class. The Groovy compiler will compile the class for you, with the body of the script copied into a run method. The previous example is therefore compiled as if it was the following:
+>
+>**Main.groovy**
+>```groovy
+> import org.codehaus.groovy.runtime.InvokerHelper
+> class Main extends Script { //---------------->1               
+>     def run() { //---------------------------->2                   
+>       println 'Groovy world!' //-------------->3             
+>    }
+>    static void main(String[] args) { //------->4           
+>        InvokerHelper.runScript(Main, args) //->5     
+>    }
+> }
+>```
+>1) The Main class extends the groovy.lang.Script class
+>2) groovy.lang.Script requires a run method returning a value
+>3) the script body goes into the run method
+>4) the main method is automatically generated
+>5) and delegates the execution of the script on the run method
+>
+>If the script is in a file, then the base name of the file is used to determine the name of the generated script class. In this example, if the name of the file is Main.groovy, then the script class is going to be Main.
+
+1. Crear la carpeta "scripts".
+2. Mover los archivos de extensión **.groovy** a la carpeta "scripts".
+3. Borrar los archivos de extensión **.class** de la raíz
+del proyecto.
+4. Crear el archivo **myScript.groovy** en la carpeta nueva llamada
+"scripts".
+5. Ejecutar en la `TERMINAL` el comando :    
+`groovyConsole ./scripts/myScript.groovy`.
+6. Este sería el código a escribir en el archivo:
+```groovy
+// a script is any groovy code not enclosed in a class file
+// but don't make the mistake thinking ther is no a class
+println "Hello from myScript.groovy"
+```
+7. En el menú de `groovyConsole`, sleccionamos: 
+Script --> Inspect AST.
+
+>[!TIP]  
+>Así que ya ves que tenemos esta clase pública, hay script, algún número gracioso después de ella y se extiende groovy llamando script.
+>
+>Entonces hay algunas propiedades aquí.
+>
+>Hay un constructor, hay un constructor, ya sabes, un constructor sobrecargado, y luego hay un principal, en realidad hay un método principal aquí.
+>
+>Y ese método principal tiene una llamada a ejecutar script.Y recuerda que antes te dije que todo lo que escribimos se copia en un método llamado ejecutar.
+>
+>Así que aquí está nuestra declaración de línea de impresión que teníamos en el método de ejecución. Así que como he dicho, no empezamos con una clase, pero Groovy en realidad compila nuestro código en una clase y pone el cuerpo aquí en ese método de ejecución.
+>
+>Así que espero que este tutorial haya sido de ayuda y explique cómo funcionan los scripts.
+
