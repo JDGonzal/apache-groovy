@@ -767,3 +767,130 @@ Script --> Inspect AST.
 >
 >Así que espero que este tutorial haya sido de ayuda y explique cómo funcionan los scripts.
 
+## Paso 25. Classes
+>[!NOTE]  
+>[Classes](https://groovy-lang.org/objectorientation.html#_class)
+>
+> Groovy classes are very similar to Java classes, and are compatible with Java ones at JVM level. They may have methods, fields and properties (think JavaBeans properties but with less boilerplate). Classes and class members can have the same modifiers (public, protected, private, static, etc.) as in Java with some minor differences at the source level which are explained shortly.
+>
+>The key differences between Groovy classes and their Java counterparts are:
+>
+>Classes or methods with no visibility modifier are automatically public (a special annotation can be used to achieve package private visibility).
+>
+>Fields with no visibility modifier are turned into properties automatically, which results in less verbose code, since explicit getter and setter methods aren’t needed. More on this aspect will be covered in the fields and properties section.
+>
+>Classes do not need to have the same base name as their source file definitions but it is highly recommended in most scenarios (see also the next point about scripts).
+>
+>One source file may contain one or more classes (but if a file contains any code not in a class, it is considered a script). Scripts are just classes with some special conventions and will have the same name as their source file (so don’t include a class definition within a script having the same name as the script source file).
+>
+>The following code presents an example class.
+>```groovy
+> class Person {  // ---------------------> 1                     
+>
+>    String name  // ---------------------> 2                      
+>    Integer age
+>
+>    def increaseAge(Integer years) { // -> 3 
+>        this.age += years
+>    }
+> }
+>```
+>1. class beginning, with the name Person
+>2. string field and property named name
+>3. method definition
+>### More details are:
+>     1. Normal class
+>     2. Inner class
+>         1. Anonymous inner class
+>         2. Abstract class
+>     3. Inheritance
+>     4. Superclasses
+>     5. Interfaces
+
+1. Creamos la carpeta "classes" en la raiz
+2. Creamos un archivo en la carpeta "classes" llamada
+**AngryBirds.groovy**.
+2. Esta vez lo abrimos en el `Visual Studio Code` y colocamos
+esto en el código:
+```groovy
+class AngryBirds {
+
+}
+
+class Bird { }
+
+class Pig { }
+```
+3. En una `TERMINAL` ejecutamos el comando:  
+`groovyc ./classes/AngryBirds.groovy`.
+4. Observamos q crea en la raíz del proyecto tres archivos:  
+* **AngryBirds.class**
+* **Bird.class**
+* **Pig.class**
+
+5. Creamos el archivo en la raíz del proyecto llamado:
+**Developer.groovy**.
+6. En el `Visual Studio Code` editamos el archivo y colocamos 
+este código básico:
+```groovy
+class Developer {
+
+}
+```
+>[!TIP]  
+>Por defecto toda clase es `public`.
+
+7. Colocamos algunas propiedades dentro de la clase:
+```groovy
+  String first
+  String last
+  def languages = []
+```
+8. Se añade en primera linea este código: `@groovy.transform.ToString()`, por encima de el nombre de
+la clase.
+9. Se añade un método público:
+```groovy
+  public void work() {
+  }
+```
+>[!TIP]  
+>Por defecto las `class` y los métodos son públicos, entonces no es
+>necesario poner el método público.
+
+10. Poner este código dentro del método:  
+`println "$first $last is working..."`
+11. Crear un archivo dentro en la raíz del proyecto llamado:
+**app.groovy**, con estos tres comentarios:
+```groovy
+// create a new instance of a developer
+
+// assign some languages
+
+// call some methods
+```
+12. Poner este código debajo de: 
+`// create a new instance of a developer`
+```groovy
+Developer dev = new Developer()
+dev.first = "Juan"
+dev.setLast("Piza")
+```
+13. Poner esto debajo de : 
+`// assign some languages`
+```groovy
+dev.languages << "Groovy"
+dev.languages << "Java"
+```
+14. Debajo de `// call some methods`, poner esto:
+```groovy
+dev.work()
+```
+15. Darle el triángulo de `Run Code (Ctrl + Alt + N)` y ver el
+resultado abajo en `OUTPUT`:
+```PowerShell
+[Running] groovy "...\apache-groovy\app.groovy"
+Juan Piza is working...
+
+[Done] exited with code=0 in 1.302 seconds
+```
+
