@@ -894,3 +894,124 @@ Juan Piza is working...
 [Done] exited with code=0 in 1.302 seconds
 ```
 
+## Paso 26. [Exercise] Create Your own Class
+>[!IMPORTANT]
+>### [Ejercicio] Crea tu propia clase
+>En este ejercicio, creará su propia clase y comenzará a pensar en lo que contendría su clase. No hay una respuesta correcta para esto. Sigue las reglas y mira lo que se te ocurre.
+>
+> 1. Crea una clase llamada Tweet
+>     1. Agregue propiedades a esta clase.
+>     * ¿Qué propiedades estarían presentes en una clase que contiene información sobre un tweet?
+>    * Piense en cuáles serían sus tipos de datos.
+>     2. ¿Qué métodos  irían en esta clase?
+>     * ¿Qué tal un constructor para crear un nuevo tweet?
+>     * ¿Qué tal los métodos para cambiar algunas de sus propiedades?
+>     * ¿Qué tal un método toString (o transformación AST)?
+>
+>2. Crea un script llamado Twitter.
+>   1. En este script crea uno o más Tweets.
+>   2. imprima las instancias de Tweet en la consola (y muestre sus representaciones de cadenas)
+> ### Bonus
+>* Crea un archivo llamado Tweet.groovy.
+>* Dentro de este archivo crea una clase llamada Tweet (la que creaste arriba)
+>* Luego, en el mismo archivo fuera de la declaración de clase, intente crear un nuevo tweet.
+>* ¿Cuál es el error que aparece y por qué sucede esto?
+
+1. Para este Ejercicio usaremos `intellij`.
+Selecciona "New Project"
+2. Seleccionamos "Groovy" de la lista de la derecha
+3. Seleccione la version de java que tengo instalada por el 
+`sdkman` (Que fue con este comando: `sdk install java 8.0.412-tem`).
+La ruta la puede buscar con:  
+`$SDKMAN_CANDIDATES_DIR/java/current/bin`.
+4. Seleccionamos la version de groovy tmabién instalada con 
+`sdkman` (Que fue con este comando: `sdk install groovy 4.0.16`).
+La ruta a mbuscar es:  
+`$SDKMAN_CANDIDATES_DIR/groovy/current/bin`.
+5. La ruta es donde tengo de forma local este reporosiorio
+(`.../groovy/apache-groovy`).
+6. El nombre del proyecto sera **TwitterExercise**
+7. Algo similar a esto:  
+![intellij New](images/section03-step_26_Intellij01.PNG)
+
+8. Creamos un `Package` dentro de "scr" llamado
+**com.classes**
+9. Creamos un `Package` dentro de "scr" llamado
+**com.scripts**
+10. Creamos en "scr/com/classes" , un `Groovy Class` llamado
+**Tweet**, con el siguiente código:
+```groovy
+package com.classes
+@groovy.transform.ToString()
+
+class Tweet {
+    String from
+    String message
+    Boolean isLike =false
+    Boolean isReTweet =false
+
+    void sendTweet(){
+        println("From: $from \n $message \n Like: $isLike \n ReTweet: $isReTweet")
+    }
+}
+```
+11. Creamos en "scr/com/classes", un `Groovy Script` llamado
+**Twitter**, con el siguiente código:
+```groovy
+package com.scripts
+import com.classes.Tweet
+Tweet t = new Tweet()
+
+t.from = "@JuanPiza"
+t.message = "Mi primer Tweet"
+t.isReTweet = true
+
+t.sendTweet()
+```
+12. Doy click derecho al archivo **Twitter.groovy** y selecciono 
+`Run 'Twitter'` y miramos el resultado abajo:
+```dos
+%USERHOME%\.sdkman\candidates\java\8.0.412-tem\bin\java.exe -Dtools.jar=%USERHOME%\.sdkman\candidates\java\8.0.412-tem\lib\tools.jar -Dgroovy.home=%WORKSITE%\apache-groovy\TwitterExercise "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.1.3\lib\idea_rt.jar=64352:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.1.3\bin" -Dfile.encoding=UTF-8 -classpath %WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-4.0.14.jar org.codehaus.groovy.tools.GroovyStarter --main groovy.ui.GroovyMain --classpath .;%WORKSITE%\apache-groovy\TwitterExercise\out\production\TwitterExercise;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-astbuilder-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-dateutil-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-jsr223-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-cli-commons-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-contracts-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-datetime-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-ant-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-cli-picocli-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-docgenerator-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-json-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-macro-library-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-jmx-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-groovydoc-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-nio-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-servlet-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-test-junit5-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-testng-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-test-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-sql-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-toml-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-ginq-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-swing-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-typecheckers-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-console-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-templates-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-macro-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-groovysh-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-xml-4.0.14.jar;%WORKSITE%\apache-groovy\TwitterExercise\lib\groovy-4.0.14.jar --encoding=UTF-8 %WORKSITE%\apache-groovy\TwitterExercise\src\com\scripts\Twitter.groovy
+```
+```Powershell
+From: @JuanPiza 
+ Mi primer Tweet 
+ Like: false 
+ ReTweet: true
+
+Process finished with exit code 0
+```
+13. Borro el **.gitignore** de "TwitterExercise".
+14. Aplico lo solicitado en el bonus, quedando así el código de 
+**Tweet.groovy**
+```groovy
+package com.classes
+@groovy.transform.ToString()
+
+class Tweet {
+    String from
+    String message
+    Boolean isLike =false
+    Boolean isReTweet =false
+
+    void sendTweet(){
+        println("From: $from \n $message \n Like: $isLike \n ReTweet: $isReTweet")
+    }
+}
+
+Tweet t = new Tweet()
+
+t.from = "@JuanPiza"
+t.message = "Mi primer Tweet"
+t.isReTweet = true
+
+t.sendTweet()
+```
+Al correrlo saca este error:
+```dos
+%WORKSITE%\apache-groovy\TwitterExercise\src\com\classes\Tweet.groovy:2
+Groovyc: Invalid duplicate class definition of class com.classes.Tweet : The source %WORKSITE%\apache-groovy\TwitterExercise\src\com\classes\Tweet.groovy contains at least two definitions of the class com.classes.Tweet.
+One of the classes is an explicit generated class using the class statement, the other is a class generated from the script body based on the file name. Solutions are to change the file name or to change the class name.
+```
+15. Retorno el valor de la forma correcta dejando solo lo del punto 10.
+
