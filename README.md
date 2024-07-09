@@ -1015,3 +1015,103 @@ One of the classes is an explicit generated class using the class statement, the
 ```
 15. Retorno el valor de la forma correcta dejando solo lo del punto 10.
 
+## Paso 27. [Exercise Review] Create your own Class
+
+1. Crear un directorio llamada "twitterdemo".
+2. Cambiar al directorio "twitterdemo" en la `TERMINAL`:  
+`cd ./twitterdemo`
+3. Crear dos archivos: **Tweet.groovy** y  **Twitter.groovy**.
+4. Ejecutamos el comando en la `TERMINAL`:  
+`groovyConsole Tweet.groovy`
+5. Creamos una clase vacía llamada `Tweet`
+```groovy
+class Tweet {
+
+}
+```
+6. Añadimos las siguiente propiedades:
+ * `username` de tipo `String`.
+ * `text` de tipo `String`.
+ * `retweets` de tipo `Integer`.
+ * `favorites` de tipo `Integer`.
+ * `createOn` de tipo `Date`.
+
+7. Creamos el constructor de la siguiente manera:
+```groovy
+    public Tweet( String user, String tweet ) {
+        username = user
+        text = tweet
+        retweets = 0
+        favorites = 0
+        createOn = new Date()
+    }
+```
+8. Creamos un método que retorna `void` llamado `addToRetweets`:
+```groovy
+    void addToRetweets() {
+        retweets += 1 
+    }
+```
+9. Creamos un método que retorna `void` llamado `addToFavorites`:
+```groovy
+    void addToFavorites() {
+        favorites += 1 
+    }
+```
+10. Añadimos en el tope la llamada a `@groovy.transform.ToString()`.
+>[!TIP]  
+>### El añadir `@groovy.transform.ToString()`, permite que al imprimir la clase cargada por el constructor sea clara la información allí contenida.
+
+11. Abrimos otra `TERMINAL` y nos cambiamos a la carpeta "twitterdemo":  
+`cd ./twitterdemo`
+12. En la `TERMINAL` se ejecuta el comando:  
+`groovyConsole Twitter.groovy`
+13. Instanciamos la clase `Tweet`, llenando los párametetros requeridos:
+```groovy
+def tweet = new Tweet ("@juanpiza", "My First Tweet")
+```
+14. Imprimimos simplemente la clase recién definida:  
+`println tweet`  
+y este es el resultado obtenido (sin Errores):
+```groovy
+groovy> // Definimos la variable de la clase 
+groovy> def tweet = new Tweet ("@juanpiza", "My First Tweet") 
+groovy> // Imprimimos dicha variable 
+groovy> println tweet 
+ 
+Tweet(@juanpiza, My First Tweet, 0, 0, Tue Jul 09 17:37:24 COT 2024)
+```
+>[!TIP]  
+>En el `groovyConsole` desactivé en `View` --> 
+>`Show Script in Output`.
+
+15. Añado el llamado a los dos métodos antes de imprimirlo, que son:
+ * `tweet.addToRetweets()`
+ * `tweet.addToFavorites()`
+
+16. El **Bonus** es tomar el mismo archivo **Tweet.groovy**, añadir
+al final la variable q llama la clase y carga el constructor y se imprime. 
+El errror sería este:
+```diff
+-Invalid duplicate class definition of class Tweet : The source Tweet.groovy contains at least two definitions of the class Tweet.
+-One of the classes is an explicit generated class using the class statement, the other is a class generated from the script body based on the file name. Solutions are to change the file name or to change the class name.
+ at line: 2, column: 1
+```
+>[!NOTE]  
+>Dice definición de clase duplicada no válida de la clase tweet.Bueno, eso es un poco extraño, ¿verdad?  
+>Aquí sólo tenemos una clase llamada Tweet.
+>Dice que el groovy tweet fuente contiene al menos dos definiciones de la clase tweet.
+>Así que, básicamente, lo que está pasando aquí es groovy tiene dos maneras de tratar un archivo groovy.
+>
+>O es un script o es una definición de clase.
+>
+>Así que en nuestro ejemplo del tweet de antes, era sólo una definición de clase. Así que estuvo bien. La definición de una clase puede tener el mismo nombre que el propio archivo.
+>
+>Si es un script, no puede tener una clase con el mismo nombre en ese archivo.
+>La razón es que Groovy creará una clase contenedora con el mismo nombre del archivo.
+>Así que tenemos tanto esta clase tweet y tenemos una secuencia de comandos aquí, porque cualquier cosa fuera de una clase se considera ahora
+>una secuencia de comandos.
+>
+>Así que lo envuelve en una clase contenedora llamada Tweet.
+>Por lo tanto, tenemos dos definiciones de una clase tweet en este mismo archivo.
+>Así que ahora la forma en que podemos conseguir alrededor de esto es vamos a guardar esto.
