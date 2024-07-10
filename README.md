@@ -1277,3 +1277,125 @@ El error sería este:
 > * try / catch / finally
 > * Multi-catch
 > * ARM Try with resources
+
+## Paso 30. Annotations & AST Transformations
+>[!NOTE]  
+> ### [Object orientation](https://groovy-lang.org/objectorientation.html#_annotation)
+> ### [Package groovy.transform](https://docs.groovy-lang.org/next/html/gapi/groovy/transform/package-summary.html)
+>Puedes crear los tuyos propios tanto en Java como en Groovy.
+>Es bastante fácil crear algunos básicos y luego, obviamente, puede llegar a ser un poco loco, sobre todo cuando
+>hablamos de la creación de transformaciones groovy.
+>Pero tú tienes la capacidad de crear la tuya propia.
+>
+>Ten en cuenta que, en la mayoría de los casos, cuando empieces, sólo serás consumidor
+>de estas anotaciones.
+>
+>Así que a diferencia del lenguaje Java en Groovy, una anotación se puede utilizar para alterar la semántica de un lenguaje.
+>Y esto es especialmente cierto en el caso de las transformaciones que generarán código basado en esa anotación.
+>Así que ya has visto una transformación AST en este curso y puede que ni siquiera te hayas dado cuenta en una de nuestras demos
+>anteriores en nuestra demo de Java a Groovy, mostramos un ejemplo de cómo podíamos eliminar el código
+>de dos cadenas.
+>Había un método que anulaba la cadena de dos y lo reemplazamos con una sola línea por encima
+>de la clase.
+>Esa fue la transformación AST de dos cadenas.
+>
+>También puedes crear tus propias transformaciones AST, pero hay un montón que vienen con Groovy.
+>Y en esta demo quiero echar un vistazo a una de las transformaciones AST que vienen con Groovy,
+>y que es la transformación AST inmutable.
+>Bien, en este punto estoy en la documentación de groovy y si recuerdas antes dije lo importante que es esta
+>documentación porque nos da un montón de información realmente genial.
+>Así que he navegado hasta el paquete groovy dot transform, y aquí es donde residen las transformaciones
+>AST.
+>
+>Así que si usted comienza a desplazarse a través de aquí, usted viene abajo, se puede ver como la
+>cadena de dos AST transformación que hemos hablado antes, pero hay todo tipo de otras transformaciones
+>realmente útil, cosas como sincronizado y ordenable y tipo comprobado y sólo algunos realmente grandes.
+>Y hoy quiero hablar de la inmutable.
+>
+>### ¿Qué es una clase inmutable en Java?
+>
+>En realidad es sólo una clase que sigue una serie de especificaciones.
+>Así que tiene un montón de reglas a las que se atiene, y no vamos a cubrir cada una de ellas, pero quiero hablar
+>de algunas de ellas y luego seguir adelante y crear la nuestra.
+>Así que no necesitamos esta transformación AST para poder hacerlo realidad.
+>Podríamos escribir nuestra propia clase y, ya sabes, siempre y cuando nos tipo de comprobado todas estas
+>reglas y se aseguró de que nuestra clase hizo estas cosas, entonces se consideraría una clase inmutable.
+>
+>Pero como verás, hacerlo es un auténtico coñazo.
+>Yo preferiría simplemente crear una clase, lanzar una anotación en el nivel de clase y tener groovy tipo
+>de cuidar de todo eso para mí.
+>De acuerdo.
+>La primera es que la clase se convierte automáticamente en definitiva.
+>Otra es que las propiedades tienen automáticamente campos privados finales con getters, por lo que necesitan ser privados
+>y finales, y entonces necesitamos tener getters para ellos.
+>Y si intentamos actualizar esa propiedad, debería resultar en una excepción de propiedad de sólo lectura.
+>Debo tener un constructor basado en el mapa que se proporciona que le permite establecer propiedades por nombre y luego
+>tiene algunas implementaciones por defecto para igualar el código hash y dos métodos de cadena.
+>Así que vamos, vamos a seguir adelante y sumergirnos en esto.
+>Así que tengo un cliente de clase aquí y todo lo que voy a hacer es que tenemos que ser capaces de utilizar como transformación.
+>Voy a importar groovy punto transformar punto inmutable.
+>
+1. Crear el directorio "ASTTransformations".
+2. Crear en el nuevo directorio el archivo **Custome.groovy**.
+3. En la `TERMINAL` cambiar la ruta a ese nuevo directorio:  
+`cd ./ASTTransformations/` 
+4. Ejecutar en la `TERMINAL` el comando:  
+`groovyConsole ./Custome.groovy`
+5. El contenido es una `class` simple:
+```groovy
+class Customer {
+    String first, last
+    int age
+    Date since
+    Collection favItems
+}
+```
+6. Añadimos la importación de una transformación:  
+`import groovy.transform.Immutable` 
+7. Añadimos una Anotación:  
+`@Immutable`
+8. En el menú de `groovyConsole`, seleccionamos:  
+`Script` --> `Inspect AST`, veremos algo así:  
+![Inspect AST](images/section03-step_30-Inspect_AST.PNG)
+
+>[!NOTE]  
+>Luego echó un vistazo a todas las propiedades de nuestra clase y dijo, Muy bien, para ser inmutable, tenemos
+>que seguir adelante y crear esos como finales y privados para que no puedan ser modificados más tarde.
+>Así que se adelantó y lo hizo por nosotros.
+>
+>Entonces también creó un constructor de cliente aquí para nosotros basado en un mapa de argumentos que podemos pasar.
+>Así que ahora podemos pasar en algún tipo de parámetros con nombre, si se quiere, en un constructor.
+>Entonces qué más hizo.
+>Hablamos de crear una implementación de hashCode equals in to string.
+>
+>Así que tenemos nuestro código hash, tenemos nuestros iguales y tenemos nuestra cadena to.
+>Y luego a lo largo de aquí verás getters y setters para todas nuestras propiedades diferentes.
+>Así que de nuevo, esto no es nada que no podríamos haber hecho por nuestra cuenta, pero.
+>Sólo hace que sea realmente, realmente mucho más fácil para nosotros para seguir adelante y crear una clase como lo haríamos normalmente
+>y, a continuación, sólo tiene que utilizar esta anotación para tipo de cuidar del resto de las cosas que tienen que suceder para
+>hacer esta clase en particular inmutable.
+
+9. Dentro de la carpeta "ASTTransformations", creamos el archivo 
+**app.groovy**.
+10. En la `TERMINAL` cambiar la ruta a ese nuevo directorio:  
+`cd ./ASTTransformations/`  y ejecutamos en la `TERMINAL` el comando:  
+`groovyConsole ./app.groovy`
+11. Ponemos este código en **app.groovy**:
+```groovy
+// Testing the Customer class
+def d = new Date()
+def c1 = new Customer(first: 'Tom', last:'Jones', age:21, since:d, favItems:['Books','Games'])
+def c2 = new Customer('Tom', 'Jones', 21, d, ['Books','Games'])
+assert c1 == c2
+```
+12. Corremos este script de **app.groovy**.
+13. Si Añadimos esta linea en **app.groovy**:  
+`c1.first = "Juan"`  
+y ejecutamos el Script, nos aparece este error:
+```Diff
+Exception thrown
+
+-groovy.lang.ReadOnlyPropertyException: Cannot set readonly property: first for class: Customer
+
+	at app.run(app.groovy:8)
+```
