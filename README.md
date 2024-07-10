@@ -1090,15 +1090,19 @@ Tweet(@juanpiza, My First Tweet, 0, 0, Tue Jul 09 17:37:24 COT 2024)
  * `tweet.addToFavorites()`
 
 16. El **Bonus** es tomar el mismo archivo **Tweet.groovy**, añadir
-al final la variable q llama la clase y carga el constructor y se imprime. 
-El errror sería este:
+al final la variable q llama la clase y carga el constructor y se imprime.
+```groovy
+def tweet = new Tweet ("@juanpiza", "My First Tweet")
+println tweet
+``` 
+El error sería este:
 ```diff
 -Invalid duplicate class definition of class Tweet : The source Tweet.groovy contains at least two definitions of the class Tweet.
 -One of the classes is an explicit generated class using the class statement, the other is a class generated from the script body based on the file name. Solutions are to change the file name or to change the class name.
  at line: 2, column: 1
 ```
 >[!NOTE]  
->Dice definición de clase duplicada no válida de la clase tweet.Bueno, eso es un poco extraño, ¿verdad?  
+>Dice definición de clase duplicada no válida de la clase tweet. Bueno, eso es un poco extraño, ¿verdad?  
 >Aquí sólo tenemos una clase llamada Tweet.
 >Dice que el groovy tweet fuente contiene al menos dos definiciones de la clase tweet.
 >Así que, básicamente, lo que está pasando aquí es groovy tiene dos maneras de tratar un archivo groovy.
@@ -1115,3 +1119,161 @@ El errror sería este:
 >Así que lo envuelve en una clase contenedora llamada Tweet.
 >Por lo tanto, tenemos dos definiciones de una clase tweet en este mismo archivo.
 >Así que ahora la forma en que podemos conseguir alrededor de esto es vamos a guardar esto.
+
+## Paso 28. Numbers
+>[!NOTE]  
+>En esta conferencia. Quiero hablar un poco sobre los números en el lenguaje groovy.
+>
+>En la próxima sección trataremos en detalle los distintos tipos de datos.
+>Pero quiero centrarme brevemente en las cifras.
+>Así que en Java, cuando creas una variable con un tipo primitivo como INT byte short, no puedes invocar métodos sobre ellas porque no son objetos, son tipos primitivos.
+>
+>De hecho, los tipos primitivos son en realidad auto boxed a sus equivalentes wrapper la mayor parte del tiempo en Groovy.
+>
+> Si pongo esto en `groovyConsole`:
+>`123456789.getClass().getName()`, obtengo esta respuesta:
+>`Result: java.lang.Integer`.
+> 
+> Otro valor en `groovyConsole`:
+>`123456789125547896564132548798.getClass().getName()`, obtengo esta respuesta:
+>`Result: java.math.BigInteger`.
+>
+>Este Otro en `groovyConsole`:
+>```groovy
+> int x = 1
+> x.class
+>```
+>Obtengo : `Result: class java.lang.Integer`.
+>
+> En `groovyConsole` pongo esto: `5.5.class` y mi respuesta es:
+>`Result: class java.math.BigDecimal`.
+
+## Paso 29. Groovy Control Structure
+>[!NOTE]  
+>### [Control structures](https://groovy-lang.org/semantics.html#_control_structures)
+> 1. Conditional structures
+> * if/else
+>```groovy
+> if ( ... ) {
+>     ...
+> } else if (...) {
+>     ...
+> } else {
+>     ...
+> }
+>```
+> * switch / case
+>```groovy
+> String person = 'Romeo'
+> def partner = switch(person) {
+>     case 'Romeo'  -> 'Juliet'
+>     case 'Adam'   -> 'Eve'
+>     case 'Antony' -> 'Cleopatra'
+>     case 'Bonnie' -> 'Clyde'
+> }
+>``` 
+>`Result: Juliet`
+>
+> 2. Looping structures
+> * Classic
+>```groovy
+> String message = ''
+> for (int i = 0; i < 5; i++) {
+>     message += 'Hi '
+> }
+> assert message == 'Hi Hi Hi Hi Hi '
+>```
+> * Enhanced classic Java-style for loop
+>```groovy
+> def facts = []
+> def count = 5
+> for (int fact = 1, i = 1; i <= count; i++, fact *= i) {
+>     facts << fact
+> }
+> assert facts == [1, 2, 6, 24, 120]
+>```
+> * Multi-assignment in combination with for loop
+>```groovy
+> // multi-assignment with types
+> def (String x, int y) = ['foo', 42]
+> assert "$x $y" == 'foo 42'
+>
+> // multi-assignment goes loopy
+> def baNums = []
+> for (def (String u, int v) = ['bar', 42]; v < 45; u++, v++) {
+>    baNums << "$u $v"
+> }
+> assert baNums == ['bar 42', 'bas 43', 'bat 44']
+>```
+> * for in loop
+>```groovy
+> // iterate over a range
+> def x = 0
+> for ( i in 0..9 ) {
+>     x += i
+> }
+> assert x == 45
+>
+> // iterate over a list
+> x = 0
+> for ( i in [0, 1, 2, 3, 4] ) {
+>     x += i
+> }
+> assert x == 10
+>
+> // iterate over an array
+> def array = (0..4).toArray()
+> x = 0
+> for ( i in array ) {
+>     x += i
+> }
+> assert x == 10
+>
+> // iterate over a map
+> def map = ['abc':1, 'def':2, 'xyz':3]
+> x = 0
+> for ( e in map ) {
+>     x += e.value
+> }
+> assert x == 6
+>
+> // iterate over values in a map
+> x = 0
+> for ( v in map.values() ) {
+>     x += v
+> }
+> assert x == 6
+>
+> // iterate over the characters in a string
+> def text = "abc"
+> def list = []
+> for (c in text) {
+>     list.add(c)
+> }
+> assert list == ["a", "b", "c"]
+>```
+> * while loop
+>```groovy
+> def x = 0
+> def y = 5
+>
+> while ( y-- > 0 ) {
+>     x++
+> }
+>
+> assert x == 5
+>```
+> * do/while loop
+>```groovy
+> // classic Java-style do..while loop
+> def count = 5
+> def fact = 1
+> do {
+>     fact *= count--
+> } while(count > 1)
+> assert fact == 120
+>```
+> 3. Exception handling
+> * try / catch / finally
+> * Multi-catch
+> * ARM Try with resources
