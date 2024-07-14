@@ -1495,3 +1495,19 @@ println sortedInteger born
 ```
 12. Podemos mirar el contenido de : `Script` -> `Inspect AST`
 13. Cerramos el `groovyConsole`.
+14. No regresamos a la carpeta raíz del proyecto:  
+`cd ..`
+
+## Paso 33. Operators
+1. Creamos un archivo llamado **operators.groovy** en la carpeta
+"scripts"
+2. Ponemos el código basado en este sitio: 
+[operators.groovy](https://github.com/danvega/apache-groovy-course/blob/master/basics/operators/operators.groovy)
+3. En la `TERMINAL` cambiamos al directio "scripts":  
+`cd ./scripts`
+4. Ejecutamos el comando en la `TERMINAL`:  
+`groovyConsole operators.groovy`
+5. Se hacen las correcciones necesarias para q ejecute el código por completo.
+6. Cerramos el `groovyConsole`.
+7. No regresamos a la carpeta raíz del proyecto:  
+`cd ..`
