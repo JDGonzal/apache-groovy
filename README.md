@@ -1399,3 +1399,99 @@ Exception thrown
 
 	at app.run(app.groovy:8)
 ```
+
+## Paso 31. [Exercise] Using AST Transformations
+>[!NOTE]  
+>### [Ejercicio] Uso de transformaciones AST
+>En este ejercicio vamos a lograr 2 objetivos.
+>
+>1. Familiarícese un poco más con los documentos de la API de Groovy
+>2. Aprenda a utilizar las transformaciones AST
+>
+>Ya hemos mostrado en conferencias anteriores las transformaciones ToString y AST inmutable. Quiero que encuentres 2 más y crees uno o más ejemplos de cómo usarlos. Nuevamente aquí no hay una respuesta correcta. Explore los documentos de API de Groovy a continuación y encuentre 2 que le gustaría probar:
+>[Package groovy.transform](http://docs.groovy-lang.org/next/html/gapi/groovy/transform/package-summary.html)
+
+## Paso 32. [Exercise Review] Using AST Transformations
+>[!NOTE]  
+>### [Canonical](https://docs.groovy-lang.org/next/html/gapi/groovy/transform/Canonical.html)
+1. Creamos la carpeta "ast_excercise".
+2. Creamos en esta nueva carpeta el archivo **CanonicalDemo.groovy**.
+3. En la terminal cambiamos la ruta a la nueva carpeta:  
+`cd ./ast_excercise`.
+4. Ejecutamos el Comando en la `TERMINAL`:  
+`groovyConsole CanonicalDemo.groovy`
+5. Pegamos el ejemplo de la página:
+```groovy
+ import groovy.transform.Canonical
+ @Canonical class Customer {
+     String first, last
+     int age
+     Date since
+     Collection favItems = ['Food']
+     def object
+ }
+ def d = new Date()
+ def anyObject = new Object()
+ def c1 = new Customer(first:'Tom', last:'Jones', age:21, since:d, favItems:['Books', 'Games'], object: anyObject)
+ def c2 = new Customer('Tom', 'Jones', 21, d, ['Books', 'Games'], anyObject)
+ assert c1 == c2
+```
+>[!NOTE]  
+>Así que básicamente lo que hemos hecho es que vamos a añade un constructor de tupla, añade un equals
+>y hashCode y añade A ¿Cuál fue el tercero?
+>Así que equals y hashCode a cadena y un constructor de tupla.
+>Así que todo lo que está haciendo es crear dos nuevos clientes aquí.
+>
+>Y por defecto no serían iguales, pero el equals y el hashCode lo resuelven y calculan
+>que son iguales.
+>Así que nada se imprime en la consola aquí porque tenemos nuestra declaración assert, la energía entra
+>y vamos a seguir adelante e inspeccionar la AST y ver qué pasa.
+>
+>![Canonical Inspect AST](images/section03-step_32-Canonical_Inspect_AST1.PNG)
+>
+>Así que aquí abajo, este es nuestro guión.
+>Así que nuestro script es la prueba real de la misma.
+>Y ahora tenemos nuestra clase cliente real y verás, aquí está nuestro constructor de tupla.
+>
+>Luego, si bajamos un poco más, tenemos un hashCode y tenemos un equals, y luego también tenemos una cadena
+>de dos.
+>Así que en realidad es sólo una combinación de un montón, algunas transformaciones diferentes todo envuelto en uno.
+>
+>>![Canonical Inspect AST](images/section03-step_32-Canonical_Inspect_AST2.PNG)
+
+6. Lo podemos ejecutar sin Problemas
+7. Cerramos el `groovyConsole`.
+
+>[!NOTE]  
+>### [Sortable](https://docs.groovy-lang.org/next/html/gapi/groovy/transform/Sortable.html)
+8. Creamos en esta nueva carpeta el archivo **SortableDemo.groovy**.
+9. Ejecutamos el Comando en la `TERMINAL`:  
+`groovyConsole SortableDemo.groovy`
+10. Ponemos este código:
+```groovy
+import groovy.transform.*
+
+@ToString
+@Sortable 
+class Person {
+     String first
+     String last
+     Integer born
+}
+def p1 = new Person(first:"juan", last: "Piza", born: 1999)
+def p2 = new Person(first:"Ivan", last: "Mesa", born: 2010)
+
+def people = [p1, p2]
+println people
+
+def sorted = people.sort(false /*No cambia o muta la colección*/)
+println sortedInteger born
+ }
+```
+11. Ejecutamos el Script y el resultado sería este:
+```dos
+[Person(juan, Piza, 1999), Person(Ivan, Mesa, 2010)]
+[Person(Ivan, Mesa, 2010), Person(juan, Piza, 1999)]
+```
+12. Podemos mirar el contenido de : `Script` -> `Inspect AST`
+13. Cerramos el `groovyConsole`.
