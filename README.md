@@ -1495,7 +1495,7 @@ println sortedInteger born
 ```
 12. Podemos mirar el contenido de : `Script` -> `Inspect AST`
 13. Cerramos el `groovyConsole`.
-14. No regresamos a la carpeta raíz del proyecto:  
+14. No regresamos a la carpeta raíz del proyecto en la `TERMINAL`:  
 `cd ..`
 
 ## Paso 33. Operators
@@ -1509,5 +1509,62 @@ println sortedInteger born
 `groovyConsole operators.groovy`
 5. Se hacen las correcciones necesarias para q ejecute el código por completo.
 6. Cerramos el `groovyConsole`.
-7. No regresamos a la carpeta raíz del proyecto:  
+7. No regresamos a la carpeta raíz del proyecto en la `TERMINAL`:  
+`cd ..`
+
+## Paso 34. Grapes
+>[!NOTE]  
+>Estos son los recursos sugeridos: 
+>	*	[Dependency management with Grape](https://docs.groovy-lang.org/latest/html/documentation/grape.html).
+>	*	[Package org.apache.commons.lang3.text](https://commons.apache.org/proper/commons-lang/javadocs/api-release/org/apache/commons/lang3/text/package-summary.html).
+>	*	[Maven Central Repository](https://central.sonatype.com/?smo=true).
+>
+> Así que grape es un gestor de dependencias jar incrustado en el groovy y grape te permite añadir rápidamente dependencias del repositorio
+>maven a tu classpath, lo que hace que el scripting sea aún más fácil.
+>
+>En algunos de los ejemplos que hemos visto hasta ahora, hemos importado librerías que estaban
+>en Java o en Groovy.
+>Bien, ¿qué ocurre en el caso de que queramos utilizar clases o bibliotecas diferentes que no formen
+>parte del lenguaje Java o Groovy?
+>
+>Bueno, lo que ocurre normalmente es que tienes que ir a buscar el conjunto de clases, que suele distribuirse
+>en formato jar, y luego tienes que importar el jar al entorno en el que estás trabajando.
+>Así que en nuestro caso, en Groovy Consejo, hay una manera de hacer eso.
+
+>[!TIP]  
+>### Esto lo veo como un [Gradle](https://gradle.org/), pero enfocado al groovy.
+
+1. En la carpata "scripts" creamos el archivo **grapeApp.groovy**.
+2. En la `TERMINAL` nos cambiamos a la carpeta de "scripts":  
+`cd ./scripts`
+3. Invocamos el comando:  
+`groovyConsole grapeApp.groovy`
+4. Colocamos este código simple:
+```groovy
+	@Grapes(
+    @Grab(group='', module='', version='' )
+	)
+```
+4. Completamos la información de esta página: 
+[apache.commons-lang3](https://central.sonatype.com/artifact/org.apache.commons/commons-lang3)
+```groovy
+	@Grapes(
+    @Grab(group='org.apache.commons', module='commons-lang3', version='3.14.0' )
+	)
+```
+5. Añadimos una línea de importación debajo de todo, como esta:  
+`import org.apache.commons.lang3.text.WordUtils`
+6. Definimos una variable llamada `name` de tipo `String`:  
+`String name = "Pietro Ubaldi Testiano Assisi"`
+7. llamamos la clase `WordUtils`:  
+`WordUtils wordUtils = new WordUtils()`
+8. Imprimimos lo siguiente:  
+`println wordUtils.initials(name)`
+9. Ejecutamos el script y vemos la respuesta, solo las iniciales.
+>[!TIP]  
+> En el `groovyConsole` , otro elemento q activé en el menú fue:
+>`View` -> `Auto Clear Output on Run`.
+
+10. Cerramos el `groovyConsole`.
+11. No regresamos a la carpeta raíz del proyecto en la `TERMINAL`:  
 `cd ..`
