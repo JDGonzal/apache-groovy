@@ -1690,7 +1690,7 @@ Y ejecutamos el código, para ver el resultado de :
 código:  
 `short s = 10000`
 14. Y justo debajo de esto ( ya sería linea 15), este código:  
-`println( s.class.getName() + " = " + s)` 
+`println( s.class.getName() + " = " + s)`  
 Ejecutamos y el resultado nuevo sería:  
 `java.lang.Short = 10000`
 15.  Añadimos una linea debajo de la linea 18, y ponemos este
@@ -1706,37 +1706,83 @@ Ejecutamos y la última linea del resultado sería:
 `java.lang.Integer = 2147483647`  
 😮‍💨
 18. Debajo de la línea 23, ponemos este código:  
-```groovy
-		long l = Long.MAX_VALUE
-		System.out.println(l.class.getName() + " = " + l)
-```
+`long l = Long.MAX_VALUE`  
+`System.out.println(l.class.getName() + " = " + l)`  
 Al ejecutar este sería el último resultado:  
 `java.lang.Long = 9223372036854775807`
-19. Debajo de la línea 28, añadimos este código:
-```groovy
-		float f = 1.25F // float f = 1.25
-		println( f.class.getName() + " = " + f)
-```
+
+19. Debajo de la línea 28, añadimos este código:  
+`float f = 1.25F // float f = 1.25`  
+`println( f.class.getName() + " = " + f)`  
 Al ejecutar este sería el último resultado:  
 `java.lang.Float = 1.25`
-20. Debajo de la línea 34, ponemos este código:
-```groovy
-		double d = 1.05798202483D
-    println( d.class.getName() + " = " + d)
-```
+
+20. Debajo de la línea 34, ponemos este código:  
+`double d = 1.05798202483D`      
+`println( d.class.getName() + " = " + d)`   
 Al ejecutar este sería el último resultado:  
 `java.lang.Double = 1.05798202483`
-21. Debajo de la línea 36, ponemos este código:
-```groovy
-		char c = 'c'
-		println( c.class.getName() + " = " + c)
-```
-Al ejecutar el resultado sería:
+21. Debajo de la línea 36, ponemos este código:  
+`char c = 'c'`  
+`println( c.class.getName() + " = " + c)`  
+Al ejecutar el resultado sería:  
 `java.lang.Character = c` 
-22. Debajo de la línea 39, ponemos este código:
-```groovy
-		boolean bool = true
-		println( bool.class.getName() + " = " + bool)
-```
-Al ejecutar el resultado sería:
+22. Debajo de la línea 39, ponemos este código:  
+`boolean bool = true`  
+`println( bool.class.getName() + " = " + bool)`  
+Al ejecutar el resultado sería:  
 `java.lang.Boolean = true` 
+
+## Paso 37. Groovy Data Types & Optional Typing
+>[!NOTE]  
+>En resumen, en Groovy, todo es un objeto.
+>Este es un concepto importante de entender en el futuro porque es lo que hace groovy un lenguaje totalmente
+>orientado a objetos.
+>
+>Los diseñadores del lenguaje groovy decidieron prescindir de los tipos primitivos.
+>Cuando declaramos un valor como int x igual a uno.
+>Eso se habría almacenado en un tipo primitivo en Java.
+>Groovy utiliza una clase envoltorio que ya viene con la plataforma Java.
+>
+>¿Y qué pasa con Float?
+>
+>Así que recuerda que en Java teníamos que decirle específicamente a ese literal que era un float.
+>Aquí sólo podemos decir 1.25 y que es una instancia de Java dot linked float.
+>Podemos hacerlo tanto con double como con char y boolean.
+>Pero ahora lo que quiero ver es ¿qué pasa si no declaramos un tipo real?
+>Así que vamos a obtener una tipificación opcional en un segundo.
+>
+>Pero, ¿y si sólo tenemos un número aquí?
+>Sabiendo que todo es un objeto, deberíamos poder llamar a un método sobre esto.
+>Así que si llamamos a la clase, podemos ver por defecto que es una instancia de java. lang punto entero.
+>
+>¿Funcionaría igual?
+>
+>Sabemos que en Java un float es de precisión simple, mientras que un double es de precisión doble.
+>
+>¿Empezaríamos también a subir por esa cadena?
+>
+>Así que vamos a entrar aquí y hacer 4. 50 y veamos cuál es la clase para esto.
+>Y que podría sorprender un poco, pero de buenas a primeras tenemos un punto matemático Java gran decimal.
+>Así que cada número decimal en groovy es una instancia del tipo Java dot math dot big decimal.
+>Y realmente esto sólo nos ayuda este defecto es algo que realmente nos ayuda a cabo sólo porque
+>nos da más precisión cuando estamos haciendo ecuaciones matemáticas.
+>Así que si necesitas un float o un double, puedes crear uno fácilmente.
+>
+>Pero por defecto, cuando asignamos un número con un punto decimal a una variable,
+>va a ser de tipo decimal grande.
+>
+>Podemos utilizar la palabra clave def en Groovy para indicar que no hay ningún tipo declarado para esta variable.
+>Así que si decimos def x es igual a diez, ahora lo que estamos diciendo aquí es que no nos importa qué tipo X es, pero aquí está el valor
+>que voy a asignar a la misma.
+>Ahora usted probablemente puede adivinar, sobre la base de lo que hemos visto hasta ahora, que si nos fijamos
+>en qué tipo de qué tipo de datos es en realidad, es un número entero.
+>Y es que aunque hayamos dicho que no nos importa de qué tipo sea.
+>Groovy en el fondo decidió que todo bien.
+>Mantener un valor de diez.
+>
+>
+>Así que si sabes cuál es el tipo y sabes que no va a cambiar, es una buena práctica empezar
+>a tipar tus variables en los casos en los que no te importa cuál es, o puede cambiar de tipo a lo largo de la ejecución
+>de tu programa.
+>Ahí es donde realmente entra en juego el poder de escribir opcionalmente una variable.
