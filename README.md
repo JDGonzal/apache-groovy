@@ -1786,3 +1786,6 @@ Al ejecutar el resultado sería:
 >a tipar tus variables en los casos en los que no te importa cuál es, o puede cambiar de tipo a lo largo de la ejecución
 >de tu programa.
 >Ahí es donde realmente entra en juego el poder de escribir opcionalmente una variable.
+
+## Quiz 3: Data Types
+![](images/section04_step_36_quiz3.gif)
