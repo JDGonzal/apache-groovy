@@ -26,6 +26,7 @@ replay_pid*
 ### IntelliJ IDEA ###
 HelloWorld/.idea
 TwitterExercise/.idea
+datatypes/.idea
 out/
 !**/HelloWorld/src/main/**/out/
 !**/HelloWorld/src/test/**/out/
