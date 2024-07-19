@@ -1572,3 +1572,171 @@ println sortedInteger born
 ## Quiz 2: Learning Groovy Basics
 ![Quiz 2 - Basics](images/section03-step_34-quiz.gif)
 
+# Section 4: Simple Data Types
+
+## Paso 35. Data Types Intro
+>[!NOTE]  
+>Esto es a partir de las dos próximas secciones, va a estar trabajando con tipos de datos.
+>En esta sección hablaremos de tipos de datos simples.
+>
+>En la siguiente sección, hablaremos de tipos de datos complejos como las colecciones.
+>Así que aquí, en tipos de datos simples, estamos hablando simplemente de lo que son los tipos de datos.
+>
+>	*	¿Qué es un tipo de datos en Java?
+>	*	¿Cómo nos afecta o cómo funciona en Groovy?
+>
+>Veremos todos esos tipos de datos y hablaremos de ellos para que los entiendas.
+>Así que cuando creas un tipo de datos como una variable en Groovy, si le das un tipo, entiendes por qué le estás
+>dando un tipo específico.
+>También hablaremos de trabajar con números.
+>La sobrecarga de operadores es realmente genial.
+>
+>Puedes hacer cosas realmente divertidas con él, y por eso, vamos a hacer un ejercicio sobre la sobrecarga de operadores
+>y simplemente divertirnos un poco con él y asegurarnos de que entendemos cómo funciona.
+>Y luego veremos las cadenas.
+>
+>Las cadenas no son realmente una variable, no son realmente un tipo de datos, pero lo son.
+>Así que vamos a ver las cadenas y cómo se comparan con Java.
+>Así que si vienes de Java, las cadenas son una adición bienvenida en Groovy porque podemos hacer algunas cosas
+>divertidas con ellas.
+>
+>Y, por último, las expresiones regulares.
+>Una de esas cosas a las que nunca dedicamos suficiente tiempo.
+>Empezaremos a aprender a construir expresiones regulares.
+>En realidad no demasiado en la semántica de la misma, pero la forma de construir algunas expresiones regulares y, a continuación,
+>los diferentes métodos que Groovy nos da para hacernos con éxito el uso de ellos.
+>
+>Así que esa va a ser la sección para tipos de datos simples.
+
+## Paso 36. Java Data Types
+>[!NOTE]  
+>![](images/section04-step_36-PrimitiveTypes.png)
+>
+>Además de INT, el lenguaje de programación Java admite otros siete tipos de datos primitivos.
+>Un tipo de datos primitivo está predefinido por el lenguaje y se denomina mediante una palabra clave reservada.
+>
+>Los ocho tipos de datos primitivos que admite el lenguaje de programación Java son byte short int long
+>float, double char y boolean.
+>Puedes ver en la tabla que cada uno de los ocho tipos primitivos tiene su correspondiente tipo envoltorio,
+>y éste es un objeto real.
+>
+>Así que si estás contando en casa, eso nos lleva a 16.
+>Ahora, en realidad hay 17 tipos de datos con los que vamos a trabajar en el lenguaje Java
+>y el 17 es string.
+
+1. Para este Ejercicio usaremos `intellij`.
+Selecciona "New Project"
+2. Seleccionamos "Groovy" de la lista de la derecha
+3. Seleccione la version de java que tengo instalada por el 
+`sdkman` (Que fue con este comando: `sdk install java 8.0.412-tem`).
+La ruta la puede buscar con:  
+`$SDKMAN_CANDIDATES_DIR/java/current/bin`.
+4. Seleccionamos la version de groovy tmabién instalada con 
+`sdkman` (Que fue con este comando: `sdk install groovy 4.0.16`).
+La ruta a mbuscar es:  
+`$SDKMAN_CANDIDATES_DIR/groovy/current/bin`.
+5. La ruta es donde tengo de forma local este reporosiorio
+(`.../groovy/apache-groovy`).
+6. El nombre del proyecto sera **datatypes**
+7. Algo similar a esto:  
+![intellij New](images/section04-step_36-Intellij01.PNG)
+
+8. Borramos el archivo **.gitignore**, q vemos en el intellij.
+
+10. Creamos en "scr" , un `Groovy Script` llamado
+**DataTypes**, con el siguiente código:
+```groovy
+/*
+* Primitive Data Types Demo
+*/
+public class DataTypes {
+public static void main(String[] args) {
+		// byte:
+		// Min Value: -128
+		// Max Value: 127
+		// short:
+		// Min Value: -32,768
+		// Max Value: 32,767
+		// int:
+		// Min Value: -2,147,483,648 (-2^31)
+		// Max Value 2,147,483,647 (2^311)
+		// long:
+		// Min Value: -9,223,372,036,854,775,808 (2^63)
+		// Max Value: 9,223,372,036,854,775,807 (2^631)
+		// float: 32-bits IEEE floating points (single precision)
+		// Min Value: 1.4E-45
+		// Max Value: 3.4028235E38
+		// double:64-bit IEEE floating points (double precision)
+		// Min Value: 4.9E-324
+		// Max Value: 1.7976931348623157E308
+		// char: character or unicode
+		// boolean: true or false
+	}
+}
+```
+11. Añadimos una linea debajo de la linea 8, y ponemos este
+código:  
+`byte b = 127`  
+y este no sería problema, pero si en vez de 127, ponemos un 
+número superior por ejemplo:  
+`byte b = 128`  
+Al ubicarnos debajo de la variable `b`, nos aparece un error.
+Dejemos el primer valor con el `127`.
+12. Debajo de esta línea, en la línea 10, ponemos este código:  
+`println( b.class.getName() + " = " + b)`  
+Y ejecutamos el código, para ver el resultado de :  
+`java.lang.Byte = 127`  
+13. Añadimos una linea debajo de la linea 13, y ponemos este
+código:  
+`short s = 10000`
+14. Y justo debajo de esto ( ya sería linea 15), este código:  
+`println( s.class.getName() + " = " + s)` 
+Ejecutamos y el resultado nuevo sería:  
+`java.lang.Short = 10000`
+15.  Añadimos una linea debajo de la linea 18, y ponemos este
+código:  
+`int i = 324561789`
+ 16. Y justo debajo de esto ( ya sería linea 20), este código:  
+`println( i.class.getName() + " = " + i)` 
+Ejecutamos y el resultado nuevo sería:  
+`java.lang.Integer = 324561789`
+17. Cambiamos la línea 19 por esta :  
+`int i = 2_147_483_647`  
+Ejecutamos y la última linea del resultado sería:  
+`java.lang.Integer = 2147483647`  
+😮‍💨
+18. Debajo de la línea 23, ponemos este código:  
+```groovy
+		long l = Long.MAX_VALUE
+		System.out.println(l.class.getName() + " = " + l)
+```
+Al ejecutar este sería el último resultado:  
+`java.lang.Long = 9223372036854775807`
+19. Debajo de la línea 28, añadimos este código:
+```groovy
+		float f = 1.25F // float f = 1.25
+		println( f.class.getName() + " = " + f)
+```
+Al ejecutar este sería el último resultado:  
+`java.lang.Float = 1.25`
+20. Debajo de la línea 34, ponemos este código:
+```groovy
+		double d = 1.05798202483D
+    println( d.class.getName() + " = " + d)
+```
+Al ejecutar este sería el último resultado:  
+`java.lang.Double = 1.05798202483`
+21. Debajo de la línea 36, ponemos este código:
+```groovy
+		char c = 'c'
+		println( c.class.getName() + " = " + c)
+```
+Al ejecutar el resultado sería:
+`java.lang.Character = c` 
+22. Debajo de la línea 39, ponemos este código:
+```groovy
+		boolean bool = true
+		println( bool.class.getName() + " = " + bool)
+```
+Al ejecutar el resultado sería:
+`java.lang.Boolean = true` 
