@@ -1789,3 +1789,166 @@ Al ejecutar el resultado sería:
 
 ## Quiz 3: Data Types
 ![](images/section04_step_36_quiz3.gif)
+
+## Paso 38. Working with numbers
+
+1. Crear en la carpeta "scripts" el archivo: 
+**working_withnumbers.groovy**
+2. En la `TERMINAL` cambiar de carpeta:  
+`cd ./scripts`
+3. Ejecutar el comando en la `TERMINAL`:  
+`groovyConsole working_withnumbers.groovy`
+4. Con este texto en el archivo:
+```groovy
+// Groovy Number Defaults
+// -----------------------------------
+
+// :: Converting Data Types ::
+// -----------------------------------
+// Explicit casting
+
+// Implicit coercion
+
+// Rules for +,-,*
+// ------------------------------------
+
+// If either operand is a float or a double the result is a double 
+// In Java if only floats are involved the result is a float
+
+// If either operand is a big decimal
+
+// If either operand is a BigInteger the result is a BigInteger
+// If either operand is a Long the result is a Long 
+// If either operand is a Integer the result is an Integer
+
+// Double division
+
+// Integer Division
+
+// GDK Methods
+// -----------------------------------------------------
+
+// times | upto | downto | step
+
+```
+5. En la línea 3 (debajo de `Groovy Number Defaults`), 
+insertamos este código:
+```groovy
+def number = 10
+println number.class
+
+def decimal = 5.50
+println decimal.class
+```
+6. Ejecutamos y el resultado seía:
+```dos
+class java.lang.Integer
+class java.math.BigDecimal
+```
+7. En la línea 12 (debajo de `Explicit casting`), 
+ añadimos este código:
+ ```groovy
+ def myFloat = (float) 1.0
+println myFloat.class
+ ```
+8. Ejecutamos y esta sería la última línea:  
+ `class java.lang.Float`
+9. En la línea 22 (debajo de `In Java if only floats`)
+ Añadimos este código:
+ ```groovy
+ Float f = 5.25
+Double d = 10.50
+def result = d / f
+println result
+println result.class
+```
+10. Al ejecutar las últimas líneas serían:
+```dos
+ 2.0
+class java.lang.Double
+```
+11. Debajo de lo reciente añadimos:
+```groovy
+Float a = 10.75
+Float b = 53.75
+def result2 = b / a
+println result2
+println result2.class
+ ```
+12. Al ejecutar las últimas líneas serían:
+```dos
+ 5.0
+class java.lang.Double
+```
+13. En la línea 35 (debajo de `If either operand is a big decimal`)
+ Añadimos este código:
+```groovy
+def x = 34.5	//	BigDecimal
+def y = 15
+def bigResult = x / y
+println bigResult
+println bigResult.class
+```
+14. Al ejecutar las últimas líneas serían:
+```dos
+2.3
+class java.math.BigDecimal
+```
+15. En la línea 46 (debajo de `Double division`)
+ Añadimos este código:  
+ `println 5.0d - 4.1d`
+16. Al ejecutar las últimas líneas serían:  
+ `0.9000000000000004`
+17. En la línea 47 (debajo del ultimo código)
+ Añadimos este código:  
+`println 5-4.1`
+18. Al ejecutar las últimas líneas serían:  
+`0.9`
+19. En la línea 50 (debajo de `Integer Division`)
+ Añadimos este código:
+```groovy
+def intDiv = 1 / 2
+println intDiv // this is much different than Java where we would get 0
+println intDiv.getClass().getName()
+println intDiv.class
+println 1.intdiv(2)
+```
+20. Al ejecutar las últimas líneas serían:
+```dos
+0.5
+java.math.BigDecimal
+class java.math.BigDecimal
+0
+```
+21. En la línea 58 (debajo de `GDK Methods`)
+ Añadimos este código:
+```groovy
+assert 2 == 2.5.toInteger() // conversion
+assert 2 == 2.5 as Integer  // enforced coercion
+
+assert '5.50'.isNumber()
+assert 5 == '5'.toInteger()
+```
+22. Seleccionamos este nuevo código, luego click derecho y
+`Run Selection`, no se generan errores, pero se ejecuta de forma
+correcta.
+23. En la línea 65 (debajo de `// times | upto | downto | step`)
+Añadimos este código:
+```groovy
+20.times { print '+-' }
+println ''
+1.upto(10) { num -> print num + ' , ' }
+println ''
+99.downto(90) { num -> print num + ', ' }
+println ''
+0.step(1,0.1) { num -> print num + ',' }
+println ''
+```
+24. Seleccionamos este nuevo código, luego click derecho y
+`Run Selection`:
+```dos
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 
+99, 98, 97, 96, 95, 94, 93, 92, 91, 90, 
+0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,
+```
