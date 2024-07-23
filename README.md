@@ -1960,7 +1960,7 @@ println ''
 >[!NOTE]  
 >### [Operator overloading](https://groovy-lang.org/operators.html#Operator-Overloading)
 >Here is a complete list of the operators and their corresponding methods:
->| | | | |
+>
 >Operator|	Method|◀️▶️|	Operator|	Method|
 >|--|--|--|--|--|
 >+|	a.plus(b)			||a[b]			|a.getAt(b)
@@ -2023,5 +2023,110 @@ Ejecuto y este sería el resultado:
 `Account Balance: 600.00`
 
 7. Cerramos el `groovyConsole`.
-26. Regresamos a la carpeta raíz del proyecto en la `TERMINAL`:  
+8. Regresamos a la carpeta raíz del proyecto en la `TERMINAL`:  
 `cd ..`
+
+## Paso 40. [Exercise] Operator Overloading
+>[!NOTE]  
+> ### [Ejercicio] Sobrecarga del operador
+>En este ejercicio vamos a aprender cómo implementar la sobrecarga de operadores en nuestras propias clases.
+>	*	Cree un nuevo script llamado **AccountDemo.groovy**.
+>	*	Crea una clase llamada `Account`.
+>	* Cree una propiedad llamada `balance`(Saldo) de tipo `BigDecimal` e inicialícela en 0.
+>	*	Crea una propiedad llamada `type` de tipo `String`.
+>	*	Cree un método llamado `deposit`(Depósito) que se sumará al `balance`.
+>	*	Crea un método llamado `withdraw`(Retiro) que restará del `balance`.
+>		*	no es necesario verificar si tienen esa cantidad disponible (manténgalo simple)
+>	*	Con ese código implementado, las siguientes líneas deberían funcionar:
+>```groovy
+>Account checking = new Account(type:"Checking")
+>checking.deposit(100.00)
+>Account savings = new Account(type:"Savings")
+>savings.deposit(50.00)
+>```
+>Sabemos que la clase `String` tiene un método sobrecargado llamado `plus` que nos permite concatenar 2 `String`, ¿verdad? Entonces, ¿cómo podríamos tomar esa lógica y hacer que las siguientes líneas funcionen?
+>```groovy
+>BigDecimal total = checking + savings
+>println total
+>```
+
+## Paso 41. [Exercise Review] Operator Overloading
+1. Crear en la carpeta "scripts" un archivo llamado 
+**AccountDemo.groovy**
+2. Cambiamos de directorio en una `TERMINAL` a "scripts":  
+`cd ./scripts`
+3. Ejecutamos en la `TERMINAL` el comando:  
+`groovyConsole accountDemo.groovy`
+4. Creamos la clase con las dos variables:
+```groovy
+class Account {
+    BigDecimal balance = 0.0
+    String type = ''  // checking or savings
+}
+```
+5. Añadimos los dos métos básico dentro de la `class`:
+```groovy
+    BigDecimal deposit( BigDecimal amount ){
+        this.balance += amount
+    }
+    
+    BigDecimal withdraw( BigDecimal amount ){
+        this.balance -= amount
+    }
+```
+6. Ponemos el llamado de la clase con base en el requerido del ejercicio:
+```groovy
+Account checking = new Account(type:"Checking")
+checking.deposit(100.00)
+Account savings = new Account(type:"Savings")
+savings.deposit(50.00)
+
+println checking
+println savings
+```
+Al correr obtenemos esto:
+```dos
+Account@59057555
+Account@7030473a
+```
+7. Añadimos el transformador de `@groovy` para String como
+primera línea:  
+`@groovy.transform.ToString`  
+Ejecuto de nuevo y obtengo esto:
+```dos
+Account(100.00, Checking)
+Account(50.00, Savings)
+```
+8. Al añadir esto al final:
+```groovy
+BigDecimal total = checking + savings
+println total
+```
+Nos genera un error
+
+9. Agregamos esto dentro de la `class`:
+```groovy
+    BigDecimal plus(Account account){
+        balance: this.balance + account.balance
+    }
+```
+10. Ejecutamos y el resultado final será:
+```dos
+Account(100.00, Checking)
+Account(50.00, Savings)
+150.00
+```
+11. Cerramos el `groovyConsole`.
+12. Regresamos a la carpeta raíz del proyecto en la `TERMINAL`:  
+`cd ..`
+>[!TIP]  
+>También ejecuté el código en `Visual Studio Code` y este es el
+>resultado en la ventana `OUTPUT`:
+>```bash
+>[Running] groovy "...\apache-groovy\scripts\AccountDemo.groovy"
+>Account(100.00, Checking)
+>Account(50.00, Savings)
+>150.00
+>
+>[Done] exited with code=0 in 1.341 seconds
+>```
