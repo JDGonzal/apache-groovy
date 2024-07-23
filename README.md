@@ -1952,3 +1952,76 @@ println ''
 99, 98, 97, 96, 95, 94, 93, 92, 91, 90, 
 0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,
 ```
+25. Cerramos el `groovyConsole`.
+26. Regresamos a la carpeta raíz del proyecto en la `TERMINAL`:  
+`cd ..`
+
+## Paso 39. Operator Overloading
+>[!NOTE]  
+>### [Operator overloading](https://groovy-lang.org/operators.html#Operator-Overloading)
+>Here is a complete list of the operators and their corresponding methods:
+>| | | | |
+>Operator|	Method|◀️▶️|	Operator|	Method|
+>|--|--|--|--|--|
+>+|	a.plus(b)			||a[b]			|a.getAt(b)
+>-|	a.minus(b)		||a[b] = c	|a.putAt(b, c)
+>*|	a.multiply(b)	||a in b		|b.isCase(a)
+>/|	a.div(b)			||<<				|a.leftShift(b)
+>%|	a.mod(b)			||>>				|a.rightShift(b)
+>**|	a.power(b)	||>>>				|a.rightShiftUnsigned(b)
+>\||a.or(b)				||++				|a.next()
+>&|a.and(b)				||--				|a.previous()
+>^|a.xor(b)				||+a				|a.positive()
+>as|a.asType(b)		||-a				|a.negative()
+>a()|a.call()			||~a				|a.bitwiseNegate()
+
+1. Creamos un achivo en "scripts" llamado **accounts.groovy**.
+2. Cambiamos de directorio en una `TERMINAL` a "scripts":  
+`cd ./scripts`
+3. Ejecutamos en la `TERMINAL` el comando:  
+`groovyConsole accounts.groovy`
+4. Escribimos este código inialmente y lo ejecutamos:
+```groovy
+class Account {
+    BigDecimal balance
+}
+
+Account savings = new Account(balance:100.00)
+Account checking = new Account(balance:500.00)
+
+println savings + checking
+```
+El resultado sería:
+```diff
+Exception thrown
+
+-groovy.lang.MissingMethodException: No signature of method: Account.plus() is applicable for argument types: (Account) values: [Account@7e42a0d0]
+-Possible solutions: is(java.lang.Object), split(groovy.lang.Closure), use([Ljava.lang.Object;), wait(), any(), dump()
+
+	at accounts.run(accounts.groovy:8)
+```
+5. Ajustamos unas correcciones en la `class` como:
+```groovy
+class Account {
+    BigDecimal balance
+    
+    Account plus(Account other){
+        new Account(balance: this.balance + other.balance)
+    }
+}
+```
+Hasta acá corre sin mostrar errores.
+
+6. Dentro de la `class` y antes de cerrarla pongo una conversión
+a `String` con un `toString`:
+```groovy
+    String toString(){
+        "Account Balance: $balance"
+    }
+```
+Ejecuto y este sería el resultado:  
+`Account Balance: 600.00`
+
+7. Cerramos el `groovyConsole`.
+26. Regresamos a la carpeta raíz del proyecto en la `TERMINAL`:  
+`cd ..`
