@@ -2130,3 +2130,161 @@ Account(50.00, Savings)
 >
 >[Done] exited with code=0 in 1.341 seconds
 >```
+
+## Paso 42. Strings
+>[!NOTE]  
+>En esta lección, vamos a echar un vistazo a trabajar con cadenas en Groovy.
+>Si recordamos nuestra discusión sobre los tipos de datos, hay 17 tipos de datos en total en Java.
+>Tenemos nuestros ocho tipos primitivos.
+>Nuestras ocho clases envolventes y cadena.
+>
+>Siempre que necesitemos crear una variable con más de un carácter en Java, utilizaremos una cadena.
+>Así que vamos a hacer una pequeña recapitulación aquí sobre cómo crear estos diferentes tipos de datos en Java.
+>Así, cuando queremos crear un carácter, utilizamos el tipo de datos char.
+
+1. Creamos en la caerpeta "scripts" el archivo 
+**strings.groovy**
+2. Usando el `Visual Studio Code`, ponemos este código de comentarios:
+```groovy
+/* groovylint-disable CompileStatic, TrailingWhitespace */
+// Working with Strings in Groovy
+// Java ::
+
+// Groovy ::
+
+// string interpolation
+
+// multiline strings
+
+// dollar slashy
+
+```
+3. Añadimos en la línea 4 debajo de `// Java ::`
+la definción de un tipo `char`:  
+```java
+char c = 'c'
+println c.class
+
+```
+4. Ejecutamos y obtenemos esto en el `OUTPUT`:  
+`class java.lang.Character`
+5. Debajo de `println c.class`, y luego de un espacio en la 
+línea 7, añadimos esto:
+```java
+String str = "this is a string"
+println str.class 
+
+```
+6. Ejecutamos y la última linea del `OUTPUT` sería:  
+`class java.lang.String` 
+7. En la línea 11, debajo de `// Groovy ::`
+```groovy
+def c2 = 'c'
+println c2.class
+
+def str2 = 'this is a string'
+println str2.class
+
+```
+8. Ejecutamos y las dos últimas líneas en `OUTPUT` serían:
+```dos
+class java.lang.String
+class java.lang.String
+```
+9.  En la línea 18, debajo de `// string interpolation`
+```groovy
+// Java ::
+String name = "Juan"
+String msg = "Hello " + name + "..."
+println msg
+
+```
+10. Ejecutamos y la última línea en `OUTPUT` sería:  
+`Hello Juan...`
+11.  En la línea 23, debajo de `println msg` y un espacio:
+```groovy
+// Groovy ::
+String msg2 = "Hello ${name}..."
+println msg2
+
+```
+12. Ejecutamos y la última línea en `OUTPUT` sería:  
+`Hello Juan...`  
+Igual resultado q en `// Java ::`
+13. En la línea 27, debajo de `println msg2` y un espacio:
+```groovy
+String msg3 = 'Hello ${name}...'
+println msg3
+
+```
+>### Usamos comilla simple.
+
+14. Ejecutamos y la última línea en `OUTPUT` sería:  
+`Hello ${name}...`  
+No funciona de manera correcta.
+15. En la línea 30, debajo de `println msg3` y un espacio:
+```groovy
+String msg4 = "We can evaluate expressions here: ${1 + 1}"
+println msg4
+
+```
+16. Ejecutamos y la última línea en `OUTPUT` sería:  
+`We can evaluate expressions here: 2`  
+
+>[!NOTE]  
+>También tenemos la capacidad de crear cadenas multilínea en Groovy.
+>Así que en este caso, quiero crear un mensaje grande y podemos utilizar comillas simples o dobles.
+>
+>Así que estamos usando tres comillas simples o tres comillas dobles, y podemos crear un mensaje que básicamente
+>abarca varias líneas.
+
+17. En la línea 34 debajo de `// multiline strings`, añadimos
+este código:
+```groovy
+def aLargeMsg = """
+a
+Message
+goes
+here
+"""
+println aLargeMsg
+
+```
+18. Ejecutamos y las últimas líneas en `OUTPUT` serían:  
+```dos
+
+a
+Message
+goes
+here
+
+```
+>[!TIP]  
+>Como usamos comillas dobles podemos usar una interpolación:
+>`${1 + 1}`
+
+19. En la línea 43 debajo de `// dollar slashy`, añadimos
+este código:
+```groovy
+def folder = "c:\apache-groovy\scripts\strings.groovy"
+println folder
+
+```
+20. Ejecutamos y las últimas líneas en `OUTPUT` serían:
+```diff
+org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
+E:\Development\tutorials\groovy\apache-groovy\scripts\tempCodeRunnerFile.groovy: 1: Unexpected character: '"' @ line 1, column 14.
+   def folder = "c:\apache-groovy\scripts\strings.groovy"
+                ^
+
+1 error
+```
+21. El código de la línea 43 , lo podemos *Escapar* usando
+doble `back-slash` (\\):  
+`def folder = "c:\\apache-groovy\\scripts\\strings.groovy"`
+22. Ejecutamos y en `OUTPUT`, nos saldría:  
+`c:\apache-groovy\scripts\strings.groovy`
+23. Otra solución en la línea 43 sería:  
+`def folder = $/c:\apache-groovy\scripts\strings.groovy/$` 
+24. Ejecutamos y en `OUTPUT`, nos saldría la misma respuesta:  
+`c:\apache-groovy\scripts\strings.groovy`
