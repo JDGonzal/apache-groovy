@@ -2288,3 +2288,142 @@ doble `back-slash` (\\):
 `def folder = $/c:\apache-groovy\scripts\strings.groovy/$` 
 24. Ejecutamos y en `OUTPUT`, nos saldría la misma respuesta:  
 `c:\apache-groovy\scripts\strings.groovy`
+
+## Paso 43. Regular Expressions
+>[!NOTE]  
+>Vamos a dedicar unos minutos a hablar de las expresiones regulares.
+>Podríamos pasarnos días hablando de lo que son y de cómo construir diferentes patrones, pero un tutorial completo
+>está un poco fuera del alcance de esta conferencia.
+>
+>Quiero empezar con este divertido cómic que encontré en uno de mis sitios favoritos xkcd.com.
+>
+>![xkcd.com](images/section04-step_43-regular_expressions1.PNG)
+>
+>Si tienes problemas con Perl, me sentiré mal por ti, hijo.
+>Tenía 99 problemas, así que utilicé expresiones regulares.
+>Ahora tengo 100.
+>Esto es muy gracioso.
+>
+>![](images/section04-step_43-regular_expressions2.PNG)
+>
+>Java ha soportado expresiones regulares o regex, como se suele decir, desde la versión 1.4.
+>Las expresiones regulares son la representación de un patrón de búsqueda utilizado para escanear y buscar coincidencias de texto.
+>Aunque hoy en día se puede utilizar regex en Java, puede resultar bastante complicado en determinadas situaciones.
+>
+>![](images/section04-step_43-regular_expressions3.PNG)
+>
+>Estos patrones pueden ser muy sencillos.
+>Por ejemplo, ABC significa que estamos buscando una A seguida directamente de una B, seguida directamente de una C en cualquier
+>parte del texto que estamos buscando.
+>Los regex más sencillos pueden ser secuencias de caracteres, mientras que los patrones más complejos pueden ser a veces
+>realmente difíciles de entender.
+>
+>Así que tenemos algunos patrones aquí y sólo tenemos un patrón y lo que significan.
+>Así que hablamos de ABC, sólo un poco de texto poco allí que estamos buscando una coincidencia en una cadena en cualquier
+>lugar.
+>Así, la segunda es una B en la que cualquiera de los siguientes caracteres, a, E, I, o, o U va seguido
+>de una T.
+>Podría ser uno.
+>Podrían ser muchos.
+>
+>Podría ser todo eso si fuera una palabra.
+>Así que ves que coincide con cosas como bate, bate, bate y.
+>Pero...
+>Ahora empezamos a complicarnos un poco más y tenemos algunas expresiones aquí y no vamos a entrar en
+>el significado de esto.
+1. Crear en la carpeta "scripts" crear el archivo 
+**regex.groovy**.
+2. Poner este código : 
+```groovy
+// Java Sample Paters
+
+// What pattterns will look like in Groovy
+
+// Find | Match
+
+```
+3. Sigo editando con `Visual Studio Code`, añado en la línea 2
+el siguiente código:
+```java
+import java.util.regex.*;
+Pattern pattern = Pattern.compile("abc")
+println pattern
+println pattern.class
+
+```
+4. Ejecuto esto y el resultado sería:
+```dos
+abc
+class java.util.regex.Pattern
+```
+5. Cambiar la línea 3 con esta :  
+`Pattern pattern = Pattern.compile("a\b")`  
+Ejecuto y obtengo esto:  
+```dos
+a
+class java.util.regex.Pattern
+```
+6. Cambiar la línea 3 con esta :  
+`Pattern pattern = Pattern.compile("a\\\\b")`  
+Ejecuto y obtengo esto:  
+```dos
+a\\b
+class java.util.regex.Pattern
+```
+7. En la línea 8, debajo de `like in Groovy`, añado este código
+```groovy
+String slashy = /a\b/
+println slashy
+println slashy.class
+```
+8. Al ejecutar el resultado de las últimas líneas será:
+```dos
+a\b
+class java.lang.String
+```
+9. Otro ejemplo sería una `url`, se manejaría asi:
+```groovy
+String url = $/http://estesitio.com/pagina/$
+println url
+```
+10. Al ejecutar este sería el resultado:
+```dos
+http://estesitio.com/pagina
+```
+11. en la línea 16, debajo de `Find | Match`, añadimos:
+```groovy
+def text = 'Si me gusta el rugby que mejor que ser fan de los AllBlacks'
+def pattern2 = ~/fan de los/
+def finder = text =~ pattern2 // Si hallamos parte en el texto
+def matcher = text ==~ pattern2 //Si coincide exactamente
+println finder
+println finder.size()
+println matcher
+```
+12. Al ejecutar, la última línea sería como esto
+```dos
+java.util.regex.Matcher[pattern=fan de los region=0,59 lastmatch=]
+1
+false
+```
+13. En la línea 24, debajo de `println matcher` y un espacio mas
+escribimos esto:
+```groovy
+def text2 = 'fan de los'
+def pattern3 = ~/fan de los/
+def matcher2 = text2 ==~ pattern3
+println matcher2
+```
+14. Lo ejecutamos y obtenemos esto:
+```dos
+true
+```
+15. En la línea 30, debajo de `println matcher2` , ponemos esto:
+```groovy
+text = text.replaceFirst(pattern2, 'dueño de')
+println text
+```
+16. Al ejecutar la última línea sería:
+```dos
+Si me gusta el rugby que mejor que ser dueño de AllBlacks
+```
