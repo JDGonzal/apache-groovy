@@ -2427,3 +2427,136 @@ println text
 ```dos
 Si me gusta el rugby que mejor que ser dueño de AllBlacks
 ```
+
+## Paso 44. Collections Intro
+>[!NOTE]  
+>Bienvenido a las colecciones de la sección cinco.
+>En la sección anterior hemos visto los tipos de datos simples.
+>Y en esta sección nos ocuparemos de los tipos de datos complejos, también conocidos como colecciones.
+>
+>Si vienes de Java, probablemente te sientas identificado.
+>Pero las colecciones fueron para mí uno de los mayores puntos de dolor cuando empecé a trabajar con Java.
+>Y, de hecho, una de las primeras razones por las que me fijé en Groovy fue tanto para hacer pruebas con Spark como para las colecciones.
+>
+>API era mucho más fácil de usar, mucho más fácil de seguir.
+>Así que cuando hablamos de colecciones, hablamos de rangos.
+>Los rangos son realmente geniales.
+>Si vienes de Java, allí no existen los rangos.
+>Están disponibles en otros idiomas.
+>
+>Vamos a ver listas.
+>
+>Así que si se trata de una lista de matriz, sólo ser capaz de crear una lista en línea y sólo realmente no tiene que preocuparse acerca de lo que usted está poniendo
+>en las listas, sólo lo hace mucho más fácil en Groovy.
+>Así que volveremos a trabajar con listas y mapas.
+>Maps podemos crear un mapa implícito y empezar a trabajar con él y es realmente fácil.
+>
+>Las API son muy fáciles de usar.
+>Hay varias formas de introducir y extraer datos.
+>Así que vamos a ver listas y mapas allí y luego vamos a ver un ejercicio rápido.
+>No es una sección larga, pero sí importante.
+>Las colecciones están por todas partes.
+>Vas a usarlos mucho.
+>Así que entre la última sección en esta sección, mucho que ver con los tipos de datos y son secciones importantes.
+
+## Paso 45. Ranges
+>[!NOTE]  
+>[Interface Range](https://docs.groovy-lang.org/latest/html/gapi/groovy/lang/Range.html)  
+>Un rango representa la lista de elementos discretos entre un valor inicial (o de origen) y avanzando hacia un valor final (o hasta). Para un rango inverso, la lista se obtiene comenzando en el valor hasta y avanzando hacia el valor desde. El concepto de avanzar y retroceder depende de la implementación del rango. En el caso general, avanzar implica llamadas sucesivas al método next() del primer elemento, mientras que avanzar implica llamar al método previous(). Los rangos numéricos optimizados pueden aplicar una suma o resta numérica de algún tamaño de paso numérico. 
+
+1. En la carpeta "scripts", crear el archivo **RangeDemo.groovy**
+2. Usando el `Visual Studio Code`, empiezo con este código:
+```groovy
+for (int x = 1; x<= 10; ++x) {
+  println x
+}
+
+println ""
+
+for (int y = 10; y>= 1; --y) {
+  print y
+}
+```
+3. Al ejecutar este sería el resultado:
+```dos
+12345678910
+10987654321
+```
+4. Añado esto en la línea 11, al final mas un espacio:
+```groovy
+println ''
+
+def letters = ['a', 'b', 'c']
+for (int i = 0; i < letters.size(); ++i) {
+  print letters[i]
+}
+```
+5. Ejecuto y obtengo:  
+`abc`
+6. Pongamos todo el código anterior en un comentario /* ... */
+7. Probemos con un rango y este código en la línea 20:
+```groovy
+Range r = 1..10
+println r 
+println r.class.name
+```
+>[!TIP]  
+>Al ejecutar me sale `1..10`, pero en el video del curso sale
+>otra cosa:  
+>`[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]`
+8. Ejecuto y este es mi resultado:
+```dos
+1..10
+groovy.lang.IntRange
+```
+9. Pongo estas dos lineas mas:
+```groovy
+println r.from
+println r.to
+```
+10. Ejecuto y estas son las últimas líneas:
+```dos
+1
+10
+```
+11. Si cambio en la línea 20, por este valor: `Range r = 1..<10`.  
+Ejecuto y el resultado sería : 
+```dos
+1..<10
+groovy.lang.IntRange
+1
+9
+```
+12. Regreso la línea 20, al valor inicial: `Range r = 1..10`.
+13. Pongo esta linea en la 26   
+`assert (0..10).contains(0)` y ejecutar no hay error, esta correcto.
+14. Otras pruebas con `assert` serían:
+```groovy
+assert (0..10).contains(0)
+assert (0..10).contains(10)
+assert (0..10).contains(-1) == false
+assert (0..10).contains(11) == false
+
+assert (0..<10).contains(0)
+assert (0..<10).contains(10) == false
+```
+15. Añado esto en la línea 34, al final mas un reglón:
+```groovy
+Date today = new Date()
+Date oneWeekAway = today + 7
+println today
+println oneWeekAway
+```
+* Al ejecutar sale la fecha de hoy y la de la semana próxima.
+16. En la línea 39, pongo esto:
+```groovy
+Range days = today..oneWeekAway
+println days
+```
+17. Al ejecutar obtengo:
+```dos
+Thu Aug 01 18:55:04 COT 2024..Thu Aug 08 18:55:04 COT 2024
+```
+18. Ejecicio similar con letras:  
+`Range letters = 'a'..'x'`, imprimo `letters` y obtengo:  
+`a..x`
