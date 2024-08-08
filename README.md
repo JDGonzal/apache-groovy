@@ -2428,6 +2428,8 @@ println text
 Si me gusta el rugby que mejor que ser dueño de AllBlacks
 ```
 
+# Section 5: Collections
+
 ## Paso 44. Collections Intro
 >[!NOTE]  
 >Bienvenido a las colecciones de la sección cinco.
@@ -2884,4 +2886,185 @@ println map.size()  // 7
 
 // Sin cierres (Closures), es posible que deba consultar la API de Java para LinkedHashMap
 println map.values()  // [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+```
+
+# Section 6: Closures
+
+## Paso 50. Intro
+>[!NOTE]  
+>Y estamos en la sección seis, que son los cierres.
+>Probablemente una de las cosas más interesantes de Groovy son los cierres.
+>Han existido desde el principio.
+>Y lo que les hace realmente especiales es que son ciudadanos de primera clase de la lengua.
+>
+>### Así que son objetos.
+>
+>Puedes pasártelos y hacer un montón de cosas chulas, muy, muy chulas con ellos.
+>Así que probablemente los has visto un poco, ya sabes, en algunos ejemplos de código.
+>Hasta ahora, e incluso cuando trabajábamos con colecciones en la última sección.
+>
+>Pero ahora vamos a sumergirnos de verdad en los cierres.
+>Vamos a hablar de lo que son, cómo crearlos, cómo se puede cómo podemos tomar diferentes parámetros
+>en los cierres, y luego vamos a ver los métodos de colección de nuevo una vez que realmente empezamos a entender
+>los cierres, los métodos de la API de colecciones son realmente va a tener mucho más sentido.
+>
+>Así que vamos a ver esos de nuevo, vamos a hablar de currying, vamos a hablar básicamente de los cierres, el alcance, lo
+>que sucede dentro de un cierre y cómo se puede hacer algunas cosas interesantes con su delegado.
+>Y luego veremos un ejercicio sobre cómo usarlos y lo repasaremos.
+>Así que mientras estamos en el sitio web groovy aquí, sin embargo, si usted va a la documentación, hay una
+>muy buena sección completa sobre los cierres en la especificación del lenguaje y de nuevo, sólo un montón de información.
+>Vamos a cubrir mucho.
+>
+>Pero de nuevo, volviendo a lo que dije al principio de este curso, realmente quieres complementar eso.
+>Así que esta documentación es estupenda.
+>Si has cogido alguno de los libros de los que hablé, también hay buenas secciones en ellos.
+>Así que una parte importante de Groovy, sin duda es cierres y realmente tenemos que entenderlos para tipo de tomar ventaja
+>de algunas cosas en el lenguaje.
+>Así que con eso, vamos a saltar a los cierres.
+
+## Paso 51. What are Closures?
+>[!NOTE]  
+>
+>¿Qué son los cierres?
+>
+>¿Para qué se utilizan los cierres?
+>
+>Bueno, se utilizan para un montón de cosas, sobre todo iteradores.
+>Así que vamos a verlas en esta sección y probablemente ya las hayamos visto a lo largo
+>de este curso.
+>
+>Pero los cierres nos ofrecen una buena forma de iterar sobre listas, mapas y otros objetos.
+>Devoluciones de llamada (Callbacks).
+>Ya no necesitamos clases internas anónimas como en Java.
+>Podemos crear callbacks.
+>Tenemos funciones de orden superior, funciones que están llamando a otras funciones estructura de control especializado.
+>Puedes crear el tuyo propio.
+>
+>Puede utilizar cierres para crear sus propias estructuras de control.
+>Constructores, que son una cosa realmente grande en Groovy que vamos a cubrir
+>en este curso, le dan una gran manera de construir algunas estructuras diferentes como HTML o XML asignación de recursos.
+>
+>Así que antes de saltar a algunas demostraciones reales, sólo quiero darle algunos recursos más para ayudarle en su
+>viaje hacia el aprendizaje de cierres.
+>Así que, obviamente, si usted ha recogido cualquiera de los libros que he recomendado al principio de este
+>curso, hay algunas buenas secciones y un montón de gran contenido en los libros sobre los cierres, así que me gustaría empezar por ahí.
+>
+>Entonces también si nos acercamos a los groovy-links. org, aquí hay un par de buenos recursos que quiero
+>consultar.
+>Así que si vamos a la documentación, si estábamos en el documento de una sola página, se puede encontrar allí
+>también.
+>Pero aquí es donde se rompe un poco la documentación.
+>Y de hecho hay toda una sección en la especificación del lenguaje sobre los cierres.
+>
+>Así que gran parte de lo que vamos a tratar en esta sección estará aquí:
+>### Documentación
+>* [Closures](https://groovy-lang.org/closures.html)
+>* [Class Closure<V>](https://docs.groovy-lang.org/latest/html/api/groovy/lang/Closure.html)
+>
+>Pero, obviamente, probablemente haya un poco más de detalle en ciertos temas.
+>Así que una vez que repases esta sección y quizás revises parte del material de los libros, si tienes alguno,
+>yo definitivamente empezaría por aquí.
+>Esta es una gran sección de documentación sobre cierres.
+>Y también, si volvemos a la documentación y vamos a las APIs groovy, si saltamos aquí y miramos bajo
+>groovy, groovy punto lang, ahí es donde la clase de cierre principal es tan groovy.
+>
+>Dot linked Closure es la clase de cierre principal con la que estamos trabajando aquí.
+>Y así hay un poco de buena información aquí, junto con todas las propiedades y métodos en los constructores y todo lo que un cierre realmente
+>puede hacer es escribir en esta documentación aquí para que usted no tiene que usted puede simplemente tipo de hojear
+>a través de esto en este momento.
+>Creo que uno de los requisitos del ejercicio, sin embargo, va a ser que usted mira a través de esta documentación
+>y entenderlo y ahora también es importante tener en cuenta que nunca tiene que memorizar las API que nunca es
+>el caso.
+
+## Paso 52. Creating Closures
+1. Creamos la carpeta "Closures" y dentro el archivo 
+**Basics.groovy**, empezamos con este código:
+```groovy
+def c ={ }
+println c.class.name // Basics$_run_closure1
+println c instanceof Closure  // true
+```
+2. Añadimos esto en la línea después de un reglón (puede ser 5):
+```groovy
+def sayHello = {
+  println "Hello"
+}
+
+sayHello() // Hello
+```
+3. Lo modifico de esta manera y la función puede tener un argumento
+```groovy
+def sayHello = { name ->
+  println "Hello, $name"
+}
+
+sayHello('Juan') // Helo, Juan // Hello
+```
+>[!TIP]  
+>Dado q tengo una instalación que `Visual Studio Code` utiliza
+> llamada `eslint`, que se compone de dos partes:
+> 1. Tengo una instalación global de el paquete `eslint`,
+> con el comando `npm install -g eslint` (Requiere nodejs), hay un video con una explicación al respecto
+>[ESLint Configuración y uso](https://www.youtube.com/watch?v=bClwMhv50aI).
+> 2. Tengo una extensión en `Visual Studio Code` 
+>llamada : [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
+>
+>El editor me hace sugerencias y cuando le digo que afectan todo el 
+>proyecto, el `Visual Studio Code` lo pone en un archivo llamado
+>**.groovylintrc.json**, con las `"rules":` que va a hacer
+>excepción.
+
+4. Otros `closure` son los de recorrer una `List`:
+```groovy
+List nums = [1, 2, 3, 4, 5, 6, 7, 78, 9]
+// In an `each` the `it` took the elements of `List`
+nums.each({print "$it |"})  // 1 |2 |3 |4 |5 |6 |7 |78 |9 |
+```
+5. Otra forma es enviando un párametro definido:
+```groovy
+// Another way is using an specific argument,
+// in this case is `num`
+nums.each({ num ->
+  print "$num |"  // 1 |2 |3 |4 |5 |6 |7 |78 |9 |
+})
+```
+6. Otra forma como parametros de un objeto:
+```groovy
+// Closures are objects & last param
+def timesTen(num, closure){
+  closure(num * 10)
+}
+timesTen(20, { println it }) // 200
+```
+>[!NOTE]  
+>Así que vamos a suponer en un escenario donde tenemos un método aquí en Groovy, digamos que tenemos
+>un método llamado veces diez, y este método va a tomar un número y un cierre.
+>Así que tenemos un número y un cierre que se pasa a este método.
+>Lo que queremos hacer es en este método en particular, vamos a 
+ lamar a la clausura.
+>
+>Así que lo que hace el cierre, y luego vamos a tomar ese número y vamos a veces diez.
+>
+>Así que ahora imagina lo que podríamos hacer es sentarnos aquí y llamar a veces diez y voy a pasar un número
+>en, digamos, diez, y luego va a tomar un cierre.
+>Y quiero decir que adelante, imprímelo.
+
+7. Otra forma u ejemplo de llamar este objeto sería:
+```groovy
+timesTen(5) { println it }  // 50
+```
+8. Aplicar a un número directamente un `closure`, en este caso
+el `times`:
+```groovy
+// The number directly apply a `clousure` as:
+10.times { print "$it |" } // 0 |1 |2 |3 |4 |5 |6 |7 |8 |9 |
+```
+9. Importamos el método `Random` y lo usamos así:
+```groovy
+// import `Random`
+import java.util.Random
+Random rand = new Random()
+3.times {
+  print "${rand.nextInt()}, " // -1935321065, 1004274475, 2119764057,
+}
 ```
