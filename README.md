@@ -2735,3 +2735,153 @@ for (key in person.keySet()){
 }
 println " " // first:juan |last:piza |email:kcorreo@server.com |twitter:[username:@piza, emailAddress:another@email.com] | 
 ```
+
+## Paso 48. [Exercise] Using Collections
+>[!NOTE]  
+>### [Ejercicio] Uso de colecciones
+>#### Rangos
+>
+>Si no tienes experiencia con Java o Groovy, la idea de una enumeración puede resultarte nueva. Una enumeración es una colección de valores constantes. Podemos usar esta colección de constantes para crear rangos. Quiero que leas un poco sobre las enumeraciones y crees una enumeración para los días de la semana. ex domingo, lunes, etc...
+>
+>* Crear un rango a partir de esa enumeración
+>* Imprimir el tamaño del rango
+>* Usar el método contains para ver si el miércoles está en ese rango
+>* Imprimir el elemento `from` de este rango
+>* Imprimir el elemento `to` de este rango
+>#### Listas
+>
+>* Crear una lista de días (domingo - sábado)
+>* Imprimir la lista
+>* Imprimir el tamaño de la lista
+>* Eliminar el sábado de la lista
+>* Agregar el sábado nuevamente agregándolo a la lista
+>* Imprimir el miércoles usando su índice
+>#### Mapas
+>
+>* Crear un mapa de días de la semana
+>	* 1: domingo, 2: lunes, etc...
+>* Imprimir el mapa
+>* Imprimir el nombre de la clase del mapa
+>* Imprimir el tamaño del mapa
+>* ¿Existe un método que imprima fácilmente todos los días (valores)?
+>	* Sin cierres (Closures), es posible que deba consultar la API de Java para LinkedHashMap
+
+## Paso 49. [Exercise Review] Using Collections
+1. Creamos la carpeta "Collections-Excercise"
+2. Creamos en la nueva carpeta el archivo **RangeDays.groovy**
+3. Este Sería el Código con los resultantes:
+```groovy
+/*
+  Rangos
+  ------------------------------------
+  * Crear un rango a partir de esa enumeración
+  * Imprimir el tamaño del rango
+  * Usar el método contains para ver si el miércoles está en ese rango
+  * Imprimir el elemento `from` de este rango
+  * Imprimir el elemento `to` de este rango
+*/
+
+enum Days {
+  SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+}
+// Crear un rango a partir de esa enumeración
+def dayRange = Days.SUNDAY..Days.SATURDAY
+// Imprimir el tamaño del rango
+println dayRange.size() // 7
+
+// Usar el método contains para ver si el miércoles está en ese rango
+println dayRange.contains(Days.WEDNESDAY) // true
+
+// Imprimir el elemento `from` de este rango
+println dayRange.from // SUNDAY
+
+// Imprimir el elemento `to` de este rango
+println dayRange.to // SATURDAY
+```
+4. Adicional imprimimos el `dayRange`:
+```groovy
+// Adicional podemos imprimir el contenido
+// for in loop
+for (day in dayRange){
+  print "$day |" // SUNDAY |MONDAY |TUESDAY |WEDNESDAY |THURSDAY |FRIDAY |SATURDAY |
+}
+println " "
+
+// using  clousures
+dayRange.each{ day ->
+  print "$day |" // SUNDAY |MONDAY |TUESDAY |WEDNESDAY |THURSDAY |FRIDAY |SATURDAY |
+}
+println " "
+```
+5. Un Bono sería `next` y `previous` equivalen a `++` y `--`
+```groovy
+// Bonus: next() and previous() are equivalent to
+// ++ and -- operators.
+def wed = Days.WEDNESDAY
+assert Days.THURSDAY == ++wed
+assert Days.WEDNESDAY == --wed
+```
+6. Creamos en la nueva carpeta el archivo **Lists.groovy**.
+7. Este sería el código con los resultantes:
+```groovy
+/* 
+  Listas
+  -----------------------------------------
+  * Crear una lista de días (domingo - sábado)
+  * Imprimir la lista
+  * Imprimir el tamaño de la lista
+  * Eliminar el sábado de la lista
+  * Agregar el sábado nuevamente agregándolo a la lista
+  * Imprimir el miércoles usando su índice
+*/
+// Crear una lista de días (domingo - sábado)
+def days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+// Imprimir la lista
+println days // [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+
+// Imprimir el tamaño de la lista
+println days.size()  // 7}
+
+// Eliminar el sábado de la lista
+days.removeAt(6)
+println days //[Sunday, Monday, Tuesday, Wednesday, Thursday, Friday]
+
+// Agregar el sábado nuevamente agregándolo a la lista
+days << 'Saturday'
+println days //[Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+
+// Imprimir el miércoles usando su índice
+println days[3] //Wednesday
+```
+8. Creamos en la nueva carpeta el archivo **Maps.groovy**
+9. Este sería el código con los resultantes:
+```groovy
+/*
+  Mapas
+  ----------------------------------
+  * Crear un mapa de días de la semana
+    * 1: domingo, 2: lunes, etc...
+  * Imprimir el mapa
+  * Imprimir el nombre de la clase del mapa
+  * Imprimir el tamaño del mapa
+  * ¿Existe un método que imprima fácilmente todos los días (valores)?
+      * Sin cierres (Closures), es posible que deba consultar la API de Java para LinkedHashMap
+*/
+
+// Crear un mapa de días de la semana
+// * 1: domingo, 2: lunes, etc...
+Map map = [1:'Sunday', 2:'Monday', 3:'Tuesday', 4:'Wednesday', 5:'Thursday', 6:'Friday', 7:'Saturday']
+
+// Imprimir el mapa
+println map // [1:Sunday, 2:Monday, 3:Tuesday, 4:Wednesday, 5:Thursday, 6:Friday, 7:Saturday]
+
+// Imprimir el nombre de la clase del mapa
+println map.getClass().getName()  // java.util.LinkedHashMap
+
+// Imprimir el tamaño del mapa
+println map.size()  // 7
+
+// Sin cierres (Closures), es posible que deba consultar la API de Java para LinkedHashMap
+println map.values()  // [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+```
