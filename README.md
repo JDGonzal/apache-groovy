@@ -2664,4 +2664,74 @@ println nums.unique() // [2, 3, 4, 5, 6, 9, 8, 79, 66, 1]
 ```groovy
 def numbers = [1,2,3,4,5,6,7,8,9,6,5,7,66,4,77,22,8,11] as Set
 println numbers // [1, 2, 3, 4, 5, 6, 7, 8, 9, 66, 77, 22, 11]
+println numbers.class.name // java.util.LinkedHashSet
+```
+
+## Paso 47. Maps
+>[!NOTE]  
+>#### [Interface Map](https://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Map.html)
+1. Creamos el archivo en "scrips" llamado **MapsDemo.groovy**
+2. Este código lo ponemos y ejecutamos
+```groovy
+def map = [:]
+println map // [:]
+println map.getClass().getName() // java.util.LinkedHashMap
+// println map.class.name // Cannot get property 'name' on null object
+```
+3. Otro Ejemplo sería:
+```groovy
+def person = [first:"juan", last:"piza", email: "kcorreo@server.com"]
+println person
+// println person.class.name // Cannot get property 'name' on null object
+println person.getClass().getName() // java.util.LinkedHashMap
+println person.first // juan
+```
+>[!TIP]  
+> ### Con respecto a `Cannot get property 'name' on null object`
+>Así que si decimos Dot Classname, esto es lo que hemos estado haciendo la mayor parte del tiempo, ¿verdad?
+>Hemos estado diciendo: Oye, mapa, ¿cuál es el nombre de la clase?
+>Si ejecutamos eso, vamos a obtener un error que dice que no se puede obtener el nombre de la propiedad en un objeto.
+>
+>Así que lo que realmente está haciendo, en lugar de llamar a la clase getter get, en realidad
+>está buscando una propiedad en ese mapa llamado clase.
+>Y si una propiedad no existe en un mapa, siempre te devolverá null.
+>
+>Así que puedes llamar a cualquier cosa.
+>Puedes llamar a foo y realmente eso va a ser nulo también.
+>Por eso, si alguna vez queremos saber cuál es el tipo, siempre tenemos que llamar a este getter real aquí,
+>obtener la clase, obtener el nombre y que debería funcionar bien.
+>
+>Así es como podemos acceder a una propiedad específica:
+>`.getClass().getName() `
+4. Añadimos nuevos elementos como:
+```groovy
+person.twitter = "@jpiza"
+println person // [first:juan, last:piza, email:kcorreo@server.com, twitter:@jpiza]
+```
+5. Podemos poner anidaciones como:
+```groovy
+def emailKey = "emailAddress"
+def twitter = [username:"@piza", (emailKey):"another@email.com"]
+person.twitter = twitter
+println person // [first:juan, last:piza, email:kcorreo@server.com, twitter:[username:@piza, emailAddress:another@email.com]]
+```
+6. El tamaño sería:
+```groovy
+println person.size()  // 4
+```
+7. Podemos recorrer el solo objeto con esto:
+```groovy
+// looping through person
+for (entry in person){
+  print entry
+  print " | "
+}
+println " " // first=juan | last=piza | email=kcorreo@server.com | twitter={username=@piza, emailAddress=another@email.com} | 
+```
+8. Otro Recorrido sería con `keySet`:
+```groovy
+for (key in person.keySet()){
+  print "$key:${person[key]} |"
+}
+println " " // first:juan |last:piza |email:kcorreo@server.com |twitter:[username:@piza, emailAddress:another@email.com] | 
 ```
