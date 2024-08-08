@@ -2560,3 +2560,108 @@ Thu Aug 01 18:55:04 COT 2024..Thu Aug 08 18:55:04 COT 2024
 18. Ejecicio similar con letras:  
 `Range letters = 'a'..'x'`, imprimo `letters` y obtengo:  
 `a..x`
+
+## Paso 46. Lists
+1. Crear en la carpeta "scripts" el archivo **ListsDemo.groovy**
+2. Y empezar con este código:
+```groovy
+def nums = [1,2,3,4,5,6,9,8,7]
+println nums
+println nums.class.name
+```
+3. Ejecutamos y esto obtenemos:
+```dos
+[1, 2, 3, 4, 5, 6, 9, 8, 7]
+java.util.ArrayList
+```
+4. Otra forma sería cambiando el `def` de la línea 1 por 
+`List`, al ejecutar obtenemos el mismo resultado.
+
+>[!NOTE]  
+>Esto lo hallan en el sitio de información de groovy [Interface List](https://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/List.html)
+
+5. El ADD Sería
+```groovy
+// add | remove | get | clear
+//Add
+nums.push(99)
+nums.putAt(0,77)
+nums[9]=79
+println nums // [77, 1, 2, 3, 4, 5, 6, 9, 8, 79]
+println nums + [3,4,6] // [77, 1, 2, 3, 4, 5, 6, 9, 8, 79, 3, 4, 6]
+nums << 66
+print "nums: "
+println nums // nums: [77, 1, 2, 3, 4, 5, 6, 9, 8, 79, 66]
+```
+
+>[!NOTE]  
+>Así que un método más nos permite porque esto es básicamente un operador sobrecargado, podemos utilizar el símbolo
+>más y nos permite añadir elementos a nuestra lista.
+>
+>Pero es importante que leas esta documentación porque puedes ver que dice que
+>esta operación siempre creará un nuevo objeto para el resultado, dejando la lista original intacta.
+
+>[!NOTE]  
+>Bueno, aquí también hay algunos métodos que pueden ayudarnos.
+>Así que la primera es que tenemos un método pop que nos permite eliminar el último elemento de una lista.
+>Hay un método remove add que toma un índice.
+>
+>Así que si queremos eliminar un elemento específico basándonos en su índice, también podemos hacerlo.
+>Y luego tenemos el método menos, que al igual que el método más es básicamente un operador de sobrecarga aquí que
+>nos permite utilizar el símbolo menos.
+>
+>Y es importante tener en cuenta, Así que si saltamos de nuevo allí, vamos a ver un objeto.
+>Así que de nuevo, como el más uno, se crea una nueva lista basada en los elementos menos lo que estamos quitando.
+>Así que es importante tenerlo en cuenta.
+
+6. El REMOVE sería:
+```groovy
+def nums2 = nums.pop()
+print "nums: "
+print nums
+print " | "
+println nums2 // nums: [1, 2, 3, 4, 5, 6, 9, 8, 79, 66] | 77
+nums2 = nums.removeAt(0)
+print nums
+print " | "
+println nums2 // [2, 3, 4, 5, 6, 9, 8, 79, 66] | 1
+def nums2New = nums - 2
+println nums2New // [3, 4, 5, 6, 9, 8, 79, 66]
+```
+7. El get sería 
+```groovy
+print "nums: "
+print nums // [3, 4, 5, 6, 9, 8, 79, 66]
+def nums3 = nums 
+println nums3.getAt(0..3) // [2, 3, 4, 5]
+println nums3 // [2, 3, 4, 5, 6, 9, 8, 79, 66]
+```
+8. El CLEAR seria:
+```groovy
+// Clear
+def nums4 = nums.clone()
+nums4.clear()
+print "nums: "
+print nums
+print " | "
+println nums4 // nums: [2, 3, 4, 5, 6, 9, 8, 79, 66] | []
+```
+9. el FLATTEN sería:
+```groovy
+// flatten
+nums << [3,4,5]
+nums << [1,2]
+println nums // [2, 3, 4, 5, 6, 9, 8, 79, 66, [3, 4, 5], [1, 2]]
+nums = nums.flatten()
+println nums // [2, 3, 4, 5, 6, 9, 8, 79, 66, 3, 4, 5, 1, 2]
+```
+10. el UNIQUE : 
+```groovy
+// unique
+println nums.unique() // [2, 3, 4, 5, 6, 9, 8, 79, 66, 1]
+```
+11. El SET es una lista con datos únicos:
+```groovy
+def numbers = [1,2,3,4,5,6,7,8,9,6,5,7,66,4,77,22,8,11] as Set
+println numbers // [1, 2, 3, 4, 5, 6, 7, 8, 9, 66, 77, 22, 11]
+```
