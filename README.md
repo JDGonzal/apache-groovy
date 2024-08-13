@@ -3068,3 +3068,80 @@ Random rand = new Random()
   print "${rand.nextInt()}, " // -1935321065, 1004274475, 2119764057,
 }
 ```
+
+## Paso 53. Closure Parameters
+
+1. Creamos en la carpeta "Closures" el archivo **params.groovy**.
+2. Con este código con parámetros implícitos:
+```groovy
+// implicit parameter
+def foo = {
+  println it
+}
+foo('juan')  // juan
+```
+3. Hacemos lo mismo, pero incluímos un parámetro definido:
+```groovy
+// Al least one parameter
+def foo2 = { name ->
+  println name
+}
+foo2('piza')  // piza
+```
+4. Una sin parámetros:
+```groovy
+// No parameters
+def noparams = {
+  println 'no params...'
+}
+noparams() // no params...
+```
+5. Con múltiples argumentos:
+```groovy
+// Many parameters
+def sayHello = { first, last ->
+  println "Hello, $first $last"
+}
+sayHello('Juan', 'Piza') // Hello, Juan Piza
+```
+
+6. Similar al anterior, pero definiendo cada parámetro:
+```groovy
+// Many parameters
+def sayHello = { String first, String last ->
+  println "Hello, $first $last"
+}
+sayHello('Juan', 'Piza') // Hello, Juan Piza
+```
+7. Valores por defecto:
+```groovy
+// default values
+// default values
+def greet = { String name, String greeting = 'Howdy' ->
+  println "$greeting, $name"
+}
+greet('Juan', 'Hello') // Hello, Juan
+greet('Ivan')  // Howdy, Ivan
+```
+8. permite hacer de nuevo es utilizar como pasar tantos argumentos como queramos a este cierre:
+```groovy
+// var-arg
+def concat = { String... args ->
+  args.join('')
+}
+println concat('abc', 'xyz')  // abcxyz
+println concat('def', 'ghi', '123')  // defghi123
+```
+9. Tipo `Closure`:
+```groovy
+// Closure type
+def someMethod(Closure c){
+  println '...'
+  println c.maximumNumberOfParameters // 2
+  println c.parameterTypes  // [int, int]
+}
+
+def someClosure = {int x, int y -> x + y}
+someMethod(someClosure)
+```
+10. 
