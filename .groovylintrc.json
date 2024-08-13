@@ -4,7 +4,25 @@
         "CompileStatic": {
             "enabled": false
         },
+        "DuplicateStringLiteral": {
+            "enabled": false
+        },
+        "ImplicitClosureParameter": {
+            "enabled": false
+        },
+        "Indentation": {
+            "spacesPerIndentLevel": 2
+        },
         "Instanceof": {
+            "enabled": false
+        },
+        "MethodReturnTypeRequired": {
+            "enabled": false
+        },
+        "NoDef": {
+            "enabled": false
+        },
+        "VariableTypeRequired": {
             "enabled": false
         }
     }
