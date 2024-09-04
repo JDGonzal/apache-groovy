@@ -3144,4 +3144,68 @@ def someMethod(Closure c){
 def someClosure = {int x, int y -> x + y}
 someMethod(someClosure)
 ```
-10. 
+
+## Quiz 4: Closure Quiz
+![Quiz 4 Closure Quiz](images/section06-step_53_Quiz-4-Closure-Quiz.gif)
+
+## Paso 54. Collections Methods
+1. Creamos el archivo **Collections.groovy** en la carpeta "Closures"
+2. Cargamos inicalmente unos comentarios:
+```groovy
+// each & eachWithIndex
+
+// findAll
+
+
+// collect
+```
+3. Ponemos este código debajo de `each & eachWithIndex` y ejecutamos:
+```groovy
+List favNums = [2, 11, 44, 35, 8, 4]
+for (num in favNums) {
+  print "${num} "
+} // 2 11 44 35 8 4
+println ''
+```
+4. Otra forma para ver el arreglo es con `each`, añadimos esto
+y ejecutamos:
+```groovy
+favNums.each { print "${it }, " }  // 2, 11, 44, 35, 8, 4,
+println ''
+```
+5. Puedo simplemente usar el ciclo `for`:
+```groovy
+for (int i = 0; i < favNums.size(); i++) {
+  print "$i:${favNums[i]} "
+} // 0:2 1:11 2:44 3:35 4:8 5:4
+println ''
+```
+6. Probemos con el `eachWithIndex`:
+```groovy
+favNums.eachWithIndex { num, idx ->
+  print "$idx:$num, "
+} // 0:2, 1:11, 2:44, 3:35, 4:8, 5:4,
+println ''
+```
+7. Debajo del `findAll`, ponbemos este código y ejecutamos:
+```groovy
+List days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+List weekend = days.findAll { it.startsWith('S') }
+println days // [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+println weekend // [Sunday, Saturday]
+```
+8. Debajo de `collect`, ponemos este código y ejecutamos:
+```goovy
+List nums = [1,2,3,7,2,8,2,4,6]
+List numsTimeTen = []
+nums.each { num ->
+  numsTimeTen << num * 10
+}
+println nums // [1, 2, 3, 7, 2, 8, 2, 4, 6]
+println numsTimeTen // [10, 20, 30, 70, 20, 80, 20, 40, 60]
+```
+9. USando ahora si el `collet`, ponemo y ejecutamos:
+```goovy
+List newTimesTen = nums.collect { num -> num * 10}
+println newTimesTen // [10, 20, 30, 70, 20, 80, 20, 40, 60]
+```
