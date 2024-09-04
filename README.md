@@ -3250,3 +3250,194 @@ def typeMsgLog = log.ncurry(1, new Date())
 typeMsgLog('ERROR', 'Using a `ncurry`')
 // Wed Sep 04 18:42:39 COT 2024 [ERROR] - Using a `ncurry`
 ```
+
+## Paso 56. Closure Scope & Delegates
+>[!NOTE]  
+>Recurso sugerido es este [Class StringBuffer](https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuffer.html).  
+>Una secuencia de caracteres mutable y segura para subprocesos. Un búfer de cadena es como una cadena, pero se puede modificar. En cualquier momento contiene una secuencia particular de caracteres, pero la longitud y el contenido de la secuencia se pueden cambiar mediante determinadas llamadas a métodos.  
+>Los búferes de cadena son seguros para su uso por parte de varios subprocesos. Los métodos se sincronizan cuando es necesario para que todas las operaciones en cualquier instancia en particular se comporten como si ocurrieran en un orden secuencial que sea coherente con el orden de las llamadas a métodos realizadas por cada uno de los subprocesos individuales involucrados.
+>
+>Para entender el concepto de un delegado, primero debemos entender los ámbitos que están disponibles para
+>nosotros dentro de un cierre.
+>
+>Así que esos tres ámbitos son propietarios delegados.
+>Y esto y quiero pasar unos minutos aquí y sólo hablar a través de ellos.
+>Así que el primero es este dentro de un cierre.
+>
+>Si imprimiéramos el objeto this, correspondería a la clase adjunta donde está definido
+>el cierre.
+>Así que si añadimos una clase llamada mi clase y dentro de eso, mi clase, añadimos un cierre.
+>Esto correspondería a mi clase.
+>
+>Si hiciéramos esto en un guión.
+>Así que no, no encierra clase.
+>Si recuerdas cuando hablamos de scripts, todavía hay una clase envuelta alrededor de nuestro script que escribimos.
+>Simplemente no escribimos explícitamente una clase.
+>
+>Así que esto en ese caso se referiría de nuevo a esa clase de script que se creó para nosotros.
+>El siguiente es el propietario.
+>Así que owner va a corresponder al objeto adjunto donde se define el cierre.
+>Puede ser una clase o un cierre.
+>
+>![Closure Scope & Delegates](images/section06-step_56-Closure-Scope_Delegates.PNG "Closure Scope & Delegates")
+
+1. Creamos el archivo **Scope.groovy** en la carpeta "Closures",
+con este código:
+```groovy
+/*
+this corresponds to the enclosing class where the closure is defined
+owner corresponds to the enclosing object where the closure is defined, 
+which may be either a class or a closure
+delegate corresponds to a third party object where methods calls or properties 
+are resolved whenever the receiver of the message is not defined
+*/
+
+class ScopeDemo {
+
+  def outerClosure = {
+    println this.class.name // ScopeDemo
+    println owner.class.name // ScopeDemo
+    println delegate.class.name // ScopeDemo
+    def nestedClosure = {
+      println this.class.name // ScopeDemo
+      println owner.class.name // ScopeDemo$_closure1
+      println delegate.class.name // ScopeDemo$_closure1
+    }
+    nestedClosure()
+  }
+}
+
+def demo = new ScopeDemo()
+demo.outerClosure()
+```
+>[!NOTE]  
+>Así que aquí tenemos una clase, tenemos una clase llamada Scope Demo.
+>Dentro de esa clase tenemos dos cierres.
+>Tenemos un cierre exterior y un cierre interior.
+>Y una vez que el cierre interior es después de que el cierre interior es golpeado, en realidad llamamos a ese cierre interior.
+>Así que si esto se llama estos tres se llaman, entonces, básicamente, definir un cierre.
+>
+>Y entonces llamamos a ese cierre interno a.
+>Así que lo que estamos haciendo aquí es que estamos creando una instancia de nuestro ámbito de demostración y estamos llamando
+>a la clausura exterior.
+>Así que cuando el cierre exterior se ejecuta, va a imprimir este propietario y delegado para que podamos ver
+>lo que son.
+>
+>A continuación, va a definir un cierre anidado y luego llamar a eso.
+>Así que entonces va a imprimir este propietario y delegado de la clausura anidada para que podamos ver lo
+>que son.
+>
+>Así que vamos a seguir adelante y ejecutar esto y verás que esto en el caso del cierre exterior,
+>el primero es Scope demo.
+>Así que, de nuevo, si nos fijamos en nuestra definición, esto corresponde a la clase que encierra donde se define
+>el cierre.
+>Así que sin siquiera imprimir eso, tiene sentido.
+>Se trata de la clase adjunta.
+>Propietario corresponde al objeto envolvente donde se define el cierre, que puede ser una clase
+>o un cierre.
+>
+>En este caso, nuestra envolvente, nuestro objeto envolvente es la clase scope demo.
+>Así que esto vuelve a tener sentido.
+>La mayoría de las veces un delegado va a ser también el propietario.
+>Así que propietario y delegado suelen ser lo mismo.
+>Donde esto no sucede es en la siguiente demostración verás que podemos cambiar el delegado pero la mayoría de las
+>veces el propietario y el delegado van a ser el mismo a menos que lo cambies.
+>
+>Así que en este caso, propietario y delegado son lo mismo y en este caso son los tres.
+>Señala la demostración de alcance.
+>Ahora es cuando nos divertimos.
+>Así que ahora estamos dentro de cierre anidado y esto va a apuntar de nuevo a la demostración de alcance porque esto siempre
+>corresponde a la clase que encierra.
+>Y en este caso sigue siendo una demostración de alcance.
+>Ahora propietario de nuevo es una clase o un cierre.
+>
+>Así que ahora usted puede ver que esto está apuntando a otra cosa y esto está apuntando a la demo ámbito de
+>las clases.
+>Y aquí está el nombre funky que se le da a ese cierre.
+>Así que ahora estamos apuntando a este es el verdadero propietario.
+>Por último, el delegado suele ser el mismo que el propietario, a menos que lo cambiemos.
+>Así que será lo mismo.
+>Así que eso es sólo un poco acerca de ámbitos dentro de la clausura.
+>Vamos a hacer una demostración más para entender cómo funciona Delegate y qué hace que sea
+>tan divertido.
+
+2. Creamos el archivo **Delegates.groovy** en la carpeta "Clousures"
+y ponemos este código:
+```groovy
+// Delegates.groovy
+def writer = {
+  append 'Juan'
+  append ' lives in Medellín'
+}
+
+writer()
+```
+* Nos genera un error:
+```diff
+-Caught: groovy.lang.MissingMethodException: No signature of method: Delegates.append() is applicable for argument types: (String) values: [Juan]
+-Possible solutions: any(), find(), grep(), print(java.lang.Object), any(groovy.lang.Closure), find(groovy.lang.Closure)
+-groovy.lang.MissingMethodException: No signature of method: Delegates.append() is applicable for argument types: (String) values: [Juan]
+-Possible solutions: any(), find(), grep(), print(java.lang.Object), any(groovy.lang.Closure), find(groovy.lang.Closure)
+-	at Delegates$_run_closure1.doCall(Delegates.groovy:3)
+-	at Delegates$_run_closure1.doCall(Delegates.groovy)
+-	at Delegates.run(Delegates.groovy:7)
+```
+3. Añado en medio el método `append`:
+```groovy
+def append(String s) {
+  println "append() called with agument of $s"
+}
+// append() called with agument of Juan
+// append() called with agument of  lives in Medellín
+```
+4. Otra manera es usando el `delegate`, pongo en comentarios
+el código anterior y añado esto:
+```groovy
+StringBuffer sb = new StringBuffer()
+writer.delegate = sb
+
+println writer() // Juan lives in Medellín
+```
+>[!NOTE]  
+>Así que ahora tenemos un método llamado append dentro de nuestro script aquí y tenemos un stringbuffer que
+>sabe cómo append.
+>Entonces, ¿qué crees que va a suceder cuando llamamos al ejecutar este método?
+>
+>Así que lo que sucede es que a pesar de que hemos asignado un delegado, todavía quiere llamar a la adjunta
+>método append porque eso es básicamente la estrategia de resolución que tiene, la estrategia de resolución que tiene.
+>Así que hay un precedente que toma para encontrar cuando no puede, cuando no sabe dónde buscar.
+>Hay un camino que sigue.
+>
+>![](images/section06-step_56-Closure-Scope_Delegates-api.PNG)
+>
+>Y si echamos un vistazo a la documentación, ¿tenemos esto aquí?
+>Así que si estamos de vuelta en la documentación de cierre, si nos fijamos en los campos de aquí arriba, los campos estáticos, podemos
+>ver que hay hay delegado primer delegado propietario, propietario, primer propietario solamente.
+>
+>Estas son las estrategias de resolución que se necesitan para tomar ese camino para averiguar cuál utilizar.
+>Y verás que esta es la estrategia por defecto es propietario primero.
+>Así que sabemos, mirando hacia atrás en nuestro ejemplo que el propietario tenía el propietario era la clase que encierra en este caso,
+>que era nuestro bloque de script El propietario tenía un método append, por lo que comenzó allí.
+>
+>Así que lo que quiero hacer es seguir adelante y cambiar esto para decir, está bien, vamos a ver a nuestro delegado en primer lugar.
+>Si ese delegado tiene un método, puede manejar el método, añadir, a continuación, utilizar eso.
+>Si no, entonces volverá a recaer en el propietario y seguir adelante y utilizar ese.
+>
+>Así que la forma en que lo hacemos, si volvemos aquí, todo lo que vamos a hacer es vamos a decir
+>que vamos a decir escritor punto resolver la estrategia.
+>Whoops, si estrategia, estrategia y vamos a establecer que de nuevo, esta es una propiedad estática en la clase
+>de cierre.
+>
+>Así que para ello, sólo tiene que utilizar la clase de cierre punto delegado whoops, delegado guión bajo en primer lugar.
+5. Añado esto antes del `writer.delegate = sb`:
+```groovy
+// Adding at end the `DELEGATE_FIRST`
+writer.resolveStrategy = Closure.DELEGATE_FIRST
+```
+>Así que ahora si ejecutamos esto, debe buscar en el delegado en primer lugar, que es nuestro stringbuffer.
+>
+>Y entonces si eso falla y no hay un método append allí, volvería al propietario.
+>Así que vamos a seguir adelante y ejecutar eso y se puede ver que ahora está utilizando la clase Stringbuffer.
+>Así que eso es un poco sobre delegar.
+>De nuevo, poder cambiar el delegado de un cierre a voluntad es lo que hace a los cierres tan especiales y lo que realmente
+>los diferencia de las expresiones lambda que has visto en otros lenguajes.
