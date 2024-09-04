@@ -3209,3 +3209,44 @@ println numsTimeTen // [10, 20, 30, 70, 20, 80, 20, 40, 60]
 List newTimesTen = nums.collect { num -> num * 10}
 println newTimesTen // [10, 20, 30, 70, 20, 80, 20, 40, 60]
 ```
+
+## Paso 55. Curry Methods
+1. Creamos en la carpeta "Closures" el archivo **curry.groovy**,
+añadimos este código y ejecutamos:
+```groovy
+def log = { String type, Date createOn, String msg ->
+  println "$createOn [$type] - $msg"
+}
+
+log('DEBUG', new Date(), 'This is a testing debug')
+// Wed Sep 04 18:26:30 COT 2024 [DEBUG] - This is a testing debug
+```
+2. Añadimos un `curry` del `log` asignado a una nueva variable:
+```groovy
+def debugLog = log.curry('DEBUG')
+debugLog(new Date(), 'This is another debug.')
+// Wed Sep 04 18:30:38 COT 2024 [DEBUG] - This is another debug.
+
+debugLog(new Date(), 'This one more.')
+// Wed Sep 04 18:30:38 COT 2024 [DEBUG] - This one more.
+```
+3. Otro `curry` mas en la variable `todayDebugLog`:
+```groovy
+def todayDebugLog = log.curry('DEBUG', new Date())
+todayDebugLog('Just add a debug for today')
+// Wed Sep 04 18:34:29 COT 2024 [DEBUG] - Just add a debug for today
+```
+4. Usando el `rcurry`, cambiamos el dato de la derecha:
+```groovy
+// right curry
+def sameMsgLog = log.rcurry('Why same message?')
+sameMsgLog('ERROR', new Date())
+// Wed Sep 04 18:39:15 COT 2024 [ERROR] - Why same message?
+```
+5. Cambiando un elemento basado en su índice, con `ncurry`:
+```groovy
+// index base curry
+def typeMsgLog = log.ncurry(1, new Date())
+typeMsgLog('ERROR', 'Using a `ncurry`')
+// Wed Sep 04 18:42:39 COT 2024 [ERROR] - Using a `ncurry`
+```
