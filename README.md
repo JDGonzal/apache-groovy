@@ -3441,3 +3441,174 @@ writer.resolveStrategy = Closure.DELEGATE_FIRST
 >Así que eso es un poco sobre delegar.
 >De nuevo, poder cambiar el delegado de un cierre a voluntad es lo que hace a los cierres tan especiales y lo que realmente
 >los diferencia de las expresiones lambda que has visto en otros lenguajes.
+
+## Paso 57. [Exercise] Using Closures
+>[!NOTE]  
+>### [Ejercicio] Uso de cierres
+>#### Conceptos básicos de cierres
+>* Busque la clase groovy.lang.Closure y dedique unos minutos a revisar la documentación.
+>* Cree un método que acepte un cierre como argumento
+>   * Cree un cierre que realice alguna acción
+>   *  Llame al método y pásele el cierre.
+>* Cree una lista y utilícela para iterar sobre cada elemento de la lista e imprimirlo
+>   * _Sugerencia: puede utilizar la variable it implícita o utilizar su propia variable_
+>* Cree un mapa de datos e itere sobre él utilizando cada método.
+>   * Este método puede tomar un cierre que acepte 1 o 2 argumentos.
+>   * Utilice 2 argumentos e imprima la clave y el valor en cada línea.
+>* Demuestre el uso de curry e intente encontrar un ejemplo diferente al que utilizamos en la lección.
+>#### Explore el GDK
+>En los siguientes ejercicios, exploraremos el GDK para encontrar algunos métodos que tomen cierres y aprender a utilizarlos.  
+>_Sugerencia: limitaría su búsqueda a java.util.Collection, java.lang.Iterable y java.util.List_
+>* Busque los métodos find y findAll.
+>   * ¿Cuál es la diferencia entre ambos?
+>   * Escriba un código para mostrar cómo funcionan ambos.
+>* Busque los métodos any y every.
+>   * ¿Cuál es la diferencia entre ambos?
+>   * Escriba un código para mostrar cómo funcionan ambos.
+>* Busque el método groupBy que acepta un cierre
+>   * ¿Qué hace este método?
+>   * Escriba un ejemplo de cómo utilizar este método.
+
+## Paso 58. [Exercise Review] Using Closures
+* Busque la clase groovy.lang.Closure y dedique unos minutos a revisar la documentación.
+1. Ir al sitio de la documentación [Goovy API](https://groovy-lang.org/api.html).
+2. Seleccionamos el `groovy.lang` en la zona superior izquierda,
+y abajo `Closure`:  
+![groovy.lang.Closure](images/section06-step_58_groovy_lang_Closure.PNG "groovy.lang.Closure")
+3. Creamos el archivo **exercise.groovy** en la carpeta "Closures",
+Con este texto en comentarios del primer ejercicio de 
+`Closure Basics` o [Conceptos básicos de cierres](#conceptos-básicos-de-cierres):
+* Cree un método que acepte un cierre como argumento
+  * Cree un cierre que realice alguna acción
+  * Llame al método y pásele el cierre.
+4. Ponemos por ejemplo una definición de un método de nombre
+`mymethod` con un argumento de tipo `Closure`
+```groovy
+// - Create a Method that accepts a closure as an argument
+def myMethod(Closure c) {
+  c()
+}
+```
+5. Hacemos un método q imprima un texto:
+```groovy
+def foo = { println 'Any text'}
+```
+6. Llammamos el método `myMethod` con el parámetro del método
+`foo`:
+```groovy
+myMethod(foo)
+```
+* Cree una lista y utilícela para iterar sobre cada elemento de la lista e imprimirlo
+  * _Sugerencia: puede utilizar la variable it implícita o utilizar su propia variable_
+7. Creamos la lista `names` y la recorremos con el `each` que
+tiene por defecto `it`:
+```groovy
+List names = ['Ana', 'Berto', 'Carlos', 'Diana', 'Esteban', 'Francia']
+names.each { print "${it }, " } 
+println ""
+```
+* Cree un mapa de datos e itere sobre él utilizando cada método.
+  * Este método puede tomar un cierre que acepte 1 o 2 argumentos.
+  * Utilice 2 argumentos e imprima la clave y el valor en cada línea.
+8. Creamos un `Map`, con su clave:valor:
+```groovy
+Map vehicles = [car: 'Chevrolet', moto: 'Pulsar', rocket: 'Space-X']
+```
+9. Recorremos los `vehicles` con un `each`:
+```groovy
+vehicles.each { key, value ->
+  print "$key=$value - "
+}
+println ''
+```
+* Demuestre el uso de curry e intente encontrar un ejemplo diferente al que utilizamos en la lección.
+10. Definimos el método `greet` con 2 parámetros `grreting` y
+`name`:
+```groovy
+def greet = { String greeting, String name ->
+  println "$greet, $name"
+}
+```
+11. Solo llamamos el método `greet` con dos textos:
+```groovy
+greet('Hello', 'Juan')
+```
+12. Podemos hacer el uso del método `curry`, para que solo enviemos
+un parámetro, usando el método `sayHello`:
+```groovy
+def sayHello = greet.curry('Hello')
+sayHello('Piza')
+```
+>[!TIP]  
+>El contenido está en este sitio [Groovy JDK](https://groovy-lang.org/gdk.html), para lo que sigue el ejercicio.  
+>Buscamos en la zona inferior izquierda `Collection`
+* Busque los métodos find y findAll.
+  * ¿Cuál es la diferencia entre ambos?  
+![Find, FindAll](images/section06-step_58_GDK_Collection-find-findAll.PNG)
+  * Escriba un código para mostrar cómo funcionan ambos.
+13. Creamos una lista de personas/`people` con dos datos
+`name` y `city`
+```groovy
+List people = [
+  [name: 'Zulia', city: 'Bello'],
+  [name: 'Yelitza', city: 'Chia'],
+  [name: 'Xander', city: 'Dabeiba'],
+  [name: 'Wilson', city: 'Espinal'],
+  [name: 'Vanesa', city: 'Facativa'],
+  [name: 'Ulises', city: 'Gómez Plata']
+]
+```
+14. Imprimimos la primer persona que es de `'Dabeiba'`:
+```groovy
+println people.find { person -> person.city == 'Dabeiba' }
+```
+15. Imprimimos las personas que son de `'Bello'`:
+```groovy
+println people.findAll { person -> person.city == 'Bello' }
+```
+>[!TIP]  
+>El contenido está en este sitio [Groovy JDK](https://groovy-lang.org/gdk.html), para lo que sigue el ejercicio.  
+>Buscamos en la zona inferior izquierda `Iterable`
+* Busque los métodos any y every.
+  * ¿Cuál es la diferencia entre ambos?  
+![Any, Every](images/section06-step_58_GDK_Iterable-any-very.PNG)
+  * Escriba un código para mostrar cómo funcionan ambos.
+16. Para el método `any` si esta devuelve `true`, sino `false`
+```groovy
+println people.any { person -> person.city == 'Facativa' }
+println people.any { person -> person.city == 'Zipaquirá' }
+```
+17. Para el método `every` todas deben cumplir para devolver
+ `true`.
+```groovy
+println people.every { person -> person.city == 'Bello' }
+println people.every { person -> person.name.size() >= 4 }
+```
+* Busque el método groupBy que acepta un cierre
+  * ¿Qué hace este método?  
+![groupBy](images/section06-step_58_GDK_Iterable-groupBy.PNG)
+  * Escriba un ejemplo de cómo utilizar este método.
+18. para el método `groupBy` definimos la variable 
+`peopleByCity` y la agrupamos por ciudad:
+```groovy
+def peopleByCity = people.groupBy { person -> person.city }
+println peopleByCity
+```
+19. El resultado impreso sería algo como esto:
+```dos
+[Bello:[[name:Zulia, city:Bello], [name:Tamara, city:Bello]],
+Chia:[[name:Yelitza, city:Chia]],
+Dabeiba:[[name:Xander, city:Dabeiba], [name:Sonia, city:Dabeiba]],
+Espinal:[[name:Wilson, city:Espinal]],
+Facativa:[[name:Vanesa, city:Facativa], [name:Raul, city:Facativa]],
+Gómez Plata:[[name:Ulises, city:Gómez Plata]]]
+```
+20. Creamos dos variables mas `bellanitas` y `facas`:
+```groovy
+def bellanitas = peopleByCity['Bello']
+def facas = peopleByCity.Facativa
+
+println bellanitas
+println facas
+facas.each { print "$it.name, " }
+```
