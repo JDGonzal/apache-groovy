@@ -3612,3 +3612,111 @@ println bellanitas
 println facas
 facas.each { print "$it.name, " }
 ```
+
+# Section 7: Control Structures
+
+## Paso 59. Intro
+>[!NOTE]  
+>Los mencionamos brevemente en una sección anterior, pero ahora vamos a comenzar a profundizar en ellos.
+>A primera vista, podrías pensar que esto no es tan importante.
+>
+>Sé qué es una declaración if.
+>Sé qué es un if else.
+>Pero creo que es importante por un par de cosas.
+>Una, la verdad maravillosa es muy diferente a evaluar expresiones booleanas en otros lenguajes.
+>
+>Quizás no del todo porque se puede hacer ese tipo de cosas similares en otros lenguajes, pero definitivamente
+>diferente a Java, la forma en que evaluamos expresiones booleanas.
+>
+>Y debido a ese tipo de lógica condicional se vuelve diferente en diferentes lugares.
+>Así que vamos a ver eso.
+>
+>Vamos a ver la verdad maravillosa, vamos a ver las diferentes estructuras condicionales, una de las cuales es la declaración switch.
+>De nuevo, viniendo de otros lenguajes.
+>
+>Probablemente hayas tenido una declaración switch, pero probablemente no tan poderosa como esta declaración switch.
+>Puede hacer muchas cosas realmente interesantes.
+>Así que vamos a ver un par de ellas también.
+>
+>Veremos un poco de manejo básico de excepciones y luego haremos un ejercicio y revisaremos un poco este
+>tema.
+>Entonces, nuevamente, solo quiero señalar aquí, si estás en la documentación, si vas aquí y vas
+>abajo, creo que es semántica.
+
+## Paso 60. The Groovy Truth
+
+>[!NOTE]  
+>Antes de sumergirnos en las estructuras condicionales, como if, if else o when, necesitamos entender cuál es
+>la verdad de Groovy.
+>
+>Esto se debe a que las expresiones que se definen en esas estructuras de control deben evaluarse como un valor booleano.
+>Y hay una diferencia fundamental en cómo manejamos esto en Groovy en comparación con Java.
+>Así que hablemos un poco sobre la evaluación de estas pruebas booleanas.
+>Entonces, como dije en una declaración if, que veremos en la próxima lección, necesitamos evaluar
+>una expresión como un valor booleano.
+>Y tenemos diferentes formas de evaluar estas pruebas booleanas.
+>Así que comencemos a echarles un vistazo.
+>
+>![](images/section07-step_60_Evaluating_Boolean_Test.png)
+
+1. Creamos la carpeta `"ControlStructures"`.
+2. Creamos el archivo **`truth.groovy`** dentro de esta nueva 
+carpeta, con estos comentarios:
+```groovy
+
+// Boolean
+
+// Matcher
+
+// Collection
+
+// Map
+
+// String
+
+// Number
+
+// None of the above
+```
+3. Empezamos en la línea 1, con un condicional `if`:
+```groovy
+if (true) {
+  println 'true' // true
+}
+```
+4. Comentamos lo anterior.
+5. Debajo del comentario `// Boolean`, va este código:
+```groovy
+assert true
+assert !false
+```
+6. Debajo del comentario `// Matcher`, ponemos esto:
+```groovy
+assert('a' =~ /a/)
+assert!('a' =~ /b/)
+```
+7. Debajo del comentario `// Collection`, estos `assert`:
+```groovy
+assert[1]
+assert![]
+```
+8. Debajo del comentario `// Map`, va este código:
+```groovy
+assert [1:'one']
+assert![:]
+```
+9. Debajo del comentario `// String`, ponemos esto:
+```groovy
+assert 'Hola'
+assert !''
+```
+10. Debajo del comentario `// Number`, estos `assert`:
+```groovy
+assert 1
+assert 3.5
+assert !0
+```
+11. Por último debajo del comentario `// None of the above`:
+```groovy
+
+```
