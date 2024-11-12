@@ -4,7 +4,16 @@
         "CompileStatic": {
             "enabled": false
         },
+        "ConstantIfExpression": {
+            "enabled": false
+        },
+        "DuplicateNumberLiteral": {
+            "enabled": false
+        },
         "DuplicateStringLiteral": {
+            "enabled": false
+        },
+        "IfStatementBraces": {
             "enabled": false
         },
         "ImplicitClosureParameter": {

@@ -3718,5 +3718,138 @@ assert !0
 ```
 11. Por último debajo del comentario `// None of the above`:
 ```groovy
+assert new Object()
+assert !null
+```
 
+## Quiz 5: The Groovy Truth
+>![](images/section07-step_60-quiz5.gif)
+
+## Paso 61. Conditional Structures
+
+1. Creamos el archivo **`conditional.groovy`** en el fólder
+"`ControlStructures`".
+2. El condicional `if` simple con estos ejemplos:
+```groovy
+// if( boolean expression) { //logic}
+
+if (true) {
+  println 'TRUE' // TRUE
+}
+
+if (true) println true // Ejemplo de sin corchetes // true
+
+def age = 35
+if (age >= 35) {
+  println 'Puede ser Presidente' // Puede ser Presidente
+}
+```
+3. El condicional `if` mas el uso del `else`:
+```groovy
+if (false) {
+  println 'TRUE'
+} else {
+  println 'FALSE' // FALSE
+}
+```
+4. Otro ejemplo sería:
+```groovy
+def yourAge = 21
+if (yourAge >= 21){
+  println 'Puede comprar cerveza' // Puede comprar cerveza
+} else {
+  println 'Sin cerveza pa Ud.'
+}
+
+```
+5. Cambia el valor de `yourAge` por `18` y le aparecerá el 
+otro menseje: `Sin cerveza pa Ud.`
+6. Otro ejemplo de `if () else` con anidación sería:
+```groovy
+def someAge = 37
+if (someAge >= 21) {
+  println 'Puede comprar cerveza' // Puede comprar cerveza
+} else if (someAge >= 35) {
+  println 'Puede ser Presidente' // Aqui no entra,
+} else {
+  println 'Menor de ventiuno...'
+}
+```
+7. En el anterior hay un detalle a corregir, sería agregar
+en el primer condicional de `if (someAge >= 21) ` otra 
+condición unida con el `and` que es el `&&`:
+```groovy
+if (someAge >= 21 && someAge < 35) {
+  println 'Puede comprar cerveza' // 
+} else if (someAge >= 35) {
+  println 'Puede ser Presidente' // Puede ser Presidente,
+} else {
+  println 'Menor de ventiuno...'
+}
+```
+8. Vemos el operador ternario `? true : false`:
+```groovy
+def name = 'Juan'
+def isItJuan = (name.toUpperCase() == 'JUAN') ? 'Yes' : 'No'
+println isItJuan //Yes
+```
+9. Añadimos cambiando la función por `toLowerCase()` y sería
+el resultado opuesto:
+```groovy
+isItJuan = (name.toLowerCase() == 'JUAN') ? 'Yes' : 'No'
+println isItJuan // No
+```
+10. Probemos con otro de tipo `string`:
+```groovy
+def msg
+def output = (msg != null) ? msg : 'Default message...'
+println output // Default message...
+```
+11. Añado otro ternario con base en el `msg`:
+```groovy
+def wichMsg = msg ?: 'Another default message...'
+println wichMsg // Another default message...
+```
+12. Probemos el `switch`:
+```groovy
+def num = 5
+switch (num) {
+  case 1: println 'one'
+    break
+  case 2: println 'two'
+    break
+  case 3: println 'three'
+    break
+  case 4: println 'four'
+    break
+  case 5: println 'five' // five
+    break
+  case 6: println 'six'
+    break
+  default : println 'Another number'
+}
+```
+13. Agrego mas condiciones en otro `switch`:
+```groovy
+switch (num) {
+  case Integer: println 'num is Integer' 
+    break
+  case Float: println 'num is Float'
+    break
+}
+```
+14. Puedo preguntar por rangos o listas:
+```groovy
+switch (num) { // num in in list [0, 5, 10]
+  case 1..3: println 'in range 1..3'
+    break
+  case [0, 5, 10]: println 'num in in list [0, 5, 10]'
+    break
+}
+```
+15. Usando el operador `in`:
+```groovy
+def validAges = 18..35
+def age2Valid = 19
+println age2Valid in validAges // true
 ```
