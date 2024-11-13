@@ -3853,3 +3853,60 @@ def validAges = 18..35
 def age2Valid = 19
 println age2Valid in validAges // true
 ```
+
+## Paso 62. Looping
+
+1. Creamos el archivo **`looping.groovy`**, en el fólder
+"`ControlStructures`", con al menos estos comentarios:
+```groovy
+// looping
+// ----------------------
+
+// while
+
+// for
+
+// return/break/continue
+```
+2. Debajo del comentario `// while` agregamos este código:
+```groovy
+List numbers = [1, 2, 3]
+assert numbers
+while (numbers) {
+  numbers.remove(0)
+}
+assert numbers == []
+```
+3. Debajo del comentario `// for` ponemos esto:
+```groovy
+numbers = [1, 2, 3]
+for (i in numbers) {
+  print i + ',' //
+}
+println ' '
+```
+4. Otra forma de usar el `for` es solo con un rango:
+```groovy
+println ' '
+for (Integer i in 10..20) {
+  print i + ',' // 10,11,12,13,14,15,16,17,18,19,20,
+}
+println ' '
+```
+5. Debajop del comentario `// return/break/continue`:
+```groovy
+Integer a = 1
+while (true) { // infinite loop
+  a++
+  if (a == 3) break
+}
+assert a == 3
+```
+6. Un ejemplo simple de `continue` y `break` sería así:
+```groovy
+for (String s in 'a'..'z') {
+  if (s == 'a') continue
+  println s
+  if (s > 'b') break
+}
+```
