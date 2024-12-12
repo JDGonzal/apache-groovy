@@ -3910,3 +3910,50 @@ for (String s in 'a'..'z') {
   if (s > 'b') break
 }
 ```
+
+## Paso 63. Exception Handling
+1. en la carpeta **"ControlStructures"** creamos el archivo 
+**`exceptions.groovy`**.
+2. Creamos un método estilo `java`:
+```java
+public void foo() throw Exception{
+  throw new Exception() // Lanzamos una excepción
+}
+foo()
+```
+3. Comentamos lo anterior
+4. En `goovy` se haría de esta manera:
+```groovy
+def foo() {
+  throw new Exception('Foo Exception')
+}
+foo()
+```
+5. Complementamos el uso en **`exceptions.groovy`**:
+```groovy
+def foo() {
+  throw new Exception('Foo Exception')
+}
+
+List log = []
+
+try {
+  foo()
+} catch( Exception e) {
+  log << e.message
+} finally {
+  log << 'finally'
+}
+// Imprimimos el contenido de la variable `log`
+println log // [Foo Exception, finally]
+```
+6. Un ejemplo de la sintaxis con `java7`:
+```java
+try {
+  // Hace algo
+} catch(FileNotfoundException | nullPoinerException e){
+  println e.class.name
+  println e.message
+}
+```
+7. 
