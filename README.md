@@ -3956,4 +3956,89 @@ try {
   println e.message
 }
 ```
-7. 
+
+## Paso 64. [Exercise] Control Structures
+>[!NOTE]
+>### [Ejercicio] Estructuras de control
+>
+>Usamos una clase similar a esta en un ejercicio anterior, pero creo que es un ejemplo breve y conciso de lo que debemos revisar en este ejercicio.
+>
+>* Crear una clase `Account`
+>   * Crear una propiedad de tipo `BigDecimal` llamada `balance` con un valor inicial de 0.0
+>* Crear un método llamado `deposit()`
+>   * Usar una estructura condicional (`if` funcionaría muy bien aquí) para verificar si el monto que se pasa es menor que cero. Si lo es, deberíamos detectar este caso porque no queremos depositar números negativos. En este caso, lanzar una excepción.
+>   * Crear otro método llamado `deposit()` que tome una lista de montos
+>     * Usar un bucle `for` para recorrer estos montos y llamar a `deposit`
+>
+>Ahora que tenemos nuestra clase, probémosla. Puedes hacer todo esto en el mismo archivo (simplemente no crees un archivo llamado **`Account.groovy`**)
+>* Crea una instancia de la clase Account
+>* Deposita un monto válido
+>* Deposita un monto inválido (¿qué sucede?)
+>* Intenta / detecta montos inválidos
+>* Deposita una lista de montos.
+>
+
+## Paso 65. [Exercise Review] Control Structures
+1. Creamos en la carpeta **"ControlStructures"** erl archivo
+**`exercise.groovy`**, con la definición de una `class` y
+dentro la variable `balance` de tipo `bigDecimal`:
+```groovy
+class Account {
+  BigDecimal balance = 0.0
+}
+```
+2. Creamos dos veces el método `deposit()` dentro de la clase
+`Account` debajo de la definición de `balance`:
+```groovy
+  // Crear un método llamado `deposit()`
+  def deposit(BigDecimal ammount) {
+
+  }
+
+  // * Crear otro método llamado `deposit()` que tome una lista de montos
+  def deposit(List ammounts) {
+    
+  }
+```
+3. Completamos los métodos recien creados:
+```groovy
+  // Crear un método llamado `deposit()`
+  def deposit(BigDecimal amount) {
+    // * Usar una estructura condicional para verificar el `ammount`
+    if(amount<0){
+      throw new Exception ('Desposit amount must be greater than 0')
+    }
+    balance += amount
+  }
+
+  // * Crear otro método llamado `deposit()` que tome una lista de montos
+  def deposit(List amounts) {
+    //* Usar un bucle `for` para recorrer estos montos y llamar a `deposit`
+    for(amount in amounts){
+      deposit(amount)
+    }
+  }
+```
+4. Probamos la clase en el mismo archivo:
+```groovy
+// * Ahora que tenemos nuestra clase, probémosla. Puedes hacer todo esto en el mismo archivo
+Account checking = new Account()
+checking.deposit(10)
+println( checking.balance) // 10.0
+```
+5. Probamos enviando un valor negativo:
+```groovy
+// * Deposita un monto inválido (¿qué sucede?)
+try {
+  checking.deposit(-20) 
+} catch (Exception e){
+  println e.message // Desposit amount must be greater than 0
+}
+println(checking.balance)
+```
+6. Enviamos un grupo de valores:
+```groovy
+// * Deposita una lista de montos.
+checking.deposit([1,5,10,20,50])
+println(checking.balance) // 96.0
+```
