@@ -24,12 +24,17 @@ hs_err_pid*
 replay_pid*
 
 ### IntelliJ IDEA ###
-HelloWorld/.idea
-TwitterExercise/.idea
-datatypes/.idea
-out/
-!**/HelloWorld/src/main/**/out/
-!**/HelloWorld/src/test/**/out/
+**/.idea
+**/**/.idea
+**/**/**/.idea
+**/out/
+**/**/out/
+**/**/**/out/
+**/.gitignore
+**/**/.gitignore
+!**/**/**/src/main/**/out/
+!**/**/**/test/**/out/
+
 
 ### Eclipse ###
 .apt_generated
@@ -39,9 +44,10 @@ out/
 .settings
 .springBeans
 .sts4-cache
-HelloWorld/bin/
-!**/HelloWorld/src/main/**/bin/
-!**/HelloWorld/src/test/**/bin/
+**/bin/
+**/**/bin
+!**/**/src/main/**/bin/
+!**/**/src/test/**/bin/
 
 ### NetBeans ###
 /nbproject/private/
@@ -51,7 +57,7 @@ HelloWorld/bin/
 /.nb-gradle/
 
 ### VS Code ###
-HelloWorld/.vscode/
+**/.vscode/
 
 ### Mac OS ###
-HelloWorld/.DS_Store
+**/.DS_Store
