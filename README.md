@@ -4042,3 +4042,249 @@ println(checking.balance)
 checking.deposit([1,5,10,20,50])
 println(checking.balance) // 96.0
 ```
+
+# Section 8: Object Oriented Programming (OOP)
+
+## Paso 66. Intro
+>[!NOTE]  
+>En esta sección, veremos las clases.
+>Las hemos creado antes, pero ahora vamos a empezar a hablar de ellas.
+>
+>Clases, campos, variables locales, cómo crear constructores y métodos, cómo organizar
+>tus clases.
+>También haremos un cuestionario rápido sobre eso.
+>
+>Ahora hablaremos de algunos temas más avanzados en programación orientada a objetos como
+>interfaces de herencia, rasgos que no están disponibles en Java.
+>Esto es algo que tienen otros lenguajes, pero los rasgos son muy parecidos.
+>También los veremos.
+>Y luego veremos qué es un ser maravilloso.
+>
+>Y luego pasaremos a un ejercicio, un pequeño ejercicio divertido sobre cómo crear tu propia clase que realmente te hará pensar en cómo empezar a diseñar tus clases.
+
+## Paso 67. Classes / Fields / Local Variables
+
+1. Creamos la carpeta **"08-ObjectOrientedProgramming"**.
+2. Adentro de la carpeta creamos el archivo **`classes.groovy`**.
+
+>[!NOTE]  
+>### El video se pausa y no ejecuta, se adjunta la transcripción
+>Si necesitamos declarar una propiedad en una clase, le damos un tipo o no.Si no es necesario y le damos un nombre.
+>Ahora tenemos un campo llamado first, llamémoslo.
+>Sí, lo dejaremos como first.
+>Entonces tenemos first name, ¿cierto?
+>Entonces tenemos un campo first name.
+>
+>Y si sigo adelante y guardo esto y voy a script y voy a inspeccionar como T o command T en Mac,
+>básicamente ese aspecto nos da cómo se ve esta clase real cuando se crea.
+>
+>Entonces, de manera predeterminada, si no le damos ningún modificador de acceso en el nivel de campo, es una variable privada.
+>Y con esa variable privada, cuando no declaramos nada, en realidad crea captadores y definidores
+>para nosotros.
+>Entonces, si tenemos este first name, obtenemos un captador, obtenemos first name y una variable first name establecida.
+>
+>Hablaremos más sobre las propiedades cuando nos adentremos en los groovy beans más adelante en esta sección.
+>Pero por ahora, solo quería señalar que, si no le damos un modificador de acceso,
+>eso es lo que sucede.
+>
+>Ahora bien, ¿qué sucede si le damos un modificador de acceso para que sepamos que, por defecto, es privado, pero qué
+>sucede si nosotros mismos lo configuramos como privado?
+>```groovy
+>class Person {
+>  private String firstName
+>}
+>```
+>Entonces, nuevamente, saltemos al este, vemos la cadena privada `firstName`.
+>Pero ahora verá que no hay ningún getter ni setter aquí.
+>Y eso es porque, de hecho, dijimos explícitamente que ese campo es privado.
+>Entonces, Groovy no siguió adelante y generó nada para nosotros.
+>
+>Solo cuando no declara un modificador de acceso, decide hacerlo.
+>Nuevamente, profundizaremos más en eso cuando hablemos de los beans Groovy.
+>Pero solo quería hacer esa distinción mientras estamos aquí.
+>Así que sigamos adelante y deshagámonos de eso.
+>Ahora, también podemos declarar múltiples campos en la misma línea si queremos.
+>
+>Si ambos campos van a ser cadenas, podemos decir cadena firstname y lastname.
+>Entonces, si ahora seguimos adelante y, bueno, ¡ups!, no se ejecutará nada allí.
+>Si seguimos adelante y observamos el AST, veremos que ahora hay una cadena privada, nombre, cadena privada, apellido, y tenemos nuestros captadores y definidores generados.
+>
+>Entonces podemos hacer esa opción:
+>```groovy
+>class Person {
+>  String firstName, lastName
+>}
+>```
+>Tampoco podemos asignarle un tipo.
+>Ya hemos hablado de esto antes, la palabra clave def.
+>Vamos a crear un campo aquí de tipo, fecha de nacimiento o de nombre con el nombre, fecha de nacimiento,
+>pero todavía no hay un tipo y el tipo se determinará más adelante en función de lo que le hayamos asignado.
+>
+>Pero ahora mismo no queremos asignarle un tipo.
+>De nuevo, también hay diferentes modificadores de acceso aquí, por lo que podemos decir que hay privado, que ya hemos
+>visto.
+>
+>Hay protegido que solo se puede usar en el mismo paquete y hay público.
+>Entonces podemos entrar aquí y decir cadena protegida `f1`, `f2`, `f3`, podemos crear.
+>Vimos privados antes, pero también podemos, por lo que podemos crear una fecha privada creada el y podemos realmente
+>inicializar nuestros campos directamente en línea para que podamos decir nueva fecha.
+>
+>Entonces se inicializará a la fecha de hoy.
+>Ahora, también hay dos palabras clave que realmente no hemos visto hasta ahora en este curso y queremos repasarlas
+>```groovy
+>class Person {
+>  String firstName, lastName
+>  def dob
+>  // private | protected | public
+>  protected String f1, f2, f3
+>  private Date createOn = new Date()
+>
+>}
+>```
+>Muy bien.
+>Entonces, vamos a seguir adelante y crear un campo estático aquí.
+>Digamos que vamos a crear un campo estático llamado `welcomeMsg` y vamos a asignarle
+>un valor de `'HELLO'`.
+>
+>Entonces, sabemos que normalmente cuando creamos una instancia de una clase o si necesitamos acceder a un campo en una
+>clase, necesitamos crear una instancia, ¿cierto?
+>```groovy
+>class Person {
+>  String firstName, lastName
+>  def dob
+>  // private | protected | public
+>  protected String f1, f2, f3
+>  private Date createOn = new Date()
+>
+>  static welcomeMsg = 'HELLO'
+>
+>}
+>```
+>Normalmente, diríamos que la persona P es igual a la nueva persona P punto mensaje de bienvenida, ¿no?
+>Normalmente, tendríamos que hacer eso.
+>Sigamos adelante e imprimamos esto.
+>
+>Pero con un campo estático podemos acceder a él sin crear realmente una instancia.
+>Podemos decir persona punto mensaje de bienvenida y si lo imprimimos, deberíamos tenerlo.
+>
+>Hola.
+>
+>Lo que verás a menudo con eso es que esta variable estática se puede cambiar.`
+>```groovy
+>class Person {
+>  String firstName, lastName
+>  def dob
+>  // private | protected | public
+>  protected String f1, f2, f3
+>  private Date createOn = new Date()
+>
+>  static welcomeMsg = 'HELLO'
+>
+>}
+>println Person.welcomeMsg // HELLO
+>```
+>Y hay muchas ocasiones en las que no quieres que eso se cambie.
+>Y la forma en que lo hacemos es usando la palabra clave final.
+>Por lo tanto, crearíamos un final estático público, lo que significa que no se puede cambiar.
+>
+>Esto es de tipo cadena y normalmente esto es lo que llamamos una constante, y otros lenguajes tienen la idea
+>de una constante.
+>Constantes en Java y Groovy.
+>Normalmente las verás todas en mayúsculas.
+>
+>Y así es como, ya sabes, si miras un campo solo por su nombre, sabrás de inmediato, 
+>Hola,
+>ese es un campo estático final que no podemos cambiar, que podemos simplemente tomar, podemos acceder sin crear
+>una instancia.
+>Entonces, si seguimos adelante y le asignamos un valor, digamos hola, podemos decir persona punto, mensaje de bienvenida.
+>Y ahí está.
+>```groovy
+>class Person {
+>  String firstName, lastName
+>  def dob
+>  // private | protected | public
+>  protected String f1, f2, f3
+>  private Date createOn = new Date()
+>
+>  static welcomeMsg = 'HELLO'
+>  public static final String WELCOME_MSG = welcomeMsg
+>
+>}
+>println Person.WELCOME_MSG // HELLO
+>```
+>Eso es un poco sobre los campos.
+>Hablemos de las variables locales.
+>Entonces, si creamos un método aquí, variables locales y digamos def foo y dentro de nuestro
+>método aquí, vamos a crear algunas variables.
+>
+>Entonces, digamos que mensaje es igual a Hola.
+>Entonces, ahora esto es una variable local para este método, mientras que estos campos o variables creadas
+>dentro de la clase, pero fuera de los métodos son variables que son campos de esa clase o instancias
+>de esa clase, mientras que esto se declara dentro de un método, por lo tanto, es una variable local
+>solo para ese método.
+>
+>Entonces, si intentamos crear una instancia aquí de persona y digamos persona punto mensaje, entonces
+>dirá, no sé qué estás buscando porque no puedo encontrar un campo llamado mensaje en la clase persona.
+>Y eso es porque es local para este método.
+>Entonces, podemos crear un mensaje aquí.
+>```groovy
+>class Person {
+>  String firstName, lastName
+>  def dob
+>  // private | protected | public
+>  protected String f1, f2, f3
+>  private Date createOn = new Date()
+>
+>  static welcomeMsg = 'HELLO'
+>  public static final String WELCOME_MSG = welcomeMsg
+>
+>  // local variable
+>  def foo(){
+>    String msg = 'Hello'
+>  }
+>
+>}
+>println Person.WELCOME_MSG // HELLO
+>```
+>También podemos crear un nombre y lo llamaremos Dan.
+>Ahora, el nombre no entrará en conflicto con el nombre en nuestra clase de persona porque tiene un alcance local
+>en este método.
+>Entonces, si quisiéramos, podemos imprimir la línea y decir nombre del mensaje, vayamos al nombre y cerremos eso.
+>
+>Ahora lo que podemos hacer es imprimir línea.
+>En realidad, vamos a necesitar una instancia para poder decir persona o simplemente decir que def persona
+>es igual a nueva persona.
+>
+>Y ahora lo que quiero hacer es llamar a `foo` print line (`println`) y eso dice  `"$msg, $firstName"`.
+>Así que eso es un poco sobre campos y variables locales.
+>Nuevamente, vas a escuchar que a veces se hace referencia a ellos como propiedades y muchas veces cuando comenzamos
+>a crear beans Groovy, son propiedades porque una propiedad tiene un es un campo de una clase y
+>tiene captadores y definidores.
+>
+>Así que debería comenzar a tener un poco más de sentido a medida que avanzamos en esta sección.
+>Así que esos son campos y variables.
+>```groovy
+>class Person {
+>  String firstName, lastName
+>  def dob
+>  // private | protected | public
+>  protected String f1, f2, f3
+>  private Date createOn = new Date()
+>
+>  static welcomeMsg = 'HELLO'
+>  public static final String WELCOME_MSG = welcomeMsg
+>
+>  // local variable
+>  def foo() {
+>    String msg = 'Hello'
+>    String firstName = "Dan"
+>    println "$msg, $firstName" // Hello, Dan
+>  }
+>
+>}
+>println Person.WELCOME_MSG // HELLO
+>def person = new Person()
+>println person.foo() // null
+>```
+>
+>Continuemos y pasemos a los métodos.
