@@ -4367,3 +4367,134 @@ Person p = new Person('Juan Piza')
 println p // Person(Juan, Piza, Juan LastName)
 p.concat('a', 'b') // 2
 ```
+
+## Paso 69. Organizing Classes into Packages
+
+>[!IMPORTANT]  
+>Comenzamos a usar Groovy Council durante gran parte de este curso porque es muy fácil de usar.
+>No tienes que crear un proyecto.
+>Puedes simplemente crear un código y ver cómo funciona.
+>
+>Bueno, a medida que comencemos a abordar cuestiones más complicadas en este curso, usaremos
+>la IDEA de [`IntelliJ (Paso 15)`](#paso-15-hello-intellij).
+>
+>Te dije al principio de este curso que realmente me encanta esta idea.
+>Puedes usar otra ID si quieres.
+>Puedes usar algo como Eclipse, pero realmente me encanta la idea de IntelliJ, así que la usaré.
+>
+>Pero a medida que avancemos, la usaremos, así que también podríamos familiarizarnos con ella un poco
+>de a poco.
+>
+>Entonces, en esta lección, hablaremos sobre cómo organizar nuestras clases en paquetes.
+>Entonces, vimos cómo crear una clase, todas las diferentes cosas que componen una clase.
+
+>[!TIP]  
+>### En mi PC de Windows 11, tengo instalado el [`SDKMAN (Paso 11)`](#paso-11-sdkman). 
+>1. Lo consulto >en la `TERMINAL` `Git Bash` de `VisualStudio` y obtengo la versión, tanto de `java`:  
+>```bash
+>java -version
+>openjdk version "1.8.0_412"
+>OpenJDK Runtime Environment (Temurin)(build 1.8.0_412-b08)
+>OpenJDK 64-Bit Server VM (Temurin)(build 25.412-b08, mixed mode)
+>``` 
+>2. Como de `groovy`
+>```bash
+>groovy -version
+>Groovy Version: 4.0.22 JVM: 17.0.12 Vendor: Eclipse Adoptium OS: Windows 11
+>```
+>3. Con el `SDKMAN` instalo la verión 17 de `java`:
+>```bash
+>sdk install java 17.0.12-tem
+>
+>Downloading: java 17.0.12-tem
+>
+>In progress...
+>
+>############################################################################################################################################ 100.0%
+>
+>Installing: java 17.0.12-tem
+>Done installing!
+>
+>
+>Setting java 17.0.12-tem as default.
+>```
+>4. Reviso las ruta de instalación en Windows ejecutando este 
+>comando en el `CMD` : `%USERPROFILE%\.sdkman\candidates\`.
+
+1. Desde el [`IntelliJ`](#paso-15-hello-intellij), seleccionamos
+`New>`->`Poject`.
+2. A la izquierda estar seguros que tenemos seleccionado el
+`Groovy`.
+3. En `Location:` cambiamos la ruta a 
+**"08-ObjectOrientedProgramming"**.
+4. En `Name:` le ponemos `package-demo`.
+5. En `JDK:` buscamos la última instalada, la de 
+`temurin-17...17.0.12`.
+>[!NOTE]  
+>Así luce antes de dar el botón `[Create]`:  
+>![New Project](images/section08-step_69-Packages_IntelliJ.png "New Project")
+
+6. Presionamos el botón `[Create]`.
+7. En el archivo **`.gitignore`** en el comentario 
+`### IntelliJ IDEA ###` ponemos este código:
+```yml
+### IntelliJ IDEA ###
+**/.idea
+**/**/.idea
+**/**/**/.idea
+**/out/
+**/**/out/
+**/**/**/out/
+**/.gitignore
+**/**/.gitignore
+!**/**/**/src/main/**/out/
+!**/**/**/test/**/out/
+```
+8. Dentro del `IntelliJ`, damos clic derecho a la carpeta 
+**"src"** y seleccionamos `New>`->`Groovy Class` y el ponemos el 
+nombre `Application`:  
+![New Groovy Class](images/section08-step_69_New_Groovy-Class.png "New Groovy Class")  
+* y presionamos la tecla `[Enter]`
+
+>[!TIP]  
+>Si pregunta por `Add File to Git`, presionamos en 
+`Don't ask again` y el botón `[Cancel]:`  
+>![Add File to Git](images/section08-step_69_AddFileGit.png "Add File to Git")
+
+9. Dentro del `IntelliJ`, damos clic derecho a la carpeta 
+**"src"** y seleccionamos `New>`->`Package` y en el nombre se
+pone `com.domain_name`.
+10. Usando el `IntelliJ`, movemos el archivo **`Application.groovy`**, dentro de el nuevo paquete
+de nombre `com.domain_name`, cuya ruta relativa es:
+**"08-ObjectOrientedProgramming/package-demo/src/com/domain_name"** y nos sale algo similar a esto:  
+![Move & Refactor](images/section08-step_69_Move_Refactor.png "Move & Refactor")
+* Damos click en `[Refactor]`.
+11. Creamos otro `package` usando `IntelliJ`, con click derecho
+en el paquete `com.domain_name`, con el nombre `controller`:  
+`com.domain_name.controller`  
+Y presionamos la tecla `[Enter]`.
+12. Creamos otros dos `package` de nombres: `service` y `domain`
+dentro del paquete `com.domain_name`, así se ve el proyecto:  
+![Project1](images/section08-step_69_Project1.png "Vista actual 1")
+13. Dentro del paquete `controller` creamos la clase Groovy de
+nombre **`HelloController`**.
+14. Dentro del paquete `domain` creamos la clase Groovy de
+nombre **`Person`**.
+15. Dentro del paquete `service` creamos la clase Groovy de
+nombre **`PersonService`**. 
+16. En el archivo **`PersonService.groovy`**, instanciamos
+de la clase `Person` una variable de nombre `person` y el debe
+importar automáticamente de donde proviene esta clase:
+```groovy
+package com.domain_name.service
+
+import com.domain_name.domain.Person
+
+class PersonService {
+    Person person
+}
+```
+
+>[!TIP]  
+>Así luce el proyecto al final:  
+>![Proyecto al final](images/section08-step_69_Project2.png "Proyecto al final")
