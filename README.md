@@ -4288,3 +4288,82 @@ println(checking.balance) // 96.0
 >```
 >
 >Continuemos y pasemos a los métodos.
+
+## Paso 68. Constructors & Methods
+
+1. Dentro de la carpeta **"08-ObjectOrientedProgramming"**
+creamos el archivo **`methods.groovy`**.
+2. El contenido va a ser la clase `Person` si la instanciamos
+el constructor implícto es cero o nada:
+```groovy
+class Person {
+
+  // Constructor
+
+}
+
+Person p = new Person()
+```
+3. Definimos dos Atributos `firstName`, y `lastName`, luego
+al instanciar asignamos valores a esos atributos:
+```groovy
+class Person {
+  // Attributes
+  String firstName, lastName
+
+  // Constructor
+
+}
+
+Person p = new Person(firstName: 'Juan', lastName: 'Piza')
+```
+4. Agregamos al principio el `@groovy.transform.ToString` y al final `println p` y obtenemos: `Person(Juan, Piza)`.
+5. Pongamos en comentarios las dos últimas líneas.
+6. Añadimos debajo del comentario `// Constructor` esto:
+```groovy
+  // Constructor
+  Person(String fullName) {
+    List parts = fullName.split(' ')
+    /* this. */ firstName = parts[0]
+    /* this. */ lastName = parts[1]
+  }
+```
+7. Abajo este código:
+```groovy
+Person p = new Person('Juan Piza')
+println p // Person(Juan, Piza, Juan LastName)
+```
+8. Debajo del constructor ponemos los `Methods`:
+```groovy
+@groovy.transform.ToString
+class Person {
+
+  // Attributes
+  String firstName, lastName
+
+  // Constructor
+  Person(String fullName) {
+    List parts = fullName.split(' ')
+    /* this. */ firstName = parts[0]
+    /* this. */ lastName = parts[1]
+  }
+
+  // Methods
+  public void foo(){
+    // do stuff
+  }
+  String getFullName(){
+    "$firstName LastName"
+  }
+  def concat(String... args){
+    println args.length
+  }
+
+}
+
+// Person p = new Person(firstName: 'Juan', lastName: 'Piza')
+// println p // Person(Juan, Piza)
+Person p = new Person('Juan Piza')
+println p // Person(Juan, Piza, Juan LastName)
+p.concat('a', 'b') // 2
+```
