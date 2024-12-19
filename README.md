@@ -4498,3 +4498,87 @@ class PersonService {
 >[!TIP]  
 >Así luce el proyecto al final:  
 >![Proyecto al final](images/section08-step_69_Project2.png "Proyecto al final")
+
+
+## Quiz 6: Classes Quiz
+
+![Quiz 6](images/section08-step69-quiz6.gif "Quiz 6")
+
+
+## Paso 70. Inheritance
+
+1. Volvemos a abrir [`IntelliJ`](#paso-15-hello-intellij), y nos 
+muestra el último proyecto que estabamos trabajando.
+2. Buscamos el archivo **`Aplication.groovy`**, que debe estar
+en esta ruta: **"src/com/domain_name"**.
+3. Borramos los archivos :
+* **`HelloController.groovy`**
+* **`Person.groovy`**
+* **`PersonService.groovy`**
+4. En el paquete `domain` creamos la clase `Phone` que crea el
+archivo **`Phone.groovy`**, colocamos esto en el archivo:
+```groovy
+package com.domain_name.domain
+
+class Phone {
+
+    String name // Nombre o Marca
+    String os // Android o Apple
+    String appStore // Sitio de almacenamiento
+
+    def powerOn() {
+
+    }
+
+    def powerOff() {
+
+    }
+    def ring() {
+        
+    }
+}
+```
+5. Creamos en el paquete `domain`  la clase `IPhone` que crea el
+archivo **`IPhone.groovy`**, añadimos la herencia con `extends`:
+```groovy
+package com.domain_name.domain
+
+class IPhone extends Phone{
+    
+}
+```
+6. Creamos un `Grovy Script` en el paquete `com.domain_name` con 
+el nombre `app`, empezamos con instanciar un `IPhone` con el
+nombre `iPhone`:
+```groovy
+package com.domain_name
+
+import com.domain_name.domain.IPhone
+
+IPhone iPhone = new IPhone(name : '12 Pro Max', appStore: 'App Store - Apple', os: 'iOS 14')
+println(iPhone)
+```
+7. En el archivo **`IPhone.groovy`**, debajo del `package`, 
+agregamos esto `@groovy.transform.ToString`.
+8. De regreso en **`app.groovy`**, damos click derecho y 
+seleccionamos `▶️ Run 'app'`.
+9. En el archivo **`IPhone.groovy`**, puedo definir nuevos 
+métodos y atributos:
+```groovy
+    String iOSVersion // Nuevo Atributo
+
+    def homeButtonPressed() { // Nuevo Método 1
+
+    }
+    def airPlay() { // Nuevo Método 2
+
+    }
+```
+10. Redefinir o reescribir métodos del padre:
+```groovy
+    def powerOn() { // Redefino un método del padre
+
+    }
+```
+12. Le puedo añadir el tag `@Override` encima del método
+que estoy redefiniendo.
