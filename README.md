@@ -4502,7 +4502,7 @@ class PersonService {
 
 ## Quiz 6: Classes Quiz
 
-![Quiz 6](images/section08-step69-quiz6.gif "Quiz 6")
+![Quiz 6](images/section08-step_69-quiz6.gif "Quiz 6")
 
 
 ## Paso 70. Inheritance
@@ -4582,3 +4582,104 @@ métodos y atributos:
 ```
 12. Le puedo añadir el tag `@Override` encima del método
 que estoy redefiniendo.
+
+## Paso 71. Interfaces
+
+1. Regresando al [`IntelliJ`](#paso-15-hello-intellij), 
+creamos un nuevo proyecto llamado `interfaces`, de tipo groovy
+en la misma carpeta **"08-ObjectOrientedProgramming"**:  
+![New Proyect: 'interfaces' ](images/section08-step_71_interfaces1.png "New Proyect: 'interfaces'")
+2. Creamos el paquete básico de `com.domain_name`.
+3. Borramos el archivo **`Main.groovy`**.
+4. Creamos un `Groovy Script` en el paquete `com.domain_name`
+ con el nombre `app`.  
+![script: 'app.groovy'](images/section08-step_71_interfaces2.png "script: 'app.groovy'")
+5. Creamos el paquete `service` dentro del paquete `com.domain_name`
+6. Creamos dentro del paquete `com.domain_name`, la clase
+Groovy de nombre `People`, con esta definición:
+```groovy
+package com.domain_name
+
+class People {
+
+    String first, last
+
+}
+```
+7. Creamos otro paquete de nombre `domain` dentro del paquete
+`com.domain_name`.
+8. Movemos la clase `People` al paquete `domain`:  
+![class : 'People'](images/section08-step_71_interfaces3.png "class : 'People'")
+9. Creamos la clase Groovy de tipo `interface` y de nombre `IPersonService`(Siempre se inicia el nombre con la `I` en mayúsculas) dentro del paquete `service`.
+* Así luce el proyecto en `IntelliJ`:  
+![interface: 'IPersonService'](images/section08-step_71_interfaces4.png "interface: 'IPersonService'")
+
+>[!NOTE]  
+>Ahora bien, una interfaz es un poco diferente a una clase en el sentido de que, en realidad, es solo un contrato.
+>
+>Es un conjunto de métodos abstractos.
+>Y eso significa que vamos a definir el nombre del método y el tipo de retorno,
+>pero en realidad no vamos a definir el cuerpo del método.
+>
+>No vamos a implementar ninguna lógica, y eso podría tener más sentido en un minuto.
+
+10. Renombramos la clase `People` por `Person`.
+11. En la nueva `interface` definimos un par de cosas e 
+importamos la clase que vamos a usar:
+```groovy
+package com.domain_name.service
+
+import com.domain_name.domain.Person
+
+interface IPersonService {
+    Person find()
+
+    List<Person> findAll()
+}
+```
+12. Creamos una clase Groovy normal en el paquete `service` de 
+nombre `PersonService` e implementamos la `interface`:
+```groovy
+package com.domain_name.service
+
+class PersonService implements IPersonService{
+
+}
+```
+13. Damos clic derecho en la clase `PersonService` y seleccionamos `Generate...` y luego `Implement Methods...`  
+![`Generate` -> `Implement Methods...`](images/section08-step_71_interfaces5.png "`Generate` -> `Implement Methods...`")
+14. Dejamos todos seleccionados y damos click en `[OK]`:  
+![Select Methods to Implement](images/section08-step_71_interfaces6.png "Select Methods to Implement")
+15. Agregamos este código en los métodos `find()` y
+`findAll()` de la clase `PersonService`:
+```groovy
+class PersonService implements IPersonService{
+    @Override
+    Person find() {
+        Person p = new Person(first: 'Juan', last: 'Piza')
+        return p
+    }
+
+    @Override
+    List<Person> findAll() {
+        Person p1 = new Person(first: 'Juan', last: 'Piza')
+        Person p2 = new Person(first: 'Giov', last: 'Piza')
+        [p1, p2]
+    }
+}
+```
+16. Antes de correr el `script`, que es el archivo 
+**`app.groovy`**, debemos instanciar la clase `PersonService`
+e imprimir el método `find()`:
+```groovy
+import com.domain_name.service.PersonService
+
+PersonService personService = new PersonService()
+
+println personService.find()
+```
+17. En la clase `Person`, agregamos el `@groovy.transform.ToString`, pero el editor nos sugiere 
+cambiar a `@ToString()` 
+18. De regreso a **`app.groovy`** damos clic derecho y
+seleccionamos `Run 'app'`. Esta sería la respuesta obtenida:  
+![Run 'app'](images/section08-step_71_interfaces7.png "Run 'app'")
