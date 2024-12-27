@@ -4683,3 +4683,173 @@ cambiar a `@ToString()`
 18. De regreso a **`app.groovy`** damos clic derecho y
 seleccionamos `Run 'app'`. Esta sería la respuesta obtenida:  
 ![Run 'app'](images/section08-step_71_interfaces7.png "Run 'app'")
+
+## Paso 72. Traits
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+creando un nuevo proyecto llamado `traits`, de tipo groovy
+en la misma carpeta **"08-ObjectOrientedProgramming"**:  
+![New Proyect: 'traits' ](images/section08-step_72_traits1.png "New Proyect: 'traits'")
+2. Creamos el paquete básico de `com.domain_name` en la
+carpeta **"src"**.
+3. Borramos el archivo **`Main.groovy`**.
+4. Creamos un `Groovy Script` en el paquete `com.domain_name`
+ con el nombre `app`.  
+5. Creamos el paquete `service` dentro del paquete `com.domain_name`  
+![script: 'app.groovy'](images/section08-step_72_traits2.png "script: 'app.groovy'").
+>[!NOTE]  
+>Groovy lo llama `Traits` y los `Traits` básicamente nos permiten incorporar capacidades en nuestras clases.
+>
+>Al igual que las interfaces, tenemos algo que necesitamos heredar.
+>Bueno, un rasgo es una capacidad que queremos hacer, pero cuando implementamos un rasgo, podemos
+>heredar la implementación de ese rasgo.
+>
+>Entonces, si esto comienza a sonar un poco como los métodos predeterminados de `Java 8`, entonces estás en el camino correcto.
+>La gran diferencia aquí, sin embargo, es que un rasgo puede contener un estado.
+>
+>Entonces, antes de comenzar con eso, solo quiero mostrarles a aquellos de ustedes que no han tocado los métodos predeterminados de `Java 8`, un poco lo que son porque es similar a lo que estábamos viendo con las interfaces.
+>Entonces, volviendo a nuestro antiguo ejemplo, digamos que creamos un... en realidad, hagámoslo en `Java`.
+
+6. En el paquete `service` creamos una clase `Java` de
+tipo `interface` y de nombre `IPersonService`.  
+![New Java Class](images/section08-step_72_traits3.png "New Java Class")
+7. Cargamos esto en el archivo **`IPersonService.java`**:
+```java
+package com.domain_name.service;
+
+public interface IPersonService {
+    default public void doSomething(){
+        System.out.println("doing something...");
+    }
+}
+```
+>[!NOTE]  
+>Digamos que nuestro método era public void, do something y básicamente vamos a imprimir
+>haciendo algo.
+>
+>Entonces, ahora no podíamos hacer esto en `Java 7` porque, como saben por nuestra última lección, una interfaz
+>no puede tener un cuerpo de método, ¿verdad?
+>En realidad, no podemos hacer nada aquí.
+>
+>Bueno, había una forma un tanto chapucera de hacer esto para básicamente proporcionar una funcionalidad predeterminada
+>de un método desde una interfaz en versiones anteriores de Java.
+>
+>Entonces, `Java 8` siguió adelante y agregó esta capacidad.
+>Entonces, ahora, si queremos decir, está bien, aquí están todos los métodos en nuestra interfaz y
+>puedes implementarlos si quieres.
+>
+>Pero para este método en particular, quiero que este sea el predeterminado si nadie anula este método.
+>Y para hacerlo, todo lo que tienes que hacer es agregar la palabra clave predeterminada.
+>Y ahora esto era válido.
+
+>[!IMPORTANT]  
+>### Groovy Language Documentation
+>[next: 1.4.5. Traits](https://docs.groovy-lang.org/docs/next/html/documentation/#_traits) ó [latest: 1.4.5. Traits](https://docs.groovy-lang.org/latest/html/documentation/#_traits)
+>
+>Bien, vuelvo a la documentación y, de hecho, he incluido un enlace a esto en los recursos adicionales.
+>Pero hay información muy útil sobre los rasgos.
+>Ahora vamos a repasar algunas de estas cosas.
+>
+>Sin embargo, probablemente no todos los detalles, por lo que es posible que desees leer esta documentación cuando
+>tengas la oportunidad.
+>
+>Básicamente, los rasgos son una construcción estructural del lenguaje que nos permite tener composición
+>de comportamiento, implementación de interfaces en tiempo de ejecución, anulación de comportamiento específico y algunas otras cosas.
+
+8. Creamos un paquete llamado `traits` dentro del paquete
+`com.domain_name`.
+9. Cremos una clase de tipo Groovy, en `traits` de nombre
+`Bird`.
+10. Creamos en `traits` un clase de tipo `Trait` con el 
+nombre `FlyingAbility`.  
+![Trait: 'FlyingAbility'](images/section08-step_72_traits4.png "Trait: 'FlyingAbility'")
+11. Agregamos esto en la clase `FlyingAbility`:
+```groovy
+package com.domain_name.traits
+
+trait FlyingAbility {
+    String fly() {
+        "I'm Flying!"
+    }
+}
+```
+12. En el archivo **`Bird.groovy`** implementamos la clase 
+`FlyingAbility`:
+```groovy
+class Bird implements FlyingAbility{
+    
+}
+```
+13. En el arhivo **`app.groovy`** instanciamos la clase `Bird`:
+```groovy
+package com.domain_name
+
+import com.domain_name.traits.Bird
+
+Bird b = new Bird()
+assert b.fly() == "I'm Flying!"
+```
+14. Damos clic derecho y seleccionamos `Run 'app'` y este sería
+el resultado esperado:  
+![Run 'app'](images/section08-step_72_traits5.png "Run 'app'")
+15. Creamos otra clase Groovy de tipo `Trait` con el nombre
+`SpeakingAbility` dentro del paquete `traits`.
+16. Adento de la clase `SpeakingAbility`, ponemos este código:
+```groovy
+package com.domain_name.traits
+
+trait SpeakingAbility {
+
+    String speak(){
+        "I'm Speaking!"
+    }
+}
+```
+17. Regresamos a la clase `Bird` y añadimos la implementación de 
+la clase `SpeakingAbility`:
+```groovy
+class Bird implements FlyingAbility, SpeakingAbility{
+
+}
+```
+18. En el archivo **`app.groovy`**, añadimos esta línea:
+```groovy
+assert b.speak() == "I'm Speaking!"
+```
+19. De nuevo clic derecho y seleccionamos `Run 'app'` y este 
+sería el resultado esperado:  
+![Run 'app'](images/section08-step_72_traits6.png "Run 'app'")
+>[!NOTE]  
+>Así que eso es comercio a un alto nivel.
+>Pero, de nuevo, piensas que parece una interfaz, que parece un método predeterminado de Java 8, y lo es hasta cierto punto, pero podemos llevarlo un poco más allá.
+>
+>Entonces, si volvemos a nuestra capacidad de volar, supongamos que en este rasgo en particular teníamos un método
+>que queríamos crear como abstracto y queríamos que cualquier clase que use este rasgo tuviera que implementar ese método.
+>Así que sigamos adelante y digamos abstracto foo.
+
+20. Volvemos la clase `FlyingAbility` y añadimos un método
+abstracto de nombre `foo()`, sin implmentar:
+```groovy
+    abstract String foo()
+```
+21. De nuevo en la clase `Bird` damos clic derecho y 
+seleccionamos `Generate...` y luego `Implement Methods...`:  
+!["Implement Methods..."](images/section08-step_72_traits7.png "Implement Methods...")
+22. A mi solo me muestra el método `foo()`, será el único a 
+implementar y damos `[OK]`:  
+![Implement Methods...](images/section08-step_72_traits8.png "Implement Methods...")
+23. Si selecciono luegeo de `Generate...` a 
+`Override Methods...`, me sale mas información:  
+![Override Methods..](images/section08-step_72_traits9.png "Override Methods..")
+24. En la clase `FlyingAbility` añadimos un método privado:
+```groovy
+    private String bar() {
+        'bar'
+    }
+```
+25. Podemos agregar mas campos públicos o privados, por ejemplo
+en la clase `SpeakingAbility`:
+```groovy
+    public String a
+    private String b
+```
