@@ -4853,3 +4853,221 @@ en la clase `SpeakingAbility`:
     public String a
     private String b
 ```
+
+## Paso 73. Groovy Beans
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+creando un nuevo proyecto llamado `beans`, de tipo groovy
+en la misma carpeta **"08-ObjectOrientedProgramming"**:  
+![New Proyect: 'beans'](images/section08-step_73_beans1.png "New Proyect: 'beans'")
+2. Creamos el paquete básico de `com.domain_name` en la
+carpeta **"src"**.
+3. Borramos el archivo **`Main.groovy`**.
+4. Creo el archivo **`GroovyBeans.txt`** en la carpeta
+**"src/com/domain_name"**, que es lo mismo que el paquete
+del paso 2, con este contenido:
+```txt
+Un JavaBean es solo un estandar
+
+- Todas las propiedades son privadas (use métodos getterssetters)
+- Un constructor publico sin argumentos
+- Implementa serializables.
+    Java proporciona un mecanismo, llamado serialización de objetos, donde un objeto puede representarse como una
+    secuencia de bytes que incluye los datos del objeto, asi como información sobre el tipo del objeto y los
+    tipos de datos almacenados en el objeto.
+- Crear un Bean Java
+- Equivalente a Groovy Bean
+- Mira un Groovy Bean debajo del capo
+- Como utilizar Groovy Beans
+- Como escribir tus propios métodos getter/setter
+- Acceso directo al campo
+```
+5. Dentro del paquete `com.domain_name`, creamos una 
+`Java Class` de nombre `EmployeeBean`, con esto al menos en 
+la nueva clase:
+```java
+package com.domain_name;
+
+public class EmployeeBean {
+    // private properties
+
+    // public no-arg constructor
+
+    // getters & setters
+
+}
+```
+6. Debajo de `// private properties`, definimos estas:
+```java
+
+    // private properties
+    private String first;
+    private String last;
+    private String email;
+```
+7. Debajo de `// public no-arg constructor` ponemos esto:
+```java
+    // public no-arg constructor
+    public EmployeeBean(){
+        
+    }
+```
+8. Debajo de `// getters & setters`, solo doy click 
+derecho, luego selecciono `Generate...`, luego `Getter and Setter`,
+selecciono todos y doy `[OK]`:  
+![EmployeeBean: 'Getter and Setter'](images/section08-step_73_beans2.png "EmployeeBean: 'Getter and Setter'")
+```java
+    public String getFirst() {
+        return first;
+    }
+
+    public void setFirst(String first) {
+        this.first = first;
+    }
+
+    public String getLast() {
+        return last;
+    }
+
+    public void setLast(String last) {
+        this.last = last;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }    public String getFirst() {
+        return first;
+    }
+```
+9. Añado un comentario de `// toString`, doy click derecho
+`Generate...` y luego `toString()` y solo seleccionamos
+`first` y `last` y doy `[OK]`:  
+![EmployeeBean: 'toString()'](images/section08-step_73_beans3.png "EmployeeBean: 'toString()'")
+```java
+    @Override
+    public String toString() {
+        return "EmployeeBean{" +
+                "first='" + first + '\'' +
+                ", last='" + last + '\'' +
+                '}';
+    }
+```
+10. Al nombre de la clase agrego `implements Serializable`,
+el importa automátiamente esta librería:
+`import java.io.Serializable;`
+>[!NOTA]  
+>Así que ese es nuestro bean Java normal.
+>Este es un bean de empleado.
+>Tiene tres campos.
+>Nombre, apellido, dirección de correo electrónico.
+>Tenemos nuestro constructor público y luego todos nuestros métodos de obtención y establecimiento para acceder a esos datos.
+>
+>Entonces, uno de los problemas que enfrentamos en Java es que hay mucho ruido.
+>Solo tenemos tres campos aquí, pero muchas clases de datos tendrán más.
+>Entonces, imaginen si tuviera como diez clases o diez campos aquí.
+>
+>Quiero decir, esta clase va a tener más de 200 líneas de código para algo tan simple como almacenar
+>y recuperar datos, ¿cierto?
+>Esto solo representa a un empleado.
+>Entonces, esto es mucho ruido.
+>Y sí, todo lo que hicimos fue escribir esto.
+>Entiendo que generamos esto, pero digamos que cometimos un error 
+>tipográfico y quisimos llamarlo como 
+>`firstName` en vez de `first`.
+
+11. Vamos a crear algo similiar pero `Groovy`, comenzamos
+creando el archivo `Employee`, como `Groovy Class`, en el 
+mismo paquete `com.domain_name`.
+12. Empiezo solo con esto:
+```groovy
+    String first, last, email
+```
+13. Al frente del nombre de la clase, añado esto:  
+`implements Serializable`
+14. Añado encima del nombre de la clase esto:  
+`@groovy.transform.ToString`  
+Pero el editor sugiere cambiarlo a 
+```groovy
+import groovy.transform.ToString
+
+@ToString
+```
+15. Se da en el menú `Build` y `Recompile 'Employee.groovy'`
+y aparece la carpeta de nombre `out` y si abrimos la clase
+`Employee.class`, vemos esto:  
+![Employee.class](images/section08-step_73_beans4.png "Employee.class")
+
+>[!NOTE]  
+>Ahora, si observamos lo que sucede en segundo plano, 
+>tenemos nuestra clase pública `Employee` que
+>va a implementar serializable.
+>
+>Tenemos nuestros tres campos privados.
+>
+>Tenemos un constructor sin ARG, tenemos nuestras dos cadenas y luego tenemos nuestros captadores y definidores para
+>cada una de nuestras propiedades.
+>
+>Entonces, en este escenario, es mucho más fácil si solo quiero agregar una, cambiar una o cambiar el nombre de una.
+>No hay mucho código de regeneración dentro del IDE aquí.
+>Groovy simplemente se encargará de eso por nosotros.
+>Así es como se ve nuestro bean groovy.
+
+16. Creamos en el paquete un `Groovy Script` de nombre
+`app.groovy`, con este código:
+```groovy
+Employee emp = new Employee(first: 'Juan', last: 'Piza', email: 'jpiza@mail.com')
+
+println emp
+```
+17. Doy Clic cerecho al archivo `app.groovy` y selecciono 
+`Run 'app'` e imprime esto:
+```bash
+com.domain_name.Employee(Juan, Piza, jpiza@mail.com)
+
+Process finished with exit code 0
+```
+18. Creo otra instancia de `Employee`:
+```groovy
+Employee empl = new Employee()
+empl.first = 'Juan' // empl.setFirst('Juan')
+empl.last = 'Piza' // empl.setLast('Piza')
+empl.email = 'jpiza@mail.com' // empl.setEmail('jpiza@mail.com')
+println empl 
+```
+* Obtengo la misma respuesta en ambos.
+19. Agrego otro _atributo_ de nombre `fullName` y una función
+`setFullName()`, en el archivo **`Employee.groovy`**:
+```groovy
+    String fullName
+
+    void setFullName( String first, String last){
+        fullName = first + ' ' + last
+    }
+
+    String getFullName(){
+        "Full name ${fullName}"
+    }
+```
+20. Creamos una `Grovy Class` de nombre `DoubleBean`, con esto
+dentro del la clase:
+```groovy
+    public Integer value
+
+    void setValue(value) {
+        this.value = value
+    }
+    Integer getValue(){
+        value * 2
+    }
+```
+21. Volviendo a **`app.groovy`**, ponemos esto en el código:
+```groovy
+DoubleBean db = new DoubleBean()
+db.value = 100
+println db.value // 200
+println db.@value // 100
+```
