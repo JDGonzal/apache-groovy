@@ -1,0 +1,14 @@
+Un JavaBean es solo un estandar
+
+- Todas las propiedades son privadas (use métodos getters, setters)
+- Un constructor publico sin argumentos
+- Implementa serializables.
+    Java proporciona un mecanismo, llamado serialización de objetos, donde un objeto puede representarse como una
+    secuencia de bytes que incluye los datos del objeto, asi como información sobre el tipo del objeto y los
+    tipos de datos almacenados en el objeto.
+- Crear un Bean Java
+- Equivalente a Groovy Bean
+- Mira un Groovy Bean debajo del capo
+- Como utilizar Groovy Beans
+- Como escribir tus propios métodos getter/setter
+- Acceso directo al campo
