@@ -5071,3 +5071,94 @@ db.value = 100
 println db.value // 200
 println db.@value // 100
 ```
+
+## Paso 74. [Exercise] What makes up a class
+
+>### [Ejercicio] ¿Qué constituye una clase?
+>Tweet
+>
+>Vamos a crear una clase que represente un solo tweet. Este es un ejercicio tanto sobre el código como para empezar a pensar en lo que se necesita para crear una clase. No hay una respuesta correcta o incorrecta aquí, así que no temas crear tu clase como creas conveniente. Repasaré en la revisión lo que estaba pensando cuando creé la mía, pero nuevamente mi respuesta no es la correcta.
+>
+>¿Qué propiedades y métodos se utilizan para crear una clase de tweet?
+>
+>**Puntos extra**  
+>¿Cómo podrías extraer menciones y hashtags del texto de la publicación?
+
+## Paso 75. [Exercise Review] What makes a class
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+creando un nuevo proyecto llamado `tweet`, de tipo groovy
+en la misma carpeta **"08-ObjectOrientedProgramming"**:  
+2. Creamos el paquete básico de `com.domain_name` en la
+carpeta **"src"**.
+3. Borramos el archivo **`Main.groovy`**.
+4. En el paquete `com.domain_name`, cremos una
+`Groovy Class` de nombre `Tweet`.
+5. Le añadimos estos atributos:
+```groovy
+    String post
+    String username
+    Date postDateTime
+```
+6. Añadimos unos atributos privados de nombres 
+`favorites`, `reTweets`, `mentions`, `hashtags` 
+de tipo `List`:
+```groovy
+    private List favorites = []
+    private List reTweets = []
+    private List mentions = []
+    private List hashtags = []
+```
+7. Añado encima del nombre de la clase esto:  
+`@groovy.transform.ToString` 
+8. Creo un `Groovy Script` de nombre `app`, con esto:
+```groovy
+Tweet tweet = new Tweet(
+        post: 'Estoy en un curso de Apache por @therealdanvega #Java #groovyLang',
+        username: '@jpiza',
+        postDateTime: new Date()
+)
+println tweet // com.domain_name.Tweet(Estoy en un curso de Apache, @jpiza, Day Mth ## HH:mm:ss COT YYYY)
+```
+9. Regreso a la clase **`Tweet.groovy`** y añado estas
+funciones:
+```groovy
+    void favorite(String username){
+        favorites << username
+    }
+    List getFavorites(){
+        favorites
+    }
+
+    void retweets(String username){
+        reTweets << username
+    }
+    List getRetweets(){
+        reTweets
+    }
+```
+10. Añadimos esto en el script **`app.groovy`**:
+```groovy
+tweet.favorite('@ApacheGroovy')
+tweet.retweets('@ApacheGroovy')
+println tweet.getFavorites() // [@ApacheGroovy]
+println tweet.getRetweets() // [@ApacheGroovy]
+```
+11. En la clase **`Tweet.groovy`** y añado estas
+funciones:
+```groovy
+    List getMentions(){
+        String pattern = /\B@[a-z0-9_-]+/
+        post.findAll(pattern)
+    }
+    List getHashTags(){
+        String pattern = ~/(?:\s|\A)[##]+([A-Za-z0-9-_]+)/
+        post.findAll(pattern)
+    }
+```
+12. En el script **`app.groovy`**, se añade esto:
+```groovy
+println tweet.getMentions() // [@therealdanvega]
+println tweet.getHashTags() // [ #Java,  #groovyLang]
+```
+13. Puedo correr y obtener la respuesta.
