@@ -5541,3 +5541,124 @@ Process finished with exit code 1
 ``` 
 * Así termina el proyecto:  
 ![`mop` project at end](images/section09-step_78_mop3.png "`mop` project at end")
+
+## Paso 79. MetaClass
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+creando un nuevo proyecto llamado `meta-class`, de tipo groovy
+en la misma carpeta **"09-RuntimeMetaProgramming"**:  
+![New Proyect: 'meta-class'](images/section09-step_79_meta-class1.png "New Proyect: 'meta-class'")
+2. Esta vez **NO** Creamos el paquete básico de `com.domain_name` en la
+carpeta **"src"**.
+3. Borramos el archivo **`Main.groovy`**.
+4. Creo un simple `Groovy Script` de nombre 
+`MetaClassDemo`, dentro de la carpeta **"src"**
+empezamos a colocar esto en el código:
+```groovy
+// MetaClass Demo
+
+class Developer{
+
+}
+
+Developer me = new Developer()
+println 'Cualquier texto sin impotancia'
+```
+* En la línea de `println 'Cualquier texto sin impotancia'`
+ponemos una pausa:  
+![Pausa](images/section09-step_79_meta-class2.png "Pausa")
+5. Damos click derecho y seleccionamos `Debug 'MetaClassDemo'`
+
+>[!WARNING]  
+>Puede que salga una pantalla de permisos, simplemente
+>le damos click en `[Allow]`:  
+![Windows Security](images/section09-step_79_meta-class3.jpg "Windows Security")
+
+6. Expandimos la instancia `me` y vemos que contiene por 
+defecto una `metaClass`:  
+![Debug 1](/images/section09-step_79_meta-class4.png "Debug 1")
+
+7. Expandimos esa `metaClass` y vemos un montón de 
+información.
+8. Ocultamos el `println` y colocamos este nuevo código:
+```groovy
+Expando e = new Expando()
+```
+* Si doy [Ctrl]+[Click] en el primer `Expando`, nos
+muestra el contenido de la biblioteca **`Expando.java`**.
+9. Agregamos mas código debajo de `Expando e =`:
+```groovy
+e.name = 'Juan'
+e.writeCode = { -> println "$name ama aprender código"}
+e.writeCode()
+```
+* Si doy click derecho y selecciono `Run 'MetaClassDemo'`,
+este ejecuta y mustra lo siguiente:
+```bash
+Juan ama aprender código
+
+Process finished with exit code 0
+```
+10. Bajo la definición de la clase, debajo del `Expando`, 
+así como esto:
+```groovy
+// MetaClass Demo
+
+Expando e = new Expando()
+e.name = 'Juan'
+e.writeCode = { -> println "$name ama aprender código"}
+e.writeCode()
+
+class Developer{
+
+}
+
+Developer me = new Developer()
+// println 'Cualquier texto sin impotancia'
+```
+11. Agrego este código, sabiendo que estas propiedades
+no existen:
+```groovy
+// MetaClass Demo
+
+// Expando e = new Expando()
+// e.name = 'Juan'
+// e.writeCode = { -> println "$name ama aprender código"}
+// e.writeCode()
+
+class Developer{
+
+}
+// per instance
+Developer me = new Developer()
+// println 'Cualquier texto sin impotancia'
+me.name = 'Juan'
+me.writeCode = { -> println "$name ama aprender código"}
+me.writeCode()
+```
+* Click derecho y Ejecuto y obtengo esto:  
+```diff
+-Caught: groovy.lang.MissingPropertyException: No such property: name for class: Developer
+-groovy.lang.MissingPropertyException: No such property: name for class: Developer
+-	at MetaClassDemo.run(MetaClassDemo.groovy:14)
+
+Process finished with exit code 1
+```
+12. Ahora hagamos una corrección al código:
+```groovy
+me.metaClass.name = 'Juan'
+me.metaClass.writeCode = { -> println "$name ama aprender código"}
+me.writeCode()
+```
+* Ejecuto el código y este es el resultado:  
+```bash
+Juan ama aprender código
+
+Process finished with exit code 0
+```
+13. Probemos con este otro código con el uso de `metaClass`:
+```groovy
+String.metaClass.shout = { -> toUpperCase() }
+println 'hola juan'.shout() // HOLA JUAN
+```
+* Y la respuesta será `HOLA JUAN`
