@@ -5162,3 +5162,145 @@ println tweet.getMentions() // [@therealdanvega]
 println tweet.getHashTags() // [ #Java,  #groovyLang]
 ```
 13. Puedo correr y obtener la respuesta.
+
+# Section 9: Runtime MetaProgramming
+
+## Paso 76. Intro to Runtime Metaprogramming
+
+>[!NOTE]  
+>Hablamos de metaprogramación en tiempo de ejecución.
+>Las dos secciones siguientes son bastante extensas.
+>
+>Um, Groovy es un lenguaje dinámico, como ya sabes, pero muchas de estas capacidades provienen de la metaprogramación.
+>Así que realmente vamos a dividir esto en dos secciones: tiempo de ejecución, que son básicamente cosas
+>que podemos hacer una vez que el programa está en funcionamiento, de modo que podemos cambiar algún comportamiento mientras el programa está
+>en ejecución, y luego, cosas de metaprogramación en tiempo de compilación.
+>Podemos cambiar el código antes de que se compilen las clases y agregar alguna funcionalidad de manera muy
+>fácil.
+>
+>Así que estas dos serán bastante divertidas en metaprogramación aquí.
+>Vamos a hablar sobre el mop, qué es, cómo funcionan realmente las llamadas de método en Groovy.
+>Luego vamos a hablar sobre la metaclase.
+>
+>Y aquí es donde realmente entran en juego algunos de los comportamientos dinámicos de poder agregar propiedades y métodos a las clases
+>en tiempo de ejecución.
+>Hablaremos sobre las clases de categorías.
+>Por último, el patrón de invocación de caché de intercepción, que realmente ayuda con el rendimiento.
+>Y tenemos un pequeño ejercicio agradable que te pide que hagas casi todo lo que hablamos
+
+## Paso 77. Meta Object Protocol  (MOP)
+
+>[!NOTE]  
+>En esta lección, vamos a empezar a profundizar en nuestra discusión sobre programación dinámica.
+>Más específicamente, en esta sección, nos centraremos en la metaprogramación en tiempo de ejecución y
+>en la siguiente sección nos centraremos en la metaprogramación en tiempo de compilación.
+>
+>Así que vas a escuchar mucho la palabra meta en esta sección y en las próximas dos secciones.
+>Y meta y la metaprogramación en particular es básicamente la escritura de programas informáticos que escriben
+>o manipulan otros programas e incluso, en algunos casos, a sí mismos.
+>
+>Así que en esta lección, vamos a profundizar un poco en los conceptos básicos de la metaprogramación en
+>Groovy y en lo que hace que todo esto sea posible.
+>
+>![MOP](images/section09-step_77_1MOP.png "MOP")
+>
+>Entonces, lo primero de lo que vamos a hablar es algo llamado protocolo de metaobjetos o mapa.
+>Y realmente el mapa es solo una colección de reglas sobre cómo se maneja una solicitud de llamada de método
+>por el sistema de ejecución de Groovy y cómo controlar la capa intermedia.
+>
+>Esto es directamente de la sección Groovy en acción, segunda edición del libro.
+>Y básicamente de lo que estamos hablando aquí es que cada vez que Groovy llama a un método, no solo dice:
+>Muy bien, ¿qué clase es esa clase?
+>Foo, déjame llamar a ese método bar en esa clase foo.
+>No hace eso.
+>En cambio, le pregunta a esta capa intermedia ¿Qué debo hacer aquí?
+>Y en función de un conjunto de reglas en un árbol de decisiones basado en el tipo de objeto con el que estás trabajando,
+>así es como sabe qué terminar llamando.
+>Y esa capa intermedia se llama `MOP`.
+>
+>![MOP in Groovy](images/section09-step_77_2MOP.png "MOP in Groovy")
+>
+>Y aquí estamos viendo un gráfico y básicamente a la izquierda tenemos lo que sucede cuando llamamos desde
+>groovy.
+>
+>A la derecha está cuando llamamos desde Java.
+>Sabemos que podemos llamar desde Java a Groovy y viceversa, pero toman caminos un poco diferentes.
+>Empecemos por el lado de Java aquí a la derecha, si compilamos un archivo Java
+>una clase y la llamamos desde Java, la llama directamente, llama directamente a esa clase y busca
+>un método.
+>Posteriormente, si creamos una clase en Groovy y la llamamos desde Java, estamos llamando directamente a esa
+>clase.
+>
+>Ahora bien, cuando llamamos desde Groovy, se toma una solicitud un poco diferente.
+>Básicamente, cuando un llamador de Groovy llama a un método de Groovy en una clase de Groovy en el destino de un archivo de clase de Groovy, pasamos por este MOP y luego este MOP tiene un montón de reglas sobre lo que debemos hacer a continuación.
+>Y eso puede tener un poco más de sentido en un minuto.
+>
+>![Tipos de MOP](images/section09-step_77_3MOP.png "Tipos de MOP")
+>
+>Entonces, cuando hablamos de llamadas desde Groovy, en realidad podríamos estar tratando con tres tipos diferentes
+>de objetos, ¿cierto?
+>
+>### El primero es un `POJO`.
+>Tenemos un objeto Java normal cuya clase puede escribirse en Java o en cualquier otro lenguaje para la JVM.
+>Entonces tenemos un objeto Java allí.
+>Luego tenemos otros dos que están escritos en Groovy.
+>### Entonces tenemos un `POGO`.
+>que es un objeto Groovy cuya clase está escrita en Groovy.
+>Extiende java.lang.object e implementa la interfaz de objeto Groovy Feeling de Groovy de manera predeterminada.
+>### Luego también tenemos algo llamado  `Groovy interceptor`.
+>Y un interceptor Groovy es simplemente un objeto que implementa la interfaz Groovy Interceptable y tiene
+>una capacidad de interceptación de métodos.
+>Entonces, estos son los tres tipos diferentes de objetos con los que Groovy va a trabajar y, en función de cuál tenga, tomará una ruta diferente.
+>
+>![Ruta del Mapa MOP](images/section09-step_77_4MOP.png "Ruta del Mapa MOP")
+>
+>Ahora que podemos ver un poco este árbol de decisiones, podemos hacernos una idea de lo que
+>está haciendo el mapa.
+>De inmediato, si es un objeto Java, simplemente llama al objeto Java y a su método de destino y sigue adelante.
+>Pero cuando es un objeto Groovy, pasa por este árbol de decisiones que se parece a esto.
+>
+>Entonces, primero, ¿la clase implementa Groovy Interceptable?
+>Sí.
+>
+>¿Llama a su método de invocación?
+>No.
+>
+>Muy bien.
+>Ahora tenemos que averiguar si el método existe en su metaclase o en esta clase en sí.
+>Entonces, hablaremos de metaclases más adelante en esta sección.
+>
+>Pero la metaclase es solo una forma de agregar métodos a una clase en particular.
+>Entonces, ¿está ahí?
+>Sí.
+>
+>Muy bien.
+>Entonces, ¿simplemente llamaremos a ese método original?
+>No.
+>
+>¿La propiedad existe en la metaclase o en la clase?
+>No veo ninguna propiedad ahí, así que no.
+>
+>Si se cae, entonces comenzamos a buscar formas de manipular el mapa y podemos comenzar a personalizar
+>y agregar algunos métodos de gancho al mapa que nos permitan hacer lo que queremos hacer con esa llamada.
+>Entonces, uno de ellos es que falta un método.
+>Entonces, ¿esta clase tiene un método que falta?
+>Sí, lo tiene.
+>Bien.
+>Adelante, llámalo No.
+>
+>¿Tiene un método de invocación?
+>Si lo tiene, adelante, llámalo.
+>Y finalmente, si llegamos hasta el final de ese árbol y no pudimos encontrar una llamada, entonces voy a seguir
+>adelante y lanzar una excepción de método faltante.
+>
+>Aí que eso es un poco sobre cómo funciona la naturaleza dinámica de una llamada de método en Groovy.
+>Si es un poco confuso ahora, está perfectamente bien.
+>Me tomó un tiempo entender esto también.
+>Pensé que el mapa era como un objeto mágico, como si viviera en el País de Nunca Jamás o algo así.
+>
+>Pero no se preocupen.
+>Les prometo que comenzará a tener sentido a medida que avancemos en esta sección en la próxima.
+>Y lo que me gustaría que hicieran, tal vez, una vez que hayamos pasado por las próximas dos secciones, tal vez regresen y
+>miren este video en particular nuevamente, solo porque creo que este árbol de decisiones y la comprensión de lo que está
+>haciendo esta capa intermedia, comenzarán a tener un poco más de sentido.
+>Así que sigamos adelante y pasemos a la siguiente.
