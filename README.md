@@ -4959,7 +4959,7 @@ selecciono todos y doy `[OK]`:
 10. Al nombre de la clase agrego `implements Serializable`,
 el importa automátiamente esta librería:
 `import java.io.Serializable;`
->[!NOTA]  
+>[!NOTE]  
 >Así que ese es nuestro bean Java normal.
 >Este es un bean de empleado.
 >Tiene tres campos.
@@ -5304,3 +5304,240 @@ println tweet.getHashTags() // [ #Java,  #groovyLang]
 >miren este video en particular nuevamente, solo porque creo que este árbol de decisiones y la comprensión de lo que está
 >haciendo esta capa intermedia, comenzarán a tener un poco más de sentido.
 >Así que sigamos adelante y pasemos a la siguiente.
+
+## Paso 78. Customizing the MOP
+
+>[!TIP]  
+>### Creamos la carpeta **"09-RuntimeMetaProgramming"**, que usaremos en toda esta sección.
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+creando un nuevo proyecto llamado `mop`, de tipo groovy
+en la misma carpeta **"09-RuntimeMetaProgramming"**:  
+![New Proyect: 'mop'](images/section09-step_78_mop1.png "New Proyect: 'mop'")
+2. Creamos el paquete básico de `com.domain_name` en la
+carpeta **"src"**.
+3. Borramos el archivo **`Main.groovy`**.
+4. Creo el archivo **`MOP.txt`** en la carpeta
+**"src/com/domain_name"**, que es lo mismo que el paquete
+del paso 2, con este contenido:
+```txt
+Personalizando el MOP con `Hooks`
+
+- GroovyObject
+  - Employee.groovy
+- invokeMethod()
+- get property
+- property missing
+- set property
+- method missing
+```
+5. Creo una `Groovy Class` de nombre `Employee`, sin ningún
+cambio, lo dejamos tal cual.
+6. Creo un simple `Groovy Script` de nombre `InvokeMethodDemo`,
+empezamos a colocar esto en el código:
+```groovy
+// this method is called when the method you called si not presen on Groovy object
+class InvokeDemo {
+    def test(){
+        return 'method exist'
+    }
+}
+
+def invokeDemo = new InvokeDemo()
+
+assert invokeDemo.test() == 'method exist'
+```
+7. Doy click derecho y selecciono `Run 'InvokeMethodDemo'`,
+este ejecuta sin errores.
+8. Si agrego otro `assert`, como este:  
+`assert invokeDemo.someMethod() == ''`  
+click dereho y `Run 'InvokeMethodDemo'`, obtengo este error:
+```diff
+-Caught: groovy.lang.MissingMethodException: No signature of method: com.domain_name.InvokeDemo.someMethod() is applicable for argument types: () values: []
+-Possible solutions: invokeMethod(java.lang.String, java.lang.Object)
+-groovy.lang.MissingMethodException: No signature of method: com.domain_name.InvokeDemo.someMethod() is applicable for argument types: () values: []
+-Possible solutions: invokeMethod(java.lang.String, java.lang.Object)
+-	at com.domain_name.invokeMethodDemo.run(invokeMethodDemo.groovy:13)
+
+Process finished with exit code 1
+```
+9. Agrego dentro de la `class InvokeDemo` y antes de 
+`def test()`, este otro método:
+```groovy
+    def invokeMethod(String name, Object args){
+        return "called invokeMethod $name $args"
+    }
+```
+10. Ajusto el segundo `assert` con este texto:  
+`assert invokeDemo.someMethod() == 'called invokeMethod someMethod []'`  
+Doy Click derecho y selecciono `Run 'invokeMethodDemo'`,
+este ejecuta sin errores.  
+![Surprise no Error](images/section09-step_78_Surprise1.gif)
+11. Buscando en el árbol de directorios a la izquierda del
+[`IntelliJ`](#paso-15-hello-intellij), expando `out`, 
+y abro la clase `invokeDemo`:  
+![implements GroovyObject](images/section09-step_78_mop2.png "implements GroovyObject")
+12. Creo un simple `Groovy Script` de nombre `GetPropertyDemo`,
+dentro del paquete `com.domain_name`
+empezamos a colocar esto en el código:
+```groovy
+// Every read access to a property can be intercepted by overriding a getProperty() method of the current object.
+class PropertyDemo {
+    // Some properties or attributes
+    def prop1 = 'prop1'
+    def prop2 = 'prop2'
+    def prop3 = 'prop3'
+}
+
+def pd = new PropertyDemo()
+println pd.prop1 // prop1
+println pd.prop2 // prop2
+println pd.prop3 // prop3
+```
+* Damos click derecho para ejecutar y nos salen los tres 
+mensanjes.
+13. Agrego este método:
+```groovy
+    def getProperty(String name){
+        println "getProperty() is called with argument $name"
+    }
+```
+* Doy click derecho para ejecutar y obtengo esto:
+```bash
+getProperty() is called with argument prop1
+null
+getProperty() is called with argument prop2
+null
+getProperty() is called with argument prop3
+null
+
+Process finished with exit code 0
+```
+14. Si agrego al nuevo método este texto:
+```groovy
+    def getProperty(String name){
+        println "getProperty() is called with argument $name"
+        // return
+        metaClass.getProperty(this, name)
+    }
+```
+* Ejecuto y obtengo esto:
+```bash
+getProperty() is called with argument prop1
+prop1
+getProperty() is called with argument prop2
+prop2
+getProperty() is called with argument prop3
+prop3
+
+Process finished with exit code 0
+```
+15. Agregamos al final la impresión de una propiedad que 
+no existe: `println pd.prop4`
+16. En el método `getProperty()` agrego esta condicional:
+```groovy
+        if(metaClass.hasProperty(this, name)) {
+            // return
+            metaClass.getProperty(this, name)
+        } else {
+            println 'lets do something fun with this property'
+            return 'party time...'
+        }
+```
+* Ejecuto y obtengo esto:
+```bash
+getProperty() is called with argument prop1
+prop1
+getProperty() is called with argument prop2
+prop2
+getProperty() is called with argument prop3
+prop3
+getProperty() is called with argument prop4
+lets do something fun with this property
+party time...
+
+Process finished with exit code 0
+```
+17. Creo un simple `Groovy Script` de nombre 
+`PropertyMissingDemo`, dentro del paquete `com.domain_name`
+empezamos a colocar esto en el código:
+```groovy
+// Groovy supports the concept of propertyMissing for intercepting failing property resolution attemps
+
+class Foo{
+    def propertyMissing(String name){
+        "caught missing property: $name"
+    }
+}
+
+println new Foo().bar
+```
+* Doy click derecho y selecciono `Run 'PropertyMissingDemo'`,
+y obtengo esto:
+```bash
+caught missing property: bar
+
+Process finished with exit code 0
+```
+18. Creo un simple `Groovy Script` de nombre 
+`SetPropertyDemo`, dentro del paquete `com.domain_name`
+empezamos a colocar esto en el código:
+```groovy
+// You can intercept write access to properties by overriding the setProperty() method:
+class POGO{
+    String property
+
+    void setProperty(String name, Object value){
+        this.@"$name" = 'overridden'
+    }
+}
+
+def pogo = new POGO()
+pogo.property = 'a'
+
+assert pogo.property == 'overridden'
+```
+* Ejecuto con click derecho y obtengo cero errores, todo ok 👍
+19. Creo un simple `Groovy Script` de nombre 
+`MissingMethodDemo`, dentro del paquete `com.domain_name`
+empezamos a colocar esto en el código:
+```groovy
+// Groovy supports the concept of methodMissing. This method differs from invokeMethod() in that it is only
+// invoke in case or a failed method dispach, when on method can be found for the given name and/or the given arguments:
+class MyEmployee {
+    def methodMissing(String name, def args){
+        println "Method Missing called on: $name"
+        println "with arguments ${args}"
+    }
+}
+
+MyEmployee emp = new MyEmployee()
+```
+* Click derecho y ejectuo, para obtener esto:
+```bash
+Method Missing called on: someMethod
+with arguments [1, 2, 3]
+
+Process finished with exit code 0
+```
+20. Agrego al final otro llamado a otro método que no existe:  
+`emp.someOtherMethod(4,5,6)`
+21. Dentro del método `methodMissing()`, porngo esta condicional:
+```groovy
+        if(name != 'someMethod'){
+            throw new MissingMethodException(name, args)
+        }
+```
+* Ejecuto y obtengo lo siguiente
+```diff
+Method Missing called on: someMethod
+with arguments [1, 2, 3]
+-Caught: groovy.lang.GroovyRuntimeException: Could not find matching constructor for: groovy.lang.MissingMethodException(String, [Ljava.lang.Object;)
+-groovy.lang.GroovyRuntimeException: Could not find matching constructor for: groovy.lang.MissingMethodException(String, [Ljava.lang.Object;)
+-	at com.domain_name.MyEmployee.methodMissing(MissingMethodDemo.groovy:8)
+-	at com.domain_name.MissingMethodDemo.run(MissingMethodDemo.groovy:17)
+
+Process finished with exit code 1
+``` 
+* Así termina el proyecto:  
+![`mop` project at end](images/section09-step_78_mop3.png "`mop` project at end")
