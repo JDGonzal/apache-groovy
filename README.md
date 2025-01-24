@@ -5745,3 +5745,104 @@ use(TimeCategory){
 }
 ```
 * Al ejecutar aparecen las tres fechas sin error.
+
+## Paso 81. Intercept / Cache / Invoke Pattern
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+creando un nuevo proyecto llamado `inter-cache-invok`, de tipo groovy
+en la misma carpeta **"09-RuntimeMetaProgramming"**:  
+![New Proyect: 'meta-class'](images/section09-step_81_inter-cache-invok1.png "New Proyect: 'meta-class'")
+2. Esta vez **NO** Creamos el paquete básico de `com.domain_name` en la
+carpeta **"src"**.
+3. Borramos el archivo **`Main.groovy`**.
+4. Creamos en la carpeta **"src"** un `Groovy Script` de
+nombre `InterCacheInvok`, y ponemos este código:
+```groovy
+// Intercept / Cache / Invoke Pattern
+class Developer {
+    def methodMissing(String name, args) {
+        println "${name}() method was called..."
+    }
+}
+
+Developer dev = new Developer()
+dev.writeGroovy()
+```
+* Lo ejecuto y obtengo esto:
+```bash
+writeGroovy() method was called...
+
+Process finished with exit code 0
+```
+5. Agregamos en la `class Developer` antes del 
+`methodMissing()`, lo siguiente:
+```groovy
+    List languages = []
+```
+6. Luego del instanciar la clase `Developer`, ponemos esto:
+```groovy
+dev.languages << 'Groovy'
+dev.languages << 'Java'
+    println dev.metaClass.methods.size()
+```
+* Ejecuto y obtengo esto:
+```bash
+15
+writeGroovy() method was called...
+
+Process finished with exit code 0
+```
+7. Repito varias veces el `dev.writeGroovy()` y el
+`println dev.metaClass.methods.size()` y añado otro:
+```groovy
+Developer dev = new Developer()
+dev.languages << 'Groovy'
+dev.languages << 'Java'
+    println dev.metaClass.methods.size()
+dev.writeGroovy()
+dev.writeGroovy()
+dev.writeGroovy()
+    println dev.metaClass.methods.size()
+dev.writeJava()
+    println dev.metaClass.methods.size()
+```
+* Y la respuesta no varía mucho:
+```bash
+15
+writeGroovy() method was called...
+writeGroovy() method was called...
+writeGroovy() method was called...
+15
+writeJava() method was called...
+15
+
+Process finished with exit code 0
+```
+8. Dentro del clase agrego un condicional:
+```groovy
+        if(name.startsWith('write')){
+            String language = name.split('write')[1]
+
+            if(languages.contains(language)){
+                def imp = { Object[] theArgs ->
+                    println "I like to write code in $language"
+                }
+                getMetaClass()."$name" = imp
+                return imp(args)
+            }
+        }
+```
+* Ejecuto y obtengo esto:
+```bash
+15
+writeGroovy() method was called...
+I like to write code in Groovy
+I like to write code in Groovy
+I like to write code in Groovy
+16
+writeJava() method was called...
+I like to write code in Java
+17
+
+Process finished with exit code 0
+```
