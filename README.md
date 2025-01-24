@@ -5846,3 +5846,170 @@ I like to write code in Java
 
 Process finished with exit code 0
 ```
+
+## Paso 82. [Exercise] Runtime Metaprogramming
+>[!NOTE]  
+>### [Ejercicio] Metaprogramación en tiempo de ejecución
+>**GroovyObject**
+>* Cree una clase e implemente cada uno de los siguientes métodos desde la interfaz GroovyObject
+>   * invokeMethod
+>   * getProperty
+>   * setProperty
+>
+>**Expando**
+>* Cree una clase Expando
+>* Agregue algunas propiedades y métodos
+>* Sabiendo que la metaclase de una clase es un expando, cree su propia clase y agréguele propiedades y métodos.
+>
+>**Times Two**
+>* Agregue un nuevo método a la clase Integer llamado `timesTwo`
+>* Este método debería estar disponible para cualquier instancia de Integer
+>* ¿Qué otro enfoque podemos adoptar para crear este método que sea un poco más controlado?
+
+## Paso 83. [Exercise Review] Runtime Metaprogramming
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+creando un nuevo proyecto llamado `excercise`, de tipo groovy
+en la misma carpeta **"09-RuntimeMetaProgramming"**:  
+
+2. Esta vez **NO** Creamos el paquete básico de `com.domain_name` en la
+carpeta **"src"**.
+3. Borramos el archivo **`Main.groovy`**.
+4. Creamos la `Groovy Class` de nombre `Developer`, con
+estos atributos y estos métodos:
+```groovy
+//**GroovyObject**
+//* Cree una clase e implemente cada uno de los siguientes métodos desde la interfaz GroovyObject
+class Developer {
+
+    // Properties
+    String first
+    String last
+    String email
+    List languages
+
+    // Constructor
+    Developer(){
+
+    }
+    
+    //   * invokeMethod
+    def invokeMethod(String name, Object args){
+        println "invokeMethod() called with args $args"
+    }
+
+    //   * getProperty
+    def getProperty(String property){
+        println 'getProperty called...'
+        metaClass.getProperty(this, property)
+    }
+
+    //   * setProperty
+    void setProperty(String property, Object newValue){
+        println "setProperty() called with name $property and newValue $newValue"
+        metaClass.setProperty(this, property, newValue)
+    }
+
+}
+```
+5. Creamos un `Groovy Script` de nombre `GroovyObjectDemo`,
+con este código:
+```groovy
+
+Developer dev = new Developer(
+        first: 'Juan',
+        last: 'Piza',
+        email: 'jpiza@mail.com'
+)
+dev.writeCode('Groovy')
+println dev.first
+dev.languages=['Groovy', 'Java']
+```
+6. Ejecuto este último y obtengo lo siguiente:
+```bash
+invokeMethod() called with args [Groovy]
+getProperty called...
+Juan
+setProperty() called with name languages and newValue [Groovy, Java]
+
+Process finished with exit code 0
+```
+7. Creamos un `Groovy Script` de nombre `ExpandoDemo`,
+con este código:
+```groovy
+// **Expando**
+
+// * Cree una clase Expando
+Expando e = new Expando()
+
+// * Agregue algunas propiedades y métodos
+// Properties
+e.first = 'Juan'
+e.last = 'Piza'
+e.email = 'jpiza@mail.com'
+// Methods
+e.getFullName = {
+    "$first $last"
+}
+
+println e.toString()
+println e.getFullName()
+
+// * Sabiendo que la metaclase de una clase es un expando, cree su propia clase y agréguele propiedades y métodos.
+@groovy.transform.ToString(includeNames = true)
+class Person {
+    String first, last
+}
+
+Person p = new Person(first: 'Juan', last: 'Piza')
+p.metaClass.email = 'jpiza@mail.com'
+println p
+println p.email
+```
+8. Ejecuto el _script_ de nombre `ExpandoDemo` y obtengo
+esto:
+```bash
+{last=Piza, getFullName=ExpandoDemo$_run_closure1@315df4bb, first=Juan, email=jpiza@mail.com}
+Juan Piza
+Person(first:Juan, last:Piza)
+jpiza@mail.com
+
+Process finished with exit code 0
+```
+9. Creamos un `Groovy Script` de nombre `SquareDemo`,
+con este código:
+```groovy
+// **Times Two**
+// * Agregue un nuevo método a la clase Integer llamado `timesTwo`
+Integer.metaClass.timesTwo = {delegate * 2}
+// * Este método debería estar disponible para cualquier instancia de Integer
+println 2.timesTwo()
+println 4.timesTwo()
+println 5.timesTwo()
+println 10.timesTwo()
+```
+10. Ejecuto el _script_ de nombre `SquareDemo` y obtengo
+esto:
+```bash
+4
+8
+10
+20
+
+Process finished with exit code 0
+```
+>[!NOTE]  
+>Entonces, aquí, en este caso, ese delegado, vamos a multiplicar por dos y si ejecutamos esto, simplemente multiplicará por
+>cada uno de estos números porque son instancias de enteros multiplicados por dos.
+>De nuevo, hablamos de esto en la sección.
+>
+>Pero si fueras a esto, es un poco peligroso porque estás agregando a un tipo de datos, la clase de tipos de datos aquí y probablemente ese no sea siempre el mejor caso en el que querrías
+>simplemente, ya sabes, pegar métodos a voluntad.
+>
+>**Entonces, ¿cuál sería una mejor manera de hacer esto?**
+>
+>Hablamos un poco sobre esto en la sección que se trataba de usar una clase de categoría.
+>
+>Entonces, tal vez crear una clase de categoría de enteros donde tienes un montón de métodos, uno de los cuales es multiplicado por
+>dos, y luego es más un caso de control donde simplemente usas esa clase de categoría y llamas a ese método estático en ella.
+ 
