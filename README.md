@@ -5662,3 +5662,6 @@ String.metaClass.shout = { -> toUpperCase() }
 println 'hola juan'.shout() // HOLA JUAN
 ```
 * Y la respuesta será `HOLA JUAN`
+
+## Paso Quiz 7: Runtime Metaprogramming
+![Quiz 7](images/section09-step_79_Quiz7.gif "Quiz 7")
