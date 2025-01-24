@@ -5665,3 +5665,83 @@ println 'hola juan'.shout() // HOLA JUAN
 
 ## Paso Quiz 7: Runtime Metaprogramming
 ![Quiz 7](images/section09-step_79_Quiz7.gif "Quiz 7")
+
+## Paso 80. Category Classes
+
+>[!NOTE]  
+>El uso de Metaclass para agregar capacidades dinámicas a nuestros programas suele ser la mejor opción.
+>
+>A veces, sin embargo, podríamos preferir un método alternativo que sea un poco más limitado y no
+>tan amplio para toda la aplicación.
+>
+>En esta lección, quiero analizar este problema y mostrar cómo las categorías nos ayudan a resolverlo.
+>También hay algunas categorías integradas en el lenguaje y hoy veremos una demostración de una de ellas.
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+creando un nuevo proyecto llamado `meta-class`, de tipo groovy
+en la misma carpeta **"09-RuntimeMetaProgramming"**:  
+![New Proyect: 'meta-class'](images/section09-step_80_categories1.png "New Proyect: 'meta-class'")
+2. Esta vez **NO** Creamos el paquete básico de `com.domain_name` en la
+carpeta **"src"**.
+3. Borramos el archivo **`Main.groovy`**.
+4. Creamos en la carpeta **"src"** un `Groovy Script` de
+nombre `catdemo`, y ponemos este código:
+```groovy
+String.metaClass.shout = { -> toUpperCase() }
+println 'Hello, World'.shout()
+```
+* Ejecutamos y esta es la respuesta:  
+`HELLO, WORLD`
+
+>[!NOTE]  
+>Muchas veces esto va a funcionar muy bien, pero puedes ver un problema aquí.
+>
+>Entonces, estamos agregando un método a la clase de cadena, que es la clase de cadena que vamos a usar en todos
+>nuestros programas.
+>¿Correcto?
+>
+>Y sabes, en un escenario en el que estamos trabajando, especialmente en equipos o incluso en un proyecto de código abierto, es posible que la gente no sepa que ese método existe a menos que haya una API bien definida.
+>Entonces, agregar métodos esporádicamente a la clase de cadena probablemente no sea una gran idea.
+>
+>Lo que podemos hacer es crear algo llamado una clase de categoría, y nos permite confinar
+>y solo agregar métodos a un bloque particular de código en lugar de solo a toda la aplicación.
+
+5. Creamos en la misma carpeta una `Groovy Class` de nombre
+`StringCategory` y ponemos este código:
+```groovy
+class StringCategory {
+    static String shout(String str ){
+        str.toUpperCase()
+    }
+}
+```
+6. Regresamos al archivo **`catdemo.groovy`**, comentamos
+lo escrito y hacemos un _hook_ de la clase `StringCategory`:
+```groovy
+use(StringCategory) {
+    println 'Hello, World'.shout()
+}
+
+println 'Hello, World'.shout()
+```
+>[!NOTE]  
+>Entonces, nuevamente, esto funcionará exactamente como lo hacía antes, pero probablemente puedas saberlo con una gran advertencia:
+>solo está disponible dentro de este `use`.
+>
+>Bloquear Entonces, si seguimos adelante e intentamos copiar eso y pegar esto aquí.
+>Esto arrojará un error.
+>![hook: 'use'](images/section09-step_80_categories2.png "hook: 'use'")
+
+7. Creamos otra `Groovy Script` de nombre `time`, con este código:
+```groovy
+import groovy.time.TimeCategory
+
+use(TimeCategory){
+    println 1.minute.from.now
+    println 10.hours.ago
+
+    def someDate = new Date()
+    println someDate - 3.months
+}
+```
+* Al ejecutar aparecen las tres fechas sin error.
