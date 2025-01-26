@@ -6012,4 +6012,179 @@ Process finished with exit code 0
 >
 >Entonces, tal vez crear una clase de categoría de enteros donde tienes un montón de métodos, uno de los cuales es multiplicado por
 >dos, y luego es más un caso de control donde simplemente usas esa clase de categoría y llamas a ese método estático en ella.
- 
+
+
+# Section 10: Compile Time MetaProgramming
+
+## Paso 84. Intro
+
+>[!NOTE]  
+>Estamos viendo la metaprogramación en tiempo de compilación.
+>
+>Espero que hayas disfrutado la sección sobre metaprogramación en tiempo de ejecución.
+>Solo quiero señalar en la documentación que hay una sección muy buena aquí sobre metaprogramación en tiempo de ejecución y
+>en tiempo de compilación, por lo que lo desglosa, de manera similar a lo que hemos estado haciendo.
+>
+>Hablaremos primero sobre el tiempo de ejecución y luego sobre la metaprogramación en tiempo de compilación.
+>
+>Entonces, en la sección diez estamos hablando sobre metaprogramación en tiempo de compilación, y realmente de lo que estamos
+>hablando hoy es de transformaciones.
+>
+>No vamos a profundizar en cómo crear tu propia transformación AST.
+>Solo pensé que podría haber sido demasiado para abordarlo en esta sección.
+>
+>Entonces, lo que haremos básicamente es echar un vistazo a ejemplos de muchas de las transformaciones AST básicas que querrás usar.
+>Y creo que una vez que comiences a verlos, entonces comenzará a tener sentido que podamos pegar una anotación
+>y personalizarla en una clase o en algunos métodos.
+>Y cuando el compilador se ejecuta, crea este código para nosotros que está básicamente allí en la clase de compilación.
+>
+>Veremos las clases de compilación.
+>Y así nos hace la vida mucho más fácil sin tener que escribir algo de este código aburrido y repetitivo.
+>Por ejemplo, vamos a ver dos cadenas o un equals y hashCode o sortable o inmutable,
+>solo un montón de transformaciones ast realmente geniales que vamos a ver.
+>Y te prometo que son realmente buenas.
+>Nos ahorran mucho tiempo.
+
+## Paso 85. @ToString
+
+>[!NOTE]  
+>En esta lección, vamos a echar un vistazo a la transformación de dos cadenas.
+>
+>Estoy aquí, en Groovy Docs, en la API, y todas las transformaciones están en un paquete llamado Groovy
+>dot Transform.
+>
+>[![groovy-lang/api  -> @ToString](images/section10-step_84_toString-Doc.png "groovy-lang/api -> @ToString")](https://groovy-lang.org/api.html)
+>
+>Entonces, voy a entrar allí, bajar y ver la transformación de dos cadenas.
+>Por lo tanto, una transformación de dos cadenas realmente nos ayuda a crear un método de dos cadenas para una
+>clase en particular.
+>
+>Podríamos escribir estos dos métodos de dos cadenas nosotros mismos o podemos generarlos desde el IDE.
+>Pero nuevamente, si algo cambia en esa clase, entonces siempre necesitamos actualizar ese método y
+>lo hace mucho más limpio.
+>
+>Si simplemente continuamos y agregamos la anotación de dos cadenas a nuestra clase.
+>Ahora está la manera fácil.
+>Una vez que agregas eso, básicamente creará un método de dos cadenas que incluye todas las propiedades
+>de tu clase.
+>Obviamente, ese no siempre es el escenario ideal.
+>
+>Entonces, hay opciones que puedes incluir o atributos que puedes incluir en la transformación para que puedas personalizar cómo quieres que se vea.
+>Por ejemplo, cosas como exclusiones, tal vez no quería que un campo en particular, como un ID, apareciera en nuestro método de dos cadenas.
+>Puedo seguir adelante y excluir ese campo en particular.
+>Ignorar valores nulos.
+>
+>Tal vez quería ignorar cualquier valor que sea nulo.
+>No quiero mostrar esos nombres de inclusión, ya sea que se incluyan o no los nombres de las propiedades reales,
+>cuando se proporcionan, cuando se muestran los pares de valor de nombre reales.
+>Por lo tanto, te animo a que sigas adelante y mires la documentación sobre todos los diferentes atributos
+>que puedes incluir.
+>Pero sigamos adelante y echemos un vistazo a un ejemplo.
+
+>[!TIP]  
+>### Creamos la carpeta **"10-ast"**, que usaremos en toda esta sección.
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+creando un nuevo proyecto llamado `transformations`, de tipo groovy
+en la misma carpeta **"10-ast"**:  
+![New Proyect: 'mop'](images/section10-step_85_tostring1.png "New Proyect: 'mop'")
+2. Creamos el paquete básico de nombre `tostring` en la
+carpeta **"src"**.
+3. Borramos el archivo **`Main.groovy`**.
+4. Creamos una `Groovy Class` de nombre `Person`, dentro 
+del paquete `tostring`, completamos la clase con esto:
+```groovy
+package tostring
+
+class Person {
+    String first
+    String last
+    String email
+}
+```
+5. Doy Click derecho  en la clase y seleccionamos `Generate...`
+y luego `toString()`:  
+![Generate... -> toString()](images/section10-step_85_tostring2.png "Generate... -> toString()")
+6. De que propiedades vamos a incluir, dejamos todas selccionadas,
+por defecto dejo activo el `insert @Override` y le damos al 
+botón `[OK]`, y esto nos va a aparecer:
+```groovy
+    @Override
+    public String toString() {
+        return "Person{" +
+                "first='" + first + '\'' +
+                ", last='" + last + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+```
+7. Creamos en el paquete `tostring` un `Groovy Script` de 
+nombre `app`, con esto:
+```groovy
+package tostring
+
+Person p = new Person(first: 'Juan', last: 'Piza',email: 'jpiza@mail.com')
+println p.toString()
+```
+* Ejecutamos y esto es lo que obtenemos:
+```bash
+Person{first='Juan', last='Piza', email='jpiza@mail.com'}
+
+Process finished with exit code 0
+```
+>[!NOTE]  
+>Ahora, si ejecutamos esto, obtenemos esta bonita representación de dos cadenas de nuestra clase de persona.
+>
+>El problema con esto es que si entramos y cambiamos campos o agregamos campos, siempre tenemos que
+>actualizar este método en particular y no es así, es un fastidio tener que mantenerlo.
+>
+>Entonces, voy a eliminar esto.
+>Lo que queremos hacer es agregar una anotación de dos cadenas a nuestra clase.
+>Entonces, si comenzamos a escribir dos cadenas, veremos que están en el paquete de transformación de puntos de Groovy.
+>Si presionamos Enter, eso continúa y las importa por nosotros.
+8. Borramos o comentamos el `@Override` y lo que hay debajo.
+9. Agregamos justo antes de la definición de la clase este
+código:  
+```groovy
+import groovy.transform.ToString
+@ToString
+```
+* Regresamos a **`app.groovy`**, ejecutamos de nuevo
+ y esto es lo que obtenemos:
+```bash
+tostring.Person(Juan, Piza, jpiza@mail.com)
+
+Process finished with exit code 0
+```
+10. Regreeso a la clase `Person`, agrego a `@ToString`
+paréntesis y este parámetro: `(includeNames = true)`
+* Regreso al script `app`, ejecuto de nuevo para ver esto:
+```bash
+tostring.Person(first:Juan, last:Piza, email:jpiza@mail.com)
+
+Process finished with exit code 0
+```
+11. En la clase `Person`, para `@ToString`, agrego otro 
+parámetro: `excludes = ['email']`
+* Ejecuto el script `app` y obtengo esto:
+```bash
+tostring.Person(first:Juan, last:Piza)
+
+Process finished with exit code 0
+```
+12. Expandimos el árbol de carpetas o directorios y buscamos
+en la ruta **"out/production/transformations/tostring"** el
+archivo **`Person.class`** y lo abrimos:  
+![Person.class](images/section10-step_85_tostring3.png "Person.class")
+
+>[!NOTE]  
+>Y nuevamente, podemos agregarlo a una clase que obtenemos que se genera si miramos el código de bytes real.
+>
+>Entonces, si miramos la clase person dot, en realidad puedes ver un método de dos cadenas aquí.
+>Es bastante complejo.
+>Hay mucho que sucede allí.
+>
+>Y nuevamente, eso no es algo que queramos escribir.
+>
+>Eso no es algo que queramos tener que mantener o actualizar cada vez que cambiamos un campo en nuestra
+>clase.
