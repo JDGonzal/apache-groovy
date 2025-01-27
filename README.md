@@ -6416,3 +6416,75 @@ Process finished with exit code 0
 >Al igual que todas las otras transformaciones que hemos visto, hay algunos atributos diferentes
 >que puedes agregar a este constructor de tuplas para personalizarlo según tus necesidades.
 >Así que echa un vistazo a la documentación y sigamos adelante.
+
+## Paso 88. @Canonical
+
+>[!NOTE]
+>
+>[![groovy-lang/api  -> @Canonical](images/section10-step_88_Canonical-Doc.png "groovy-lang/api -> @Canonical")](https://groovy-lang.org/api.html)
+>
+>La siguiente transformación que vamos a ver es la canónica.
+>
+>En realidad, se trata de una combinación de las tres anotaciones anteriores que vimos `@ToString`
+>`@EqualsAndHashCode` y el `@TupleConstructor`.
+>
+>Por lo tanto, estas tres se usan tan comúnmente y se usan juntas que decidieron crear una
+>nueva anotación llamada `@Canonical`.
+>
+>Entonces, nuevamente, veremos una demostración, pero en realidad es solo una combinación de las tres anteriores en
+>una.
+
+1. Regresamos a [`IntelliJ`](#paso-15-hello-intellij), 
+al mismo proyecto de nombre `transformations`.
+2. Creamos el paquete de nombre `canonical`, en la carpeta
+**"src"**
+3. Creamos una `Groovy Class` de nombre `Person`, 
+en el paquete`canonical`, con esta información:
+```groovy
+package canonical
+
+import groovy.transform.Canonical
+
+@Canonical
+class Person {
+    String first
+    String last
+    String email
+    
+}
+```
+4. Creamos en el paquete `canonical` un `Groovy Script` de 
+nombre `app`, y le ponemos este código:
+```groovy
+package canonical
+
+Person p1 = new Person('Juan', 'Piza','jpiza@mail.com')
+Person p2 = new Person('Juan', 'Piza','jpiza@mail.com')
+
+assert p1 == p2
+println p1.toString()
+```
+* Ejecutamos y obtenemos esto:
+
+```bash
+canonical.Person(Juan, Piza, jpiza@mail.com)
+
+Process finished with exit code 0
+```
+>[!NOTE]  
+>Entonces, esa es la cadena de impresión.
+>Esa es la impresión de dos cadenas.
+>La aserción ocurrió.
+>No tuvimos un error allí.
+>Entonces sabemos que se realizó.
+>Bien.
+>
+>Entonces, nuevamente, eso es todo lo que voy a decir al respecto.
+>Se usan comúnmente.
+>Te encontrarás usándolos mucho.
+>Entonces, si necesitas los tres, definitivamente puedes usar Canonical.
+>
+>Lo único que diré es que si necesitas personalizar solo uno, digamos que quieres excluir un nombre para dos
+>cadenas, entonces necesitarás agregar las dos cadenas a la clase en particular y luego pasar los
+>atributos particulares que necesitas.
+>Así que espero que haya sido de ayuda.
