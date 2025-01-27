@@ -6567,3 +6567,100 @@ DatabaseConnection db = DatabaseConnection.instance
 println db
 ```
 * Ejecutamos y corre sin problemas, sin errores.
+
+## Paso 90. @Sortable
+
+>[!NOTE]
+>
+>[![groovy-lang/api  -> @Sortable](images/section10-step_90_Sortable-Doc.png "groovy-lang/api -> @Sortablen")](https://groovy-lang.org/api.html)
+>
+>La siguiente transformación que vamos a ver es `@Sortable`.
+>
+>`@Sortable` es una transformación muy útil y hace que ordenar objetos o clases sea muy fácil.
+>Por lo general, lo que tienes que hacer es, si miras aquí abajo, si quieres escribir tu propia clase en Java,
+>tienes que hacer algunas cosas para asegurarte de que se pueda ordenar.
+>
+>Tienes que implementar la interfaz comparable.
+>Luego, necesitas tener un método allí llamado compare to que se basa en las propiedades con las que
+>quieres comparar.
+>
+>Por lo tanto, hay algo de trabajo involucrado para hacer que esto sea ordenable, pero en nuestro caso, en Groovy, no necesitamos
+>escribir nuevamente esa lógica subyacente.
+>Y luego, cada vez que las propiedades cambien, tengamos que actualizar o mantener esa lógica, simplemente podemos agregar la
+>anotación sortable a nuestra clase.
+
+1. Regresamos a [`IntelliJ`](#paso-15-hello-intellij), 
+al mismo proyecto de nombre `transformations`.
+2. Creamos el paquete de nombre `sorted`, en la carpeta
+**"src"**
+3. Creamos una `Groovy Class` de nombre `Person`, 
+en el paquete`sorted`, con esta información:
+```groovy
+package sorted
+
+import groovy.transform.Canonical
+import groovy.transform.Sortable
+
+@Canonical
+// @Sortable
+class Person {
+    String first
+    String last
+}
+```
+4. Creamos en el paquete `sorted` un `Groovy Script` de 
+nombre `app`, y le ponemos este código:
+```groovy
+package sorted
+
+Person p1 = new Person('Carlos','Piza')
+Person p2 = new Person('Juan','Piza')
+Person p3 = new Person('Paula','Piza')
+Person p4 = new Person('Camila','Piza')
+
+def pizas = [p1, p2, p3, p4]
+println pizas
+```
+* Ejecuto este _script_ y obtengo esto:
+```bash
+[sorted.Person(Carlos, Piza), sorted.Person(Juan, Piza), sorted.Person(Paula, Piza), sorted.Person(Camila, Piza)]
+
+Process finished with exit code 0
+```
+5. Volvemos a la clase `Person` y descomentamos 
+`// @Sortable`, de regreso al _script_ `app`
+y agregamos al `println pizas` la función `.toSorted()`.
+Corremos y este es el resultado:
+```bash
+[sorted.Person(Camila, Piza), sorted.Person(Carlos, Piza), sorted.Person(Juan, Piza), sorted.Person(Paula, Piza)]
+
+Process finished with exit code 0
+```
+6. Agregamos en el archivo **`app.groovy`** otra instancia,
+y lo mismo al arreglo:
+```groovy
+...
+Person p5 = new Person('Julian', 'Gonzalez')
+
+def pizas = [p1, p2, p3, p4, p5]
+println pizas.toSorted()
+```
+* Ejecutamos y obtenemos esta respuesta:
+```bash
+[sorted.Person(Camila, Piza), sorted.Person(Carlos, Piza), sorted.Person(Juan, Piza), sorted.Person(Julian, Gonzalez), sorted.Person(Paula, Piza)]
+
+Process finished with exit code 0
+```
+7. En el archivo **`Person.groovy`**, agregamos al `@Sortable`
+un par de paréntesis y un parámetro:
+```groovy
+@Sortable(includes = ['last'])
+```
+8. Regreso al _script_ `app` y lo ejecuto y este es el 
+resultado:
+```bash
+[sorted.Person(Julian, Gonzalez), sorted.Person(Carlos, Piza), sorted.Person(Juan, Piza), sorted.Person(Paula, Piza), sorted.Person(Camila, Piza)]
+
+Process finished with exit code 0
+```
+
