@@ -6730,3 +6730,66 @@ ejecuto y obtengo esto:
 >
 >Entonces, nuevamente, algo que podría hacer por su cuenta, pero con Groovy agregando una anotación fácil a nuestra clase,
 >ahora tenemos una clase inmutable.
+
+## Paso 92. @TypeChecked
+
+>[!NOTE]
+>
+>[![groovy-lang/api  -> @TypeChecked](images/section10-step_92_TypeChecked-Doc.png "groovy-lang/api -> @TypeChecked")](https://groovy-lang.org/api.html)
+>
+>En esta lección, vamos a echar un vistazo a una transformación `AST` llamada `@TypeChecked`.
+>
+>Una de las mayores quejas sobre los lenguajes dinámicos es la falta de verificación de tipo en tiempo de compilación.
+>
+>Y debido a la naturaleza dinámica de Groovy, tampoco tenemos mucho de eso, pero podemos con esta
+>transformación AST en particular.
+
+1. Regresamos a [`IntelliJ`](#paso-15-hello-intellij), 
+al mismo proyecto de nombre `transformations`.
+2. Creamos el paquete de nombre `typechecked`, en la carpeta
+**"src"**
+3. Creamos una `Groovy Class` de nombre `Person`, 
+en el paquete `typechecked`, con esta información:
+```groovy
+package typechecked
+
+import groovy.transform.TypeChecked
+
+// @TypeChecked
+class Person {
+    String firstName
+    String lastName
+
+        String getFullName(){
+        "$firstName $lasName"  // Mal escrito el `lastName`
+    }
+}
+```
+4. Podemos crear o no en el paquete `typechecked` un 
+`Groovy Script` de nombre `app`, ya que no lo vamos a usar.
+5. Damos en el menú `Build` -> `Recompile 'Person.groovy'` 
+y todo funciona correctamente, sin errores.
+>[!NOTE]  
+>Y todo va a estar bien.
+>Porque aunque no pueda encontrar ese campo en particular, apellido, no sabemos si eso es necesariamente
+>un problema.
+>
+>Entonces, después de haber visto la ejecución, sabemos que las capacidades de metaprogramación en tiempo de ejecución nos permiten
+>probablemente continuar y agregar apellido cuando quisiéramos.
+>Entonces, aunque no esté bien en este punto, el apellido podría eventualmente ser un valor válido.
+>
+>Entonces, lo que podemos hacer es decir que queremos poder verificar el tipo de esto y podemos agregar esta
+>anotación en el nivel de clase, lo que significa que todo en esta clase será verificado por tipo, o
+>podríamos agregarlo en métodos o propiedades individuales.
+
+6. Descomentamos el `// @TypeChecked`, de nuevo del menú
+`Build` -> `Recompile 'Person.groovy'`, y nos sale esto en
+el `Build Output`:
+```diff
+-Groovyc: [Static type checking] - The variable [lasName] is undeclared.
+```
+>[!NOTE]  
+>Si bien Groovy es un lenguaje dinámico, muchas personas no saben que tiene capacidades de tipos estáticos.
+>
+>Por lo tanto, entre la verificación de tipos y las anotaciones estáticas de compilación, realmente podemos tratarlo en ciertas
+>situaciones como un lenguaje estático si es necesario o como un lenguaje de tipos estáticos si es necesario.
