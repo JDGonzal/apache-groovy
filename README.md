@@ -6188,3 +6188,170 @@ archivo **`Person.class`** y lo abrimos:
 >
 >Eso no es algo que queramos tener que mantener o actualizar cada vez que cambiamos un campo en nuestra
 >clase.
+
+## Paso 86. @EqualsAndHashCode
+
+>[!NOTE]  
+>En esta lección, vamos a echar un vistazo a la transformación `EqualsAndHashCode`.
+>
+>Así que si eres nuevo en el mundo de Java y Groovy, no te preocupes por eso.
+>Vamos a ver un ejemplo de para qué se utilizan realmente Equals y hashCode.
+>
+>Pero en realidad, esto, al igual que todas las demás transformaciones que vamos a ver, simplemente
+>limpia nuestro código y separa esa lógica real en, creo, una solución mucho más limpia.
+>Así que, al igual que la anotación de dos cadenas, aquí hay algo de documentación sobre cómo empezar a usarla.
+>
+>Hay algunas formas en las que podemos... hay algunas propiedades diferentes que podemos configurar aquí en nuestros atributos
+>que podemos configurar en la transformación, una de las cuales es exclusiones si queremos excluir como una propiedad particular
+>del cálculo real de si un objeto es igual o no.
+>Así que saltemos a una demostración real aquí.
+
+1. Regresamos a [`IntelliJ`](#paso-15-hello-intellij), 
+al mismo proyecto de nombre `transformations`.
+2. Creamos el paquete de nombre `equals`, en la carpeta
+**"src"**
+3. Creamos una `Groovy Class` de nombre `Person`, 
+en el paquete`equals`, con esta información:
+```groovy
+package equals
+
+class Person {
+    String first
+    String last
+    String email
+}
+```
+4. Creamos en el paquete `equals` un `Groovy Script` de 
+nombre `app`, y le ponemos este código:
+```groovy
+package equals
+
+Person p1 = new Person(first: 'Juan', last: 'Piza',email: 'jpiza@mail.com')
+Person p2 = new Person(first: 'Juan', last: 'Piza',email: 'jpiza@mail.com')
+
+assert p1 == p2
+```
+* Ejecutamos el _script_ y esto es lo que obtenemos:
+```diff
+-Caught: Assertion failed: 
+
+-assert p1 == p2
+-       |  |  |
+-       |  |  equals.Person@307765b4
+-       |  false
+-       equals.Person@4a9e6faf
+
+-Assertion failed: 
+
+-assert p1 == p2
+-       |  |  |
+-       |  |  equals.Person@307765b4
+-       |  false
+-       equals.Person@4a9e6faf
+
+-	at equals.app.run(app.groovy:6)
+
+Process finished with exit code 1
+```
+>[!NOTE]  
+>Son solo referencias de una instancia real.
+>Y entonces, esa instancia, esas dos instancias son completamente diferentes.
+>No sabe cómo compararlas.
+>
+>Entonces, lo que hacemos en Java y Groovy aquí es crear un método equals y hashCode.
+>Y así es como sabemos si dos objetos son iguales.
+>Entonces.
+>Un problema con la creación de estos es que podemos seguir adelante y crearlos nosotros mismos.
+>
+>Pero nuevamente, al igual que con la cadena, si alguna propiedad cambia, vamos a tener que regenerarla
+>o reescribirla y crearla desde cero o incluso copiar y pegar algún código antiguo es muy propenso a errores.
+
+5. En la clase damos click derecho seleccionamos `Generate...`
+y luego `equals() and hashCode()`:  
+![Generate... ->equals() and hashCode()](/images/section10-step_86_equals1.png "Generate... ->equals() and hashCode()")
+6. En la ventana que pide el `Template:`, lo cambiamos a 
+`ìntelliJ Default` y presionamos el botón `[Next]`.
+7. En la ventana `Choose fields to be included in equals()`
+dejamos por defecto la selección de las tres 
+_propiedades_ o _atributos_ ( si faltan seleccionarlas, 
+simplemente se marcan las tres con las teclas `[shift]` y
+el click del mouse), y botón `[Next]`.
+8. En la ventana `Choose fields to be included in hashCode()`
+dejamos por defecto la selección de las tres 
+_propiedades_ o _atributos_ ( si faltan seleccionarlas, 
+simplemente se marcan las tres con las teclas `[shift]` y
+el click del mouse), y botón `[Next]`.
+9. En la ventana `Select all non-null fields`
+dejamos por defecto la selección de las tres 
+_propiedades_ o _atributos_ ( si faltan seleccionarlas, 
+simplemente se marcan las tres con las teclas `[shift]` y
+el click del mouse), y botón `[Create]` o `[Finish]`.
+* Esto es lo que se agrega al código de la clase `Person`:
+```groovy
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (o == null || getClass() != o.class) return false
+
+        Person person = (Person) o
+
+        if (email != person.email) return false
+        if (first != person.first) return false
+        if (last != person.last) return false
+
+        return true
+    }
+
+    int hashCode() {
+        int result
+        result = (first != null ? first.hashCode() : 0)
+        result = 31 * result + (last != null ? last.hashCode() : 0)
+        result = 31 * result + (email != null ? email.hashCode() : 0)
+        return result
+    }
+```
+10. Regresamos al _script_ de nombre `app` y lo ejecutamos,
+obteniendo cero errores, es decir funciona correctamente.
+11. Borramos o comentamos lo nuevo de la clase `Person`.
+12. Antes de la definición de la clase escribimos este 
+código:  
+```groovy
+import groovy.transform.EqualsAndHashCode
+
+@EqualsAndHashCode
+```
+13. Regresamos al _script_ de nombre `app` y lo ejecutamos,
+obteniendo cero errores, es decir funciona correctamente,
+también.
+14. Cambiemos en el archivo **`app-groovy`**, el correo del
+segundo por esto: `'jpiza@mailtwo.com'`, ejecutamos este
+_script_ y vemos este resultado:
+```diff
+-Caught: Assertion failed: 
+
+-assert p1 == p2
+-       |  |  |
+-       |  |  equals.Person@2e7067a7
+-       |  false
+-       equals.Person@87f30d55
+
+-Assertion failed: 
+
+-assert p1 == p2
+-       |  |  |
+-       |  |  equals.Person@2e7067a7
+-       |  false
+-       equals.Person@87f30d55
+-
+-	at equals.app.run(app.groovy:6)
+
+Process finished with exit code 1
+```
+15. En el archivo **`Person.groovy`** para el 
+`@EqualsAndHashCode`, agregamos unos paréntesis y un 
+parámetro:
+```groovy
+@EqualsAndHashCode( excludes = ['email'])
+```
+16. Regreso al _script_ `app` y ejecuto, para obtener que
+ejecuta sin errores, todo correcto.  
+![@EqualsAndHashCode( excludes = ['email'])](images/section10-step_86_equals2.png "@EqualsAndHashCode( excludes = ['email'])")
