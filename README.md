@@ -6488,3 +6488,82 @@ Process finished with exit code 0
 >cadenas, entonces necesitarás agregar las dos cadenas a la clase en particular y luego pasar los
 >atributos particulares que necesitas.
 >Así que espero que haya sido de ayuda.
+
+## Paso 89. @Singleton
+
+>[!NOTE]
+>
+>[![groovy-lang/api  -> @Singleton](images/section10-step_89_Singleton-Doc.png "groovy-lang/api -> @Singleton")](https://groovy-lang.org/api.html)
+>
+>La siguiente transformación que vamos a ver es Singleton.
+>Y Singleton es una forma de hacer que una clase pueda seguir un estándar determinado.
+>
+>Básicamente, un singleton en el mundo Java significa que solo podemos tener una instancia de esta clase en existencia.
+>La forma de solucionarlo en Java es crear un campo estático que contenga la instancia y
+>un constructor privado.
+>
+>Por lo tanto, nunca se puede crear una instancia de esa clase.
+>Solo se puede llamar a su método de obtención de instancia o a su método estático para obtener una instancia de esa
+>clase.
+
+1. Regresamos a [`IntelliJ`](#paso-15-hello-intellij), 
+al mismo proyecto de nombre `transformations`.
+2. Creamos el paquete de nombre `singleton`, en la carpeta
+**"src"**
+3. Creamos una `Groovy Class` de nombre `DatabaseConnection`, 
+en el paquete`singleton`, con esta información:
+```groovy
+package singleton
+
+@Singleton
+class DatabaseConnection {
+
+}
+```
+4. Creamos en el paquete `singleton` un `Groovy Script` de 
+nombre `app`, y le ponemos este código:
+```groovy
+package singleton
+
+DatabaseConnection bdConn = new DatabaseConnection()
+println dbConn
+```
+* Si ponemos el mouse encima del la instancia obtenemos este 
+error:  
+![@Singleton -> access rights](images/section10-step_89_singleton1.png "@Singleton -> access rights")
+* Ejecutamos y obtenemos este error:
+```diff
+-Caught: java.lang.RuntimeException: Can't instantiate singleton singleton.DatabaseConnection. Use singleton.DatabaseConnection.instance
+-java.lang.RuntimeException: Can't instantiate singleton singleton.DatabaseConnection. Use singleton.DatabaseConnection.instance
+-	at singleton.DatabaseConnection.<init>(DatabaseConnection.groovy)
+-	at singleton.app.run(app.groovy:3)
+
+Process finished with exit code 1
+```
+
+>[!NOTE]  
+>De nuevo, algo que podemos hacer fácilmente en Groovy es agregar el `@Singleton` como transformación.
+>
+>Y ahora, cuando sigamos adelante y creemos una instancia, obtendremos un error aquí.
+>Básicamente, diremos que no queremos poder crear una instancia de
+>ella.
+>
+>Solo existirá una, y si desea una instancia de la conexión a la base de datos, entonces
+>debe obtenerla a través de su método de instancia.
+>Una forma sencilla de ver esto es si pasamos al código de clase real aquí, el código de clase generado
+
+5. Entramos en el árbol de carpetas a buscar esta 
+**"out/production/transformations/singleton"** y abrimos el 
+archivo **`DatabaseConnection.class`**  
+![DatabaseConnection.class](images/section10-step_89_singleton2.png "DatabaseConnection.class")
+* Verás que hay una instancia de conexión de base de datos final estática pública.
+Por lo tanto, si quieres obtener una instancia, básicamente estás llamando al método de obtención de instancia y luego hay
+un constructor privado.
+Por lo tanto, si intentas crear públicamente una nueva instancia de esto, básicamente obtendrás ese error de tiempo de ejecución.
+6. Comentamos el código del _script_ `app` y ponemos este
+nuevo código:
+```groovy
+DatabaseConnection db = DatabaseConnection.instance
+println db
+```
+* Ejecutamos y corre sin problemas, sin errores.
