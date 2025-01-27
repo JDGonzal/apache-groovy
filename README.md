@@ -6211,7 +6211,7 @@ al mismo proyecto de nombre `transformations`.
 2. Creamos el paquete de nombre `equals`, en la carpeta
 **"src"**
 3. Creamos una `Groovy Class` de nombre `Person`, 
-en el paquete`equals`, con esta información:
+en el paquete `equals`, con esta información:
 ```groovy
 package equals
 
@@ -6378,7 +6378,7 @@ al mismo proyecto de nombre `transformations`.
 2. Creamos el paquete de nombre `tuple`, en la carpeta
 **"src"**
 3. Creamos una `Groovy Class` de nombre `Person`, 
-en el paquete`tuple`, con esta información:
+en el paquete `tuple`, con esta información:
 ```groovy
 package tuple
 
@@ -6439,7 +6439,7 @@ al mismo proyecto de nombre `transformations`.
 2. Creamos el paquete de nombre `canonical`, en la carpeta
 **"src"**
 3. Creamos una `Groovy Class` de nombre `Person`, 
-en el paquete`canonical`, con esta información:
+en el paquete `canonical`, con esta información:
 ```groovy
 package canonical
 
@@ -6511,7 +6511,7 @@ al mismo proyecto de nombre `transformations`.
 2. Creamos el paquete de nombre `singleton`, en la carpeta
 **"src"**
 3. Creamos una `Groovy Class` de nombre `DatabaseConnection`, 
-en el paquete`singleton`, con esta información:
+en el paquete `singleton`, con esta información:
 ```groovy
 package singleton
 
@@ -6594,7 +6594,7 @@ al mismo proyecto de nombre `transformations`.
 2. Creamos el paquete de nombre `sorted`, en la carpeta
 **"src"**
 3. Creamos una `Groovy Class` de nombre `Person`, 
-en el paquete`sorted`, con esta información:
+en el paquete `sorted`, con esta información:
 ```groovy
 package sorted
 
@@ -6664,3 +6664,69 @@ resultado:
 Process finished with exit code 0
 ```
 
+## Paso 91. @Immutable
+
+>[!NOTE]
+>
+>[![groovy-lang/api  -> @Immutable](images/section10-step_91_Immutable-Doc.png "groovy-lang/api -> @Immutable")](https://groovy-lang.org/api.html)
+>
+>La siguiente transformación que vamos a ver es `@Immutable`.
+>
+>`@Immutable` significa básicamente que una vez que creamos una instancia de algo, no podemos cambiar su
+>estado.
+>
+>Y para hacerlo, especialmente en Java, seguimos un conjunto de convenciones como que la clase se convierte automáticamente en final.
+>Todas las propiedades deben ser privadas, campos de respaldo finales con métodos get y setter.
+>De nuevo, puedes leer qué hace que una clase sea inmutable.
+>
+>Pero, de nuevo, Groovy hace que sea muy fácil no tener que seguir cada una de estas convenciones y simplemente agregar
+>esta transformación `AST` a nuestra clase.
+>Y Groovy hará esto por nosotros.
+
+1. Regresamos a [`IntelliJ`](#paso-15-hello-intellij), 
+al mismo proyecto de nombre `transformations`.
+2. Creamos el paquete de nombre `immutable`, en la carpeta
+**"src"**
+3. Creamos una `Groovy Class` de nombre `Person`, 
+en el paquete `immutable`, con esta información:
+```groovy
+package immutable
+
+import groovy.transform.Immutable
+import groovy.transform.ToString
+
+@ToString
+@Immutable
+class Person {
+    String first
+    String last
+}
+```
+4. Creamos en el paquete `immutable` un `Groovy Script` de 
+nombre `app`, y le ponemos este código:
+```groovy
+package immutable
+
+Person p = new Person(first: 'Juan', last: 'Piza')
+println p.toString()
+```
+* Ejecutamos, y sale esto: `immutable.Person(Juan, Piza)` 
+5. Añado algo mas al _script_ como esto: `p.first('John')`,
+ejecuto y obtengo esto:
+```diff
+-Caught: groovy.lang.MissingMethodException: No signature of method: immutable.Person.first() is applicable for argument types: (String) values: [John]
+-Possible solutions: find(), print(java.io.PrintWriter), print(java.lang.Object), getFirst(), find(groovy.lang.Closure), getAt(java.lang.String)
+-groovy.lang.MissingMethodException: No signature of method: immutable.Person.first() is applicable for argument types: (String) values: [John]
+-Possible solutions: find(), print(java.io.PrintWriter), print(java.lang.Object), getFirst(), find(groovy.lang.Closure), getAt(java.lang.String)
+-	at immutable.app.run(app.groovy:6)
+```
+>[!NOTE]  
+>Entonces, si volvemos a la clase inmutable y a la clase persona, vimos en la documentación que lo que realmente hace que
+>una clase sea inmutable es que sigue un conjunto de estándares.  
+>![Person.class](images/section10-step_91_Immutable1.png "Person.class")  
+>Uno es que tenemos una clase final persona aquí.
+>Tenemos nuestras cadenas finales privadas aquí que tienen los captadores aquí abajo.
+>Por lo tanto, no hay establecedores para ese campo en particular.
+>
+>Entonces, nuevamente, algo que podría hacer por su cuenta, pero con Groovy agregando una anotación fácil a nuestra clase,
+>ahora tenemos una clase inmutable.
