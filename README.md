@@ -6793,3 +6793,75 @@ el `Build Output`:
 >
 >Por lo tanto, entre la verificación de tipos y las anotaciones estáticas de compilación, realmente podemos tratarlo en ciertas
 >situaciones como un lenguaje estático si es necesario o como un lenguaje de tipos estáticos si es necesario.
+
+## Paso 93. @CompileStatic
+
+>[!NOTE]
+>
+>[![groovy-lang/api  -> @CompileStatic](images/section10-step_93_CompileStatic-Doc.png "groovy-lang/api -> @CompileStatic")](https://groovy-lang.org/api.html)
+>
+>En una lección anterior, analizamos la verificación de tipo at.
+>Transformación `AST`.
+>En esta lección, analizaremos la compilación estática y la que, que van juntas.
+>
+>La `@CompileStatic` permitirá que el compilador Groovy utilice verificaciones en tiempo de compilación en el mismo estilo de Java y luego realice la compilación estática,
+>evitando así el protocolo de metaobjetos Groovy o el `MOP`.
+>
+>Ya analizamos el `MOP` antes y esto puede sonar como una verificación de tipo at, de entrada
+>lo es.
+>Sin embargo, hay una diferencia importante, y es el `MOP`.
+>
+>Por lo tanto, se evita el protocolo de metaprogramación de objetos Groovy.
+>Por lo tanto, la verificación de tipo at sigue pasando por el `MOP`, mientras que la compilación estática genera llamadas de método similares al código de bytes de Java.
+>
+>Esto realmente significa que su semántica es diferente, pero también significa que aún puede aplicar la compilación Metaprogram sobre el código de verificación de tipo at siempre que las llamadas de método se puedan resolver en tiempo de compilación.
+>
+>De modo que esa es realmente la diferencia en la verificación de tipos que le permitirá seguir haciendo algo de programación dinámica
+>mientras compila.
+>El código estático realmente se acerca más al bytecode generado de Java.
+
+1. Regresamos a [`IntelliJ`](#paso-15-hello-intellij), 
+al mismo proyecto de nombre `transformations`.
+2. Creamos el paquete de nombre `immutable`, en la carpeta
+**"src"**
+3. Creamos una `Groovy Class` de nombre `SomeClass`, 
+en el paquete `compile`, con esta información:
+```groovy
+package compile
+
+import groovy.transform.CompileStatic
+
+@CompileStatic
+class SomeClass {
+    String foo(){
+        'foo'
+    }
+
+    String bar(){
+        'bar'
+    }
+
+    void noReturn(){
+
+    }
+}
+```
+4. No se requiere un `Groovy Script` de nombre `app`
+5. Puedo del menú seleccionar
+`Build` -> `Recompile 'someClass.groovy'` y muestra un
+_log_ de ejecución.
+6. Le agrego al método `noReturn()` esto encima 
+`@CompileStatic(TypeCheckingMode.SKIP)`, vuelvo al menú,
+selecciono `Build` -> `Recompile 'someClass.groovy'` y muestra 
+el mismo _log_ de ejecución.
+
+>[!NOTE]  
+>Ahora bien, esto no pasará por lo mismo que el resto de los métodos de la clase.
+>
+>De nuevo, es una demostración bastante aburrida.
+>
+>Si siguiéramos adelante y compiláramos esto, funcionaría perfectamente.
+>No hay nada especial.
+>Solo quería mostrarles tanto en Typecheck como en la compilación.
+>`@CompileStatic` simplemente les brinda un poco más de flexibilidad cuando necesitan cambiar la forma en que funcionan las cosas en Groovy para que coincidan con Java.
+>Así que creo que eso es todo para `@CompileStatic` y seguiremos adelante.
