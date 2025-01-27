@@ -6355,3 +6355,64 @@ parámetro:
 16. Regreso al _script_ `app` y ejecuto, para obtener que
 ejecuta sin errores, todo correcto.  
 ![@EqualsAndHashCode( excludes = ['email'])](images/section10-step_86_equals2.png "@EqualsAndHashCode( excludes = ['email'])")
+
+
+## Paso 87. @TupleConstructor
+
+>[!NOTE]  
+>En esta lección.
+>Vamos a echar un vistazo al constructor de tuplas como transformación.
+>Será muy breve, pero también muy útil.
+>
+>Groovy nos proporciona una buena manera de crear instancias y objetos, ¿no?
+>En esta primera instancia, puedes ver que estamos creando un nuevo cliente y estamos usando parámetros con nombre.
+>Aunque no configuramos un constructor que tome todos estos parámetros con nombre de forma predeterminada.
+>Groovy nos da esa capacidad.
+>
+>Bueno, hay ciertas ocasiones en las que solo tenemos un objeto pequeño, o tal vez estamos creando este objeto
+>desde Java donde solo queremos pasar los parámetros implícitos y no queremos tener que sentarnos
+>y nombrarlos.
+
+1. Regresamos a [`IntelliJ`](#paso-15-hello-intellij), 
+al mismo proyecto de nombre `transformations`.
+2. Creamos el paquete de nombre `tuple`, en la carpeta
+**"src"**
+3. Creamos una `Groovy Class` de nombre `Person`, 
+en el paquete`tuple`, con esta información:
+```groovy
+package tuple
+
+import groovy.transform.ToString
+import groovy.transform.TupleConstructor
+
+@ToString
+@TupleConstructor
+class Person {
+    String first
+    String last
+    String email
+    
+}
+```
+4. Creamos en el paquete `tuple` un `Groovy Script` de 
+nombre `app`, y le ponemos este código:
+```groovy
+package tuple
+
+Person p = new Person('Juan', 'Piza','jpiza@mail.com')
+println p.toString()
+```
+* Ejecutamos este _script_ y esto es lo que obtenemos:
+```bash
+tuple.Person(Juan, Piza, jpiza@mail.com)
+
+Process finished with exit code 0
+```
+>[!NOTE]  
+>Ahora puedo continuar y ejecutarlo y verás que no proporcioné ningún parámetro con nombre a esta instancia en particular, pero con el constructor de tuplas entiendo que los tomará a medida que aparezcan en la clase.
+>
+>Entonces, el primero que enviamos fue el nombre, apellido, correo electrónico, etcétera.
+>
+>Al igual que todas las otras transformaciones que hemos visto, hay algunos atributos diferentes
+>que puedes agregar a este constructor de tuplas para personalizarlo según tus necesidades.
+>Así que echa un vistazo a la documentación y sigamos adelante.
