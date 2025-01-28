@@ -6848,11 +6848,11 @@ class SomeClass {
 ```
 4. No se requiere un `Groovy Script` de nombre `app`
 5. Puedo del menú seleccionar
-`Build` -> `Recompile 'someClass.groovy'` y muestra un
+`Build` -> `Recompile 'SomeClass.groovy'` y muestra un
 _log_ de ejecución.
 6. Le agrego al método `noReturn()` esto encima 
 `@CompileStatic(TypeCheckingMode.SKIP)`, vuelvo al menú,
-selecciono `Build` -> `Recompile 'someClass.groovy'` y muestra 
+selecciono `Build` -> `Recompile 'SomeClass.groovy'` y muestra 
 el mismo _log_ de ejecución.
 
 >[!NOTE]  
@@ -6980,3 +6980,118 @@ Process finished with exit code 0
 >A mí personalmente me gusta esta sintaxis.
 >No la uso todo el tiempo, pero siento que tiene algún valor.
 >Así que espero que haya sido de ayuda.
+
+## Paso 95. [Exercise] AST Transformations
+
+>[!NOTE]  
+>### [Ejercicio] Transformaciones AST
+>**Transformaciones AST**
+>
+>En esta sección veremos muchas transformaciones AST. Ahora quiero que revises la documentación y encuentres una que no hayamos visto y veas si puedes hacer que funcione por tu cuenta.
+
+## Paso 96. [Exercise Review] AST Transformations
+
+>[!NOTE]
+>
+>[![groovy-lang/api -> groovy.transform.builder -> @AutoClone](images/section10-step_96_AutoClone-Doc.png "groovy-lang/api -> groovy.transform.builder -> @AutoClone")](https://groovy-lang.org/api.html)
+>Estamos de vuelta y estamos revisando el ejercicio de transformaciones.
+>Y básicamente el ejercicio fue, bueno, vimos un montón de transformaciones diferentes en esta sección.
+>
+>Lo que quería que hicieras era revisar la documentación, encontrar otra que te pudiera resultar útil,
+>y simplemente probarla.
+>Así que esta no es una respuesta correcta o incorrecta.
+>Nuevamente, la mía.
+>
+>La que estoy eligiendo es `@AutoClone`.
+>Si elegiste otra, no hay problema.
+>Solo quería que pudieras revisar la documentación y hacer esto tú mismo.
+>Así que aquí estamos.
+>
+>Voy a echar un vistazo a `@AutoClone` y básicamente `@AutoClone` nos permite ayudar en la creación
+>de clases Cloneable.
+>Entonces, la anotación `@AutoClone` le indica al compilador que ejecute la transformación AST, que agrega un
+>método de clonación pública y agrega cloneable a la lista de interfaces que implementa esta clase.
+>
+>Entonces, profundicemos y echemos un vistazo a esto.
+
+1. Regresamos a [`IntelliJ`](#paso-15-hello-intellij), 
+al mismo proyecto de nombre `transformations`.
+2. Creamos el paquete de nombre `clone`, en la carpeta
+**"src"**
+3. Creamos una `Groovy Class` de nombre `Person`, 
+en el paquete `clone`, con esta información:
+```groovy
+package clone
+
+import groovy.transform.AutoClone
+
+@AutoClone
+class Person {
+    String first
+    String last
+    List favItems
+    Date since
+}
+```
+4. Creamos en el paquete `clone` un `Groovy Script` de 
+nombre `clonedemo`, y lo dejamos vacío:
+5. Estando en la clase `Person`, voy al menú, y selecciono 
+`Build` -> `Recompile 'Person.groovy'`
+
+>[!NOTE]  
+>Ahora vamos a echar un vistazo a lo que se compiló.  
+>![Person.class](images/section10-step_96_AutoClone1.png "Person.class")  
+>
+>Si observamos la clase persona, podemos ver que implementa el objeto Groovy de forma predeterminada y ahora
+>también implementa `Cloneable`.
+>Ahora tenemos un objeto `Cloneable` y tenemos este método llamado clone que se agregó para nosotros.
+>
+>De modo que, según todas las propiedades, se descubrió y escribió este método que ahora podemos
+>usar para clonar una nueva persona en nuestro clon, una persona existente en una nueva persona.
+
+6. Ahora si de regreso al _script_ de nombre `clonedemo`
+y colocamos esto en el código:
+```groovy
+package clone
+
+def p = new Person(first: 'Juan', last: 'Piza', favItems: ['Learning', 'coding'], since: new Date())
+def p2 = p.clone()
+
+assert p instanceof Cloneable
+assert p.favItems instanceof Cloneable
+assert p.since instanceof Cloneable
+assert !(p.first instanceof Cloneable)
+
+assert !p.is(p2)
+assert !p.favItems.is(p2.favItems)
+assert !p.since.is(p2.since)
+assert p.first.is(p2.first)
+```
+>![NOTE]  
+>Simplemente vamos a colocar este código.
+>Entonces, todo lo que están haciendo aquí es en P, estamos instanciando una nueva persona.
+>
+>Entonces, tenemos primero, último elementos favoritos y luego una propiedad de sentido.
+>
+>Entonces, en P dos, podemos llamar a un método en persona en nuestra nueva persona llamada clon.
+>Y eso se agregó a él mediante esa transformación AST para nosotros.
+>
+>Entonces, podemos preguntar cosas como, bien, ¿es P una i0nstancia de clonable, que será
+>porque implementamos esa interfaz P punto elementos favoritos instancia de Cloneable.
+>Sí.
+>Entonces, estas son todas las propiedades que son instancias de clonable.
+>Entonces, um.
+>
+>Ahora, lo que podemos hacer es también verificar el método Is.
+>Entonces, es una forma de preguntar, ¿es igual, es igualdad, es igualdad?
+>Entonces, no estamos probando.
+>
+>¿Cada propiedad individual allí resulta ser lo mismo que estamos preguntando?
+>¿Son estos dos objetos iguales?
+>
+>Y en este caso, no lo son.
+>Serán dos objetos diferentes en la memoria.
+>
+>Así que sigamos adelante y ejecutemos esto y, con suerte, todas nuestras afirmaciones pasarán y estaremos listos para continuar.
+>Así que, si alguna vez necesitas clonar algo, esta es la forma más fácil de hacerlo.
+>Agrega la anotación de clonación automática a tu objeto y deberías estar listo.
