@@ -7095,3 +7095,32 @@ assert p.first.is(p2.first)
 >Así que sigamos adelante y ejecutemos esto y, con suerte, todas nuestras afirmaciones pasarán y estaremos listos para continuar.
 >Así que, si alguna vez necesitas clonar algo, esta es la forma más fácil de hacerlo.
 >Agrega la anotación de clonación automática a tu objeto y deberías estar listo.
+
+# Section 11: Working with Builders
+
+## 97. Intro to Builders
+
+>[!NOTE]  
+>Estamos en la Sección 11, avanzando rápidamente, comenzando a abordar algunas cuestiones realmente divertidas.
+>
+>La Sección 11 trata sobre cómo trabajar con constructores.
+>
+>En esta sección no vamos a hablar de mucho.
+>Hablaremos específicamente de constructores y veremos, creo, 3 o 4 de ellos aquí.
+>
+>Los constructores son una forma muy conveniente de crear objetos.
+>Vamos a ver diferentes tipos de constructores.
+>Vamos a ver uno, que es un constructor de marcado, que se puede usar para crear objetos como
+>XML o HTML, por ejemplo.
+>
+>Es una forma muy sencilla de crear este tipo de cosas en comparación con, por ejemplo, Java, donde crear algo como XML es simplemente molesto.
+>Vamos a ver eso, vamos a ver la documentación del constructor para que puedas
+>orientarte.
+>Vamos a ver el generador de Json para crear Json, que será muy útil
+>en la siguiente sección cuando comencemos a hablar sobre los servicios web.
+>
+>Y, por último, veremos el generador de gráficos de objetos, que es realmente útil para crear gráficos
+>de objetos en sus aplicaciones.
+>Y veremos una lista de todos los generadores que están disponibles en Groovy.
+>Y creo que ahí es donde terminaremos.
+>Así que en esta sección nos divertiremos mucho con los generadores, que son realmente útiles.
