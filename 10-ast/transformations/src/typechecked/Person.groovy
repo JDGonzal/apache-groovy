@@ -8,6 +8,6 @@ class Person {
     String lastName
 
     String getFullName(){
-        "$firstName $lasName"  // Mal escrito el `lastName`
+        "$firstName $lastName"  // Mal escrito el `lastName`
     }
 }

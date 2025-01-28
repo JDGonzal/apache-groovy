@@ -6865,3 +6865,118 @@ el mismo _log_ de ejecución.
 >Solo quería mostrarles tanto en Typecheck como en la compilación.
 >`@CompileStatic` simplemente les brinda un poco más de flexibilidad cuando necesitan cambiar la forma en que funcionan las cosas en Groovy para que coincidan con Java.
 >Así que creo que eso es todo para `@CompileStatic` y seguiremos adelante.
+
+## Paso 94. @Builder
+
+>[!NOTE]
+>
+>[![groovy-lang/api -> groovy.transform.builder -> @Builder](images/section10-step_94_Builder-Doc.png "groovy-lang/api -> groovy.transform.builder -> @Builder")](https://groovy-lang.org/api.html)
+>
+>En esta lección, vamos a echar un vistazo a una transformación bastante interesante llamada `@Builder`.
+>
+>Hasta este punto, todas las transformaciones que hemos visto han estado en el paquete de transformación Groovy punto.
+>El material del `@Builder` está en otro paquete llamado Groovy punto Transform Builder.
+>
+>Así que vayamos a ese paquete y verás un tipo de anotación para el `@Builder` y luego algunas otras clases
+>aquí que son diferentes tipos de estrategias para usar con este `@Builder`.
+>
+>Así que podemos ver, mirando la documentación aquí, que la transformación at Builder se usa para ayudar a escribir
+>clases que se pueden crear usando algo llamado llamadas API fluidas.
+>
+>Básicamente, el `@Builder` te permite una nueva forma de construir objetos y realmente puede ayudar
+>cuando estás creando objetos de objetos también.
+>Así que veremos que hay algunas estrategias diferentes aquí.
+>
+>Hoy solo veremos la estrategia predeterminada, pero al final les daré una manera
+>de utilizar otras estrategias si quieren ir a la documentación y verla.
+>
+>Entonces, solo una nota rápida: Groovy proporciona algunos mecanismos integrados para crear objetos, cuando
+>llamamos a New person.
+>Podemos pasar parámetros de nombre y valores para construir nuestro objeto, o incluso podemos hacer algo como new
+>person dot width y luego establecer nuestros campos prop aquí.
+>Así que es posible que no encuentren ningún valor en usar el `@Builder`.
+>
+>Pero definitivamente cuando se adentren en alguna integración de Java o en algunos casos en una seguridad de tipos mejorada, esa
+>transformación del `@Builder` puede resultar útil.
+>Y honestamente, me gusta la sintaxis para construir algunos de nuestros objetos.
+>Así que vamos a echarle un vistazo y luego realmente depende de ustedes averiguar si encuentran algún uso para
+>él.
+>
+>De nuevo, estamos en la anotación del generador de aplicaciones y luego en la documentación, y luego puedes ver que hay
+>diferentes estrategias aquí cuando no pasas una estrategia a la anotación del generador de aplicaciones, de manera predeterminada,
+>se usará la estrategia predeterminada.
+>Entonces, este es el primer lugar donde querrás buscar.
+
+1. Regresamos a [`IntelliJ`](#paso-15-hello-intellij), 
+al mismo proyecto de nombre `transformations`.
+2. Creamos el paquete de nombre `builder`, en la carpeta
+**"src"**
+3. Creamos una `Groovy Class` de nombre `Developer`, 
+en el paquete `builder`, con esta información:
+```groovy
+package builder
+
+import groovy.transform.ToString
+import groovy.transform.builder.Builder
+
+@Builder
+@ToString(includeNames = true)
+class Developer {
+
+    String firstName
+    String lastName
+    String middleInitial
+    String email
+    Date hireDate
+    List languages
+
+}
+```
+4. Creamos en el paquete `builder` un `Groovy Script` de 
+nombre `default`, y le ponemos este código:
+```groovy
+package builder
+
+Developer dev = Developer
+    .builder()
+    .firstName('Juan')
+    .lastName('Piza')
+    .middleInitial('G')
+    .email('jpiza@mail.com')
+    .hireDate(new Date())
+    .languages(['Java', 'Groovy'])
+    .build()
+
+println dev
+assert dev.firstName == 'Juan'
+assert dev.lastName == 'Piza'
+assert dev.languages.size() == 2
+```
+
+>[!WARNING]  
+>Me sale un error de un ejercicio anterior, entonces procedo
+>a arregarlo:  
+>![typechecked, Error](images/section10-step_94_Builder1-Error.png "typechecked, Error")
+
+5. Ejecutamos el _script_ y obtenemos esto:
+```bash
+builder.Developer(firstName:Juan, lastName:Piza, middleInitial:G, email:jpiza@mail.com, hireDate:Day Mth MM HH:mm:ss COT YYYY, languages:[Java, Groovy])
+
+Process finished with exit code 0
+```
+
+>[!NOTE]  
+>Entonces, podríamos ver simplemente otra forma sencilla de instanciar un objeto aquí usando la anotación del generador de aplicaciones
+>y simplemente una forma de crear algunas API fluidas.
+>Es como si funcionara, ¿no?
+>
+>Parece que si alguien mirara esto, tendría un poco más de sentido para ellos.
+>A veces, cuando las personas están de acuerdo, realmente no entienden que, ya sabes, un objeto
+>como nuestro objeto de desarrollador aquí tiene la capacidad de tomar parámetros de nombre porque no ven un constructor.
+>Y luego, obviamente, si alguien mirara esto de inmediato, entendería
+>que simplemente estamos llamando a los establecedores en nuestro objeto de desarrollador para construirlo.
+>
+>Entonces, nuevamente, depende de ti encontrar si tienes un uso para esto.
+>A mí personalmente me gusta esta sintaxis.
+>No la uso todo el tiempo, pero siento que tiene algún valor.
+>Así que espero que haya sido de ayuda.
