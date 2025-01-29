@@ -7067,7 +7067,7 @@ assert !p.favItems.is(p2.favItems)
 assert !p.since.is(p2.since)
 assert p.first.is(p2.first)
 ```
->![NOTE]  
+>[!NOTE]  
 >Simplemente vamos a colocar este código.
 >Entonces, todo lo que están haciendo aquí es en P, estamos instanciando una nueva persona.
 >
@@ -7098,7 +7098,7 @@ assert p.first.is(p2.first)
 
 # Section 11: Working with Builders
 
-## 97. Intro to Builders
+## Paso 97. Intro to Builders
 
 >[!NOTE]  
 >Estamos en la Sección 11, avanzando rápidamente, comenzando a abordar algunas cuestiones realmente divertidas.
@@ -7124,3 +7124,150 @@ assert p.first.is(p2.first)
 >Y veremos una lista de todos los generadores que están disponibles en Groovy.
 >Y creo que ahí es donde terminaremos.
 >Así que en esta sección nos divertiremos mucho con los generadores, que son realmente útiles.
+
+## Paso 98. MarkupBuilder - XML
+
+>[!NOTE]
+>
+>[![groovy-lang/api -> groovy.xml -> MarkupBuilder](images/section11-step_098_MarkupBuilder-Doc.png "groovy-lang/api -> groovy.xml -> MarkupBuilder")](https://groovy-lang.org/api.html)
+>
+>En la introducción a esta sección, aprendimos un poco sobre qué son los constructores y cómo pueden
+>ayudarnos.
+>Ahora lo que quiero hacer es comenzar a analizar algunos de los diferentes constructores y ver algunos
+>ejemplos de cómo funcionan. Una vez que los veas en acción, tendrás una idea de lo útiles que pueden ser para nosotros.
+>
+>El primero que veremos hoy es el constructor de marcado, y lo usaremos específicamente
+>para generar XML.
+>Estoy en la documentación de Groovy aquí y el constructor de marcado está en el paquete Groovy dot XML.
+>Si ingresas aquí, puedes ver los diferentes constructores que tenemos, los diferentes métodos que
+>tenemos disponibles. Pero volveremos a esto.
+
+>[!TIP]  
+>### Creamos la carpeta **"11-builders"**, que usaremos en toda esta sección.
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+creando un nuevo proyecto llamado `builders-demo`, de tipo 
+groovy en la misma carpeta **"11-builders"** 
+2. Borramos el archivo **`Main.groovy`**.
+3. Creamos una `Groovy Script` de nombre `xml`, dentro 
+de la carpeta **"src"**, completamos el script con esto:
+```groovy
+import groovy.xml.MarkupBuilder
+
+MarkupBuilder builder = new MarkupBuilder()
+builder.sports(){
+
+}
+```
+4. En el método `sports()`, empezamos a crear la estructura
+a utilizar en el `xml`:
+```groovy
+builder.sports(){
+    sport(id:1){
+        name 'Baseball'
+    }
+    sport(id:2){
+        name 'Basketball'
+    }
+    sport(id:3){
+        name 'Football'
+    }
+    sport(id:4){
+        name 'Hockey'
+    }
+}
+```
+* Ejecutamos este _script_ y esto sería el resultado:
+```xml
+<sports>
+  <sport id='1'>
+    <name>Baseball</name>
+  </sport>
+  <sport id='2'>
+    <name>Basketball</name>
+  </sport>
+  <sport id='3'>
+    <name>Football</name>
+  </sport>
+  <sport id='4'>
+    <name>Hockey</name>
+  </sport>
+</sports>
+Process finished with exit code 0
+```
+>[!NOTE]  
+>Entonces, tenemos que el `sports` es el nodo raíz.
+>Así que ese es nuestro nodo raíz.
+>Y luego todo lo que está debajo de él comienza a construirse.
+>
+>Entonces, tenemos un deporte, por lo que crea un deporte aquí, tiene un ID de uno, luego el `name`.
+>Entonces, tenemos un `sport`, por lo que crea un `sport` aquí, tiene un ID de uno, luego el `name`.
+>Entonces, tenemos un `name` de elemento con el texto de `Basketball`.
+>
+>Entonces, esto es increíblemente fácil de usar.
+>No sé si has usado Java antes, es muy, muy detallado y difícil de construir `XML`.
+>Es casi doloroso.
+>Um, solo por todos los obstáculos que tienes que superar solo para imprimir cosas simples, simples es simplemente
+>realmente, realmente difícil de usar.
+>
+>Y sé que en algunos otros lenguajes aún no es ni siquiera más fácil que Java, pero aún no es simple
+>en absoluto.
+>Para mí, esto es muy simple.
+>Podemos usar código para construir nuestra estructura `XML` aquí, así que esto es realmente genial.
+>
+>Entonces, quiero volver a la documentación.  
+>![groovy-lang/api -> groovy.xml -> MarkupBuilder](images/section11-step_098_MarkupBuilder-Doc.png "groovy-lang/api -> groovy.xml -> MarkupBuilder")  
+>Entonces, cuando creamos este generador de marcado, no pasamos ningún argumento al constructor aquí.
+>
+>El valor predeterminado es simplemente seguir adelante e imprimir esto en la pantalla.
+>Pero si observamos los constructores, una de las sobrecargas del constructor es tomar un escritor.
+>Entonces, si quisiéramos, podríamos escribir esto en un archivo y generar una cadena, una cadena, etcétera.
+>Eso es bastante útil.
+>
+>Además, hay algunos métodos excelentes y bastante útiles aquí, que veremos ahora.
+>Entonces, quiero ver un par de ellos.
+>Entonces, en realidad, no los configuremos.
+>Entonces, configurar `omitEmptyAttributes` para permitir que los atributos vacíos se eliminen del marcado generado y
+>configurar `omit null` y luego configure, creo, elementos expandidos.
+>
+>Entonces, echemos un vistazo a esto.
+
+5. Agregamos esto al método `sports()`:
+```groovy
+    sport(id:null){
+        name ''
+    }
+```
+* Si lo ejecuto encuento esto al final como datos vacíos:
+```xml
+  <sport id=''>
+    <name></name>
+  </sport>
+```
+6. Agregamos esto después de definir la variable `builder`:
+```groovy
+builder.omitEmptyAttributes = true
+builder.omitNullAttributes = true
+```
+* Ejecuto este _script_ y obtengo esta respuesta:
+```xml
+<sports>
+  <sport id='1'>
+    <name>Baseball</name>
+  </sport>
+  <sport id='2'>
+    <name>Basketball</name>
+  </sport>
+  <sport id='3'>
+    <name>Football</name>
+  </sport>
+  <sport id='4'>
+    <name>Hockey</name>
+  </sport>
+  <sport>
+    <name></name>
+  </sport>
+</sports>
+Process finished with exit code 0
+```
+ 
