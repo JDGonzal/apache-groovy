@@ -7270,4 +7270,82 @@ builder.omitNullAttributes = true
 </sports>
 Process finished with exit code 0
 ```
- 
+
+## Paso 99. Builder Documentation
+
+>[!NOTE]  
+>Ahora que vimos un ejemplo de cómo usar el generador de marcado, quiero hablar rápidamente de algo más
+>que tiene que ver con la documentación.
+>
+>Así que no puedo atribuirme el mérito.
+>De hecho, aprendí este pequeño truco de Ken Cousin, que es un presentador, orador y bloguero increíble,
+>hace muchos videos en YouTube.
+>Está en el podcast Groovy.
+>
+>Si estás en esta comunidad, lo conocerás bastante rápido.
+>Hace un gran trabajo enseñando cosas relacionadas con Groovy y es muy importante en la comunidad.
+>Así que, si tienes la oportunidad, no dudes en echarle un vistazo.
+>Creo que lo aprendí de él en una conferencia y una de las cosas que dijo fue que
+>la documentación de Groovy para Builder es un poco ligera.
+>
+>Entonces, a qué me refiero con eso, vayamos al grano rápidamente.
+>Entonces, si vamos a la API y buscamos un generador de marcado o, en realidad, vamos a marcar.
+>Más antiguo.
+>Y deberíamos.
+>Ahí está.
+>
+>Entonces, si miramos el generador de mercado, solo dice una clase auxiliar para crear marcado XML o HTML.
+>Hay un ejemplo rápido y un montón de métodos y realmente nada más.
+>Entonces, además de hacer lo normal y lo básico, probablemente te encontrarás con preguntas,
+>
+>Bueno, ¿cómo hago esto?
+>¿O cómo hago aquello?
+>Y la documentación es un poco deficiente en esa área.
+>Bueno, una cosa que aprendí de él, una forma fácil de ver otros ejemplos de esto es ir al
+>código fuente real y mirar algunas de las pruebas unitarias.
+>
+>Entonces, esta es otra ventaja de usar proyectos de código abierto.
+>
+>[![github -> apache -> groovy](images/section11-step_099_apache_groovy-github.png "github -> apache -> groovy")](https://github.com/apache/groovy)
+>
+>Bueno, una cosa que aprendí de él, una manera fácil de ver otros ejemplos de esto es ir al
+>código fuente real y ver algunas de las pruebas unitarias.
+>Esta es otra ventaja de usar proyectos de código abierto.
+>
+>Los desarrolladores de Groovy son muy buenos escribiendo pruebas para todos sus diferentes casos de prueba.
+>Entonces, aquí estamos en el sitio de GitHub para Apache Groovy.
+>Y si bajamos a los subproyectos y echamos un vistazo a Groovy XML, vayamos aquí.
+>Vamos a ir al código fuente, a las pruebas, a Groovy, a Groovy XML.
+>Y ahora tenemos todas estas diferentes pruebas aquí.
+>
+>Entonces, vamos a ver la prueba del generador de marcado y esta es una prueba para probar el generador de marcado.
+>Entonces, hay algo de información de configuración aquí y luego hay una variedad de pruebas.
+>Entonces, prueba un árbol pequeño con texto y atributos.
+>Entonces, nuevamente, si lo desea, puede ingresar aquí y copiar algunas de estas pruebas en, por ejemplo,
+>
+>IntelliJ o Groovy Console y jugar con ellas para ver qué sucede aquí.
+>Y esta es una excelente manera de aprender no solo las cosas básicas, sino que luego, cuando comience a tener preguntas
+>sobre, bueno, esto es un poco diferente del ejemplo básico normal.
+>
+>¿Cómo hago X?
+>¿Cómo hago Y?
+>Y verá.
+>Entonces, pruebe el marcado con dos puntos y espacios de nombres.
+>Entonces, puede tener una instancia donde tenga dos puntos y desee asegurarse de que eso funcione
+>también.
+>Al bajar aquí para generar marcado con caracteres especiales, tal vez desee usar comillas dobles para
+>realmente poder configurar ese generador.
+>
+>Puede configurar una propiedad llamada Comillas dobles.
+>Entonces, llame al establecedor y configure las comillas dobles como verdaderas.
+>Um, omitiendo los valores nulos, uh, algunas otras cosas aquí.
+>Entonces, comenzamos con las pruebas.
+>No se pueden escapar los atributos.
+>Quizás querías ingresar un enlace y, en el caso de los enlaces, no querrías escapar los atributos.
+>
+>Este es otro ejemplo de que quizás no lo hayas hecho de inmediato, pero tarde o temprano
+>puede que llegues a esto y te preguntes: "Espera un minuto, ¿cómo hago eso?".
+>Nuevamente, esta prueba que ejecuta las diferentes pruebas para todos los diferentes constructores es una excelente
+>manera de aprender a hacer diferentes cosas que están fuera del ejemplo normal que ves en la documentación.
+>Nuevamente, agradecemos a Ken Cousin por ese pequeño consejo.
+>Es realmente genial para aprender todas las diferentes sintaxis de constructores.
