@@ -7349,3 +7349,230 @@ Process finished with exit code 0
 >manera de aprender a hacer diferentes cosas que están fuera del ejemplo normal que ves en la documentación.
 >Nuevamente, agradecemos a Ken Cousin por ese pequeño consejo.
 >Es realmente genial para aprender todas las diferentes sintaxis de constructores.
+
+## Paso 100. Markup Builder - HTML
+
+1. Usando el mismo [`IntelliJ`](#paso-15-hello-intellij), 
+en el mismo proyecto `builders-demo`, creamos una 
+`Groovy Script` de nombre `html`, dentro 
+de la carpeta **"src"**, completamos el script con esto:
+```groovy
+import groovy.xml.MarkupBuilder
+
+MarkupBuilder builder = new MarkupBuilder()
+
+builder.html() {
+
+}
+```
+2. Completamos el contenido del método `html()`:
+```groovy
+    head {
+        title 'Juan Piza'
+        description 'Página acerca de mi'
+        keywords 'Juan Piza, Groovy, Java, Spring'
+    }
+    body {
+        h1 'Una breve biografía'
+        p 'Una reseña resumida de mi labor'
+        section {
+            h2 'Cursos'
+            table{
+                tr {
+                    th 'id'
+                    th 'nombre'
+                }
+                tr {
+                    td '1'
+                    td 'Groovy'
+                }
+                tr {
+                    td '2'
+                    td 'JavaScript'
+                }
+            }
+        }
+    }
+```
+3. Ejecutamos este _script_ y esto es lo que se obtiene:
+```html
+<html>
+  <head>
+    <title>Juan Piza</title>
+    <description>Página acerca de mi</description>
+    <keywords>Juan Piza, Groovy, Java, Spring</keywords>
+  </head>
+  <body>
+    <h1>Una breve biografía</h1>
+    <p>Una reseña resumida de mi labor</p>
+    <section>
+      <h2>Cursos</h2>
+      <table>
+        <tr>
+          <th>id</th>
+          <th>nombre</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Groovy</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>JavaScript</td>
+        </tr>
+      </table>
+    </section>
+  </body>
+</html>
+Process finished with exit code 0
+```
+4. Lo propuesto por el instructor y lo que debe tener 
+correctamente un archivo **`*.html`**, se le deben hacer
+las siguientes correcciones:
+```groovy
+    head {
+        title 'Juan Piza'
+        meta (name : 'description', content:'Página acerca de mi')
+        meta (name:'keywords', content: 'Juan Piza, Groovy, Java, Spring')
+    }
+    body {
+        h1 'Una breve biografía'
+        p 'Una reseña resumida de mi labor'
+        section {
+            h2 'Cursos'
+            table{
+                tr {
+                    th 'id'
+                    th 'nombre'
+                }
+                tr {
+                    td '1'
+                    td 'Groovy'
+                }
+                tr {
+                    td '2'
+                    td 'JavaScript'
+                }
+            }
+        }
+    }
+```
+5. Al ejecutar de nuevo el _script_ con las correcciones
+obtengo esto:
+```html
+<html>
+  <head>
+    <title>Juan Piza</title>
+    <meta name='description' content='Página acerca de mi' />
+    <meta name='keywords' content='Juan Piza, Groovy, Java, Spring' />
+  </head>
+  <body>
+    <h1>Una breve biografía</h1>
+    <p>Una reseña resumida de mi labor</p>
+    <section>
+      <h2>Cursos</h2>
+      <table>
+        <tr>
+          <th>id</th>
+          <th>nombre</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Groovy</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>JavaScript</td>
+        </tr>
+      </table>
+    </section>
+  </body>
+</html>
+```
+* Ahora bien, llevando el resultado en un arhivo
+**`index.html`** y exponiéndolo a un browser, obtengo esto:  
+![index.html](images/section11-step_100_html1.png "index.hml")
+6. Vamos ha hacer unos cambios en el archivo **`html.groovy`**:
+```groovy
+import groovy.xml.MarkupBuilder
+
+MarkupBuilder builder = new MarkupBuilder()
+
+List courses =[
+        [id:1, name:'Apache Groovy'],
+        [id:2, name:'JavaScript']
+]
+
+builder.html() {
+    head {
+        title 'Juan Piza'
+        meta (name : 'description', content:'Página acerca de mi')
+        meta (name:'keywords', content: 'Juan Piza, Groovy, Java, Spring')
+    }
+    body {
+        h1 'Una breve biografía'
+        p 'Una reseña resumida de mi labor'
+        section {
+            h2 'Cursos'
+            table{
+                tr {
+                    th 'id'
+                    th 'nombre'
+                }
+                courses.each { course ->
+                    tr{
+                        td course.id
+                        td course.name
+                    }
+                }
+            }
+        }
+    }
+}
+```
+* Al ejecutar obtengo una respuesta válida:
+
+7. Creamos en la carpeta **"src"**, una nueva carpeta de nombre
+**"html"**
+8. Agregamos la forma de se cree un archivo, justo con otras
+mejoras:
+```groovy
+import groovy.xml.MarkupBuilder
+
+FileWriter writer = new FileWriter('html/about.html')
+MarkupBuilder builder = new MarkupBuilder(writer)
+
+List courses =[
+        [id:1, name:'Apache Groovy'],
+        [id:2, name:'JavaScript']
+]
+
+builder.html(lang:'es') {
+    head {
+        title 'Juan Piza'
+        meta (name : 'description', content:'Página acerca de mi')
+        meta (name:'keywords', content: 'Juan Piza, Groovy, Java, Spring')
+    }
+    body {
+        h1 'Una breve biografía'
+        p 'Una reseña resumida de mi labor'
+        section {
+            h2 'Cursos'
+            table{
+                tr {
+                    th 'id'
+                    th 'nombre'
+                }
+                courses.each { course ->
+                    tr{
+                        td course.id
+                        td course.name
+                    }
+                }
+            }
+        }
+    }
+}
+```
+9. Ejecutamos este _script_ y abrimos el archivo resultante
+de nombre **`about.html`**
