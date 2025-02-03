@@ -7576,3 +7576,201 @@ builder.html(lang:'es') {
 ```
 9. Ejecutamos este _script_ y abrimos el archivo resultante
 de nombre **`about.html`**
+
+## Paso 101. [Exercise] MarkupBuilder
+>[!NOTE]  
+>**1. `XML`**  
+>Utilizar el `MarkupBuilder` para generar el siguiente `XML`
+>```xml
+><books>
+>    <book isbn="978-1935182443">
+>        <title>Groovy in Action 2nd Edition</title>
+>        <author>Dierk Koenig</author>
+>        <price>50.58</price>
+>    </book>
+>    <book isbn="978-1935182948">
+>        <title>Making Java Groovy</title>
+>        <author>Ken Kousen</author>
+>        <price>33.96</price>
+>    </book>
+>    <book isbn="978-1937785307">
+>        <title>Programming Groovy 2: Dynamic Productivity for the Java Developer</title>
+>        <author>Venkat Subramaniam</author>
+>        <price>28.92</price>
+>    </book>
+></books>
+>```
+>
+>**2. `HTML`**  
+>Con los mismos datos de la versión `xml`, cree una página `HTML` que enumere esos datos.
+>
+>**3. Bonus**  
+>Usando un `FileWriter` escribe el contenido del `HTML` desde `MarkupBuilder` a un archivo.
+
+### **1. `XML`** -> Utilizar el `MarkupBuilder` para generar el siguiente `XML`
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+creando un nuevo proyecto llamado `builders-exercise`, de tipo 
+groovy en la misma carpeta **"11-builders"** 
+2. Borramos el archivo **`Main.groovy`**.
+3. Creamos una `Groovy Script` de nombre `xml`, dentro 
+de la carpeta **"src"**, completamos el script con esto:
+```groovy
+import groovy.xml.MarkupBuilder
+
+MarkupBuilder builder = new MarkupBuilder()
+builder.books(){
+
+}
+```
+4. Como son varios elementos repetidos de elemento `book`,
+los vamos a colocar en una lista para luego usarlos en un 
+ciclo `each`:
+```groovy
+List books =[
+        [isbn:'978-1935182443', title:'Groovy in Action 2nd Edition', author:'Dierk Koenig', price:50.58],
+        [isbn:'978-1935182948', title:'Making Java Groovy', author:'Ken Kousen', price:33.96],
+        [isbn:'978-1937785307', title:'Programming Groovy 2: Dynamic Productivity for the Java Developer', author:'Venkat Subramaniam', price:28.92],
+]
+```
+5. Ahora bien completo el método `builder.books()`, con el 
+el ciclo `each`:
+```groovy
+builder.books(){
+    books.each { aBook ->
+        book( isbn: aBook.isbn ) {
+            title  aBook.title
+            author  aBook.author
+            price  aBook.price
+        }
+    }
+}
+```
+6. Ejecuto este _script_ y esta es la respuesta obtenida:
+```xml
+<books>
+  <book isbn='978-1935182443'>
+    <title>Groovy in Action 2nd Edition</title>
+    <author>Dierk Koenig</author>
+    <price>50.58</price>
+  </book>
+  <book isbn='978-1935182948'>
+    <title>Making Java Groovy</title>
+    <author>Ken Kousen</author>
+    <price>33.96</price>
+  </book>
+  <book isbn='978-1937785307'>
+    <title>Programming Groovy 2: Dynamic Productivity for the Java Developer</title>
+    <author>Venkat Subramaniam</author>
+    <price>28.92</price>
+  </book>
+</books>
+Process finished with exit code 0
+```
+
+### **2. `HTML`** -> Con los mismos datos de la versión `xml`, cree una página `HTML` que enumere esos datos.
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+usando el mismo proyecto llamado `builders-exercise`, de tipo 
+groovy en la misma carpeta **"11-builders"**, creamos una `Groovy Script` de nombre `html`, dentro 
+de la carpeta **"src"**, completamos el script con esto:
+```groovy
+import groovy.xml.MarkupBuilder
+
+MarkupBuilder builder = new MarkupBuilder()
+builder.html(){
+
+}
+```
+2. Como La lista de `books` va a ser usada en ambos archivos,
+convertimos el contenido en una clase. Creamos la 
+`Groovy Class` de nombre `Books` con este conetenido:
+```groovy
+class Books {
+    List books =[
+            [isbn:'978-1935182443', title:'Groovy in Action 2nd Edition', author:'Dierk Koenig', price:50.58],
+            [isbn:'978-1935182948', title:'Making Java Groovy', author:'Ken Kousen', price:33.96],
+            [isbn:'978-1937785307', title:'Programming Groovy 2: Dynamic Productivity for the Java Developer', author:'Venkat Subramaniam', price:28.92],
+    ]
+}
+```
+3. Hacemos un cambio antes en el archivo **`xml.groovy`**:
+```groovy
+import groovy.xml.MarkupBuilder
+
+MarkupBuilder builder = new MarkupBuilder()
+
+Books b = new  Books()
+
+builder.books(){
+    b.books.each { aBook ->
+        book( isbn: aBook.isbn ) {
+            title  aBook.title
+            author  aBook.author
+            price  aBook.price
+        }
+    }
+}
+```
+4. Regresamos al arcihvo **`html.groovy`**, para completar
+el método `builder.html()`, antes instanciamos la clase
+`Books` y luego completamos así el código:
+```groovy
+import groovy.xml.MarkupBuilder
+
+MarkupBuilder builder = new MarkupBuilder()
+
+Books b = new  Books()
+
+builder.html(lang:'es') {
+    head {
+        title 'Lista de Libros'
+        meta (name : 'description', content:'Algunos Libros')
+        meta (name:'keywords', content: 'Books, Groovy, Java, Developer')
+    }
+    body {
+        h1 'lista de libros'
+        p 'Algunos libros sugeridos'
+        section {
+            h2 'Libros'
+            table{
+                tr {
+                    th 'ISBN'
+                    th 'Titulo'
+                    th 'Autor'
+                    th 'Precio'
+                }
+                b.books.each { aBook ->
+                    tr{
+                        td aBook.isbn
+                        td aBook.title
+                        td aBook.author
+                        td aBook.price
+                    }
+                }
+            }
+        }
+    }
+}
+```
+* Al ejecutar y llevar el resultado a un archivo, por ejemplo
+**`index.html`**, y lo exponemos al browser y esto sería lo
+que veremos en pantalla:  
+![index.html](images/section11-step_102_html1.png "index.html")
+
+### **3. Bonus** -> Usando un `FileWriter` escribe el contenido del `HTML` desde `MarkupBuilder` a un archivo.
+1. En la carpeta **"src"**, cramos la carpeta **"html"**.
+2. Agregamos una instanciación a `FileWriter` con el nombre
+`writer`, indicamos la ruta de almacenamiento y nombre de
+archivo con la respuesta:
+```groovy
+FileWriter writer = new FileWriter('html/books.html')
+```
+3. Justo en la instanciación de `MarkupBuilder`, ponemos
+como parámetro el recién creado de `writer`:
+```groovy
+MarkupBuilder builder = new MarkupBuilder(writer)
+```
+4. Ejecutamos este _script_ y revisamos el achivo generado
+de nombre `books.html` y lo vemos en un browser:  
+![books.html](images/section11-step_102_html2.png "books.html")
