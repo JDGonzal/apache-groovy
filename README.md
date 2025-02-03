@@ -7756,7 +7756,7 @@ builder.html(lang:'es') {
 * Al ejecutar y llevar el resultado a un archivo, por ejemplo
 **`index.html`**, y lo exponemos al browser y esto sería lo
 que veremos en pantalla:  
-![index.html](images/section11-step_102_html1.png "index.html")
+![index.html](images/section11-step_101_html1.png "index.html")
 
 ### **3. Bonus** -> Usando un `FileWriter` escribe el contenido del `HTML` desde `MarkupBuilder` a un archivo.
 1. En la carpeta **"src"**, cramos la carpeta **"html"**.
@@ -7773,4 +7773,20 @@ MarkupBuilder builder = new MarkupBuilder(writer)
 ```
 4. Ejecutamos este _script_ y revisamos el achivo generado
 de nombre `books.html` y lo vemos en un browser:  
-![books.html](images/section11-step_102_html2.png "books.html")
+![books.html](images/section11-step_101_html2.png "books.html")
+
+
+## Paso 102. [Exercise Review] Markup Builder
+
+>[!NOTE]  
+>Estas son las soluciones propuestas por el instructor:
+>* **`XML`**  
+>![xml.groovy](images/section11-step_102_xml.png "xml.groovy")
+>* **`HTML`**  
+>![html.groovy](images/section11-step_102_html.png "html.groovy")
+>
+>Pero en definitiva la que hice esta mucho mejor. Tal vez le
+>quedó faltanto guardar en un archivo el resultado del archivo
+>**`groovy.xml`**, pero fue mas elegante el uso de una
+>`class` con los valores para ambos procesos, sin repetir 
+>tanto código.
