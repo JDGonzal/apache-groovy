@@ -7216,7 +7216,9 @@ Process finished with exit code 0
 >Podemos usar código para construir nuestra estructura `XML` aquí, así que esto es realmente genial.
 >
 >Entonces, quiero volver a la documentación.  
->![groovy-lang/api -> groovy.xml -> MarkupBuilder](images/section11-step_098_MarkupBuilder-Doc.png "groovy-lang/api -> groovy.xml -> MarkupBuilder")  
+>
+>[![groovy-lang/api -> groovy.xml -> MarkupBuilder](images/section11-step_098_MarkupBuilder-Doc.png "groovy-lang/api -> groovy.xml -> MarkupBuilder")](https://groovy-lang.org/api.html) 
+>
 >Entonces, cuando creamos este generador de marcado, no pasamos ningún argumento al constructor aquí.
 >
 >El valor predeterminado es simplemente seguir adelante e imprimir esto en la pantalla.
@@ -7997,3 +7999,116 @@ new File('json/books.json').write(builder.toPrettyString())
 ```
 11. Ejecutamos y abrimos el archivo **`books.json`**:  
 ![books.json](images/section11-step_103_json.png "books.json")
+
+## Paso 104. Object Graph Builder
+
+>[!NOTE]  
+>En esta lección.
+>Vamos a echar un vistazo al generador de gráficos de objetos.
+>Ahora bien, este es, para mí, uno de los generadores más geniales que existen y realmente es extremadamente útil en ciertas
+>situaciones.
+>
+>Entonces, encontrará este generador en el paquete de utilidades Groovy.
+>
+>Nuevamente, este es el `Object Graph Builder` y es un generador para crear gráficos de objetos.
+>Cada nodo define la clase que se creará y la propiedad de su padre, si la hay, al mismo tiempo.
+>
+>[![groovy-lang/api -> groovy.util -> ObjectGraphBuilder](images/section11-step_104_ObjectGraphBuilder-Doc.png "groovy-lang/api -> groovy.util -> ObjectGraphBuilder")](https://groovy-lang.org/api.html)
+>
+>De nuevo, echaría un vistazo a la documentación y vería todos los métodos diferentes que están disponibles, pero aquí solo veremos un ejemplo bastante simple.
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+creando un nuevo proyecto llamado `object-graph`, de tipo 
+groovy en la misma carpeta **"11-builders"**  
+![New Project: object-graph](images/section11-step_104_o-g-b1.png "New Project: object-graph")
+2. Borramos el archivo **`Main.groovy`**.
+3. Creamos una `Groovy Script` de nombre `books`, dentro 
+de la carpeta **"src"**, completamos el script con esto:
+```groovy
+class Book{
+    String title
+    String summary
+    List<Section> sections =[]
+}
+
+class Section {
+    String title
+    List<Chapter> chapters = []
+}
+
+class Chapter{
+    String title
+}
+```
+4. Antes de la definición de cada `class`, agregamos esto:  
+`@ToString(includeNames = true)`  
+Por ende se hace la importación de esta librería
+5. Adiciono este código al estilo de `Java`:
+```java
+// Java style
+public Book createBook(){
+    Book b = new Book();
+    b.setTitle('My Book');
+    b.setSummary('My Summary');
+
+    Section s = new Section();
+    s.setTitle('Section 1');
+
+    Chapter c1 = new Chapter();
+    c1.setTitle('Chapter 1');
+    Chapter c2 = new Chapter();
+    c2.setTitle('Chapter 2');
+
+    s.addChapter(c1, c2);
+    b.getSections().add(s);
+
+    return book;
+}
+```
+>[!NOTE]  
+>Así que esto es básicamente algo, ya sabes, no vamos a ejecutar esto.
+>
+>Esto es solo para darte una idea de lo que se necesita para crear este gráfico de objetos, ¿verdad?
+>Todo lo que queremos hacer es crear un nuevo libro y agregarle algo de información.
+>
+>En este caso, estamos agregando una sección y dos capítulos para que puedas ver que esto es muy detallado y solo
+>hay que escribir mucho para algo tan trivial como crear un nuevo libro.
+6. Simplemente vamos a encerrar todo lo que acabamos de
+escribir relacionado con `java` en un gran comentario.
+7. Escribimos usando el `ObjectGraphBuilder` en el formato 
+`Groovy`:
+```groovy
+// Groovy style
+ObjectGraphBuilder builder = new ObjectGraphBuilder()
+def book = builder.book(
+        title: 'Groovy en Action 2nd Edition',
+        summary: 'Groovy in Action, Second Edition an more text') {
+    section(title: 'Section 1') {
+        chapter(title: 'Chapter 1')
+        chapter(title: 'Chapter 2')
+        chapter(title: 'Chapter 3')
+            }
+    section(title: 'Section 2') {
+        chapter(title: 'Chapter 4')
+        chapter(title: 'Chapter 5')
+        chapter(title: 'Chapter 6')
+    }
+}
+println book
+```
+8. Ejecutamos y este es el resultado:
+```bash
+Book(title:Groovy en Action 2nd Edition, summary:Groovy in Action, Second Edition an more text, section:[Section(title:Section 1, chapters:[Chapter(title:Chapter 1), Chapter(title:Chapter 2), Chapter(title:Chapter 3)]), Section(title:Section 2, chapters:[Chapter(title:Chapter 4), Chapter(title:Chapter 5), Chapter(title:Chapter 6)])])
+
+Process finished with exit code 0
+```
+9. Agregamos unos `assert`, para validar los elementos
+a modo de objetos con respecto a las `class` definidas
+al principio:
+```groovy
+assert book.title == 'Groovy en Action 2nd Edition' // Referencia a la clase `Book`
+assert book.sections.size() == 2 // Referencia a la clase `Section`
+assert book.sections[0].title == 'Section 1' // Referencia a la clase `Section`
+assert book.sections[0].chapters.size() == 3 // Referencia a la clase `Chapter`
+```
+* Ejecuto y sale sin errores
