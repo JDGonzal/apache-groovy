@@ -8149,3 +8149,7 @@ assert book.sections[0].chapters.size() == 3 // Referencia a la clase `Chapter`
 >Pero solo quería darte el enlace a la documentación.
 >
 >Así que sabías que no estabas limitado solo al generador de Json y al generador de marcado.
+
+## Quiz 8: Builders Quiz
+
+![Quiz 8](images/section11-step_105_Quiz8.gif "Quiz 8")
