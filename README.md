@@ -8112,3 +8112,40 @@ assert book.sections[0].title == 'Section 1' // Referencia a la clase `Section`
 assert book.sections[0].chapters.size() == 3 // Referencia a la clase `Chapter`
 ```
 * Ejecuto y sale sin errores
+
+## Paso 105. List of Builders
+
+>[!NOTE]
+>En esta sección, hemos visto algunos ejemplos de los diferentes constructores que se incluyen en el lenguaje de programación Groovy, como `MarkupBuilder` y `JasonBuilder`.
+>
+>Ahora no tenemos tiempo para revisar cada constructor que existe, pero quiero señalarte rápidamente dónde puedes encontrar más información sobre los constructores disponibles en Groovy.
+>
+>Así que te vincularé a esta documentación.
+>Pero si vienes aquí y miras, podemos ver una lista de un montón de constructores diferentes.
+>Vemos nuestro constructor de marcado y nuestro `JasonBuilder` que ya hemos visto.
+>Y también hay constructores correspondientes llamados `StreamingMarkupBuilder` y `StreamingJsonBuilder`.
+>
+>Si no estás muy seguro de qué es eso, siempre puedes saltar a la API y hacer una búsqueda rápida.
+>
+>[![groovy-lang/api -> groovy.json -> StreamingJsonBuilder](images/section11-step_105_StreamingJsonBuilder-Doc.png "groovy-lang/api -> groovy.json -> StreamingJsonBuilder")](https://groovy-lang.org/api.html)
+>
+>Entonces, `StreamingJsonBuilder` Y si miras el ejemplo, aquí está la documentación, el generador de JSON de transmisión transmite directamente a un escritor sin ninguna estructura de datos de memoria.
+>
+>Entonces, si no necesitas modificar la estructura y quieres un enfoque más eficiente en el uso de la memoria, puedes
+>usar el generador de JSON de transmisión.
+>Entonces, podemos entrar aquí y mirar.
+>
+>También hay cosas para los nodos de Doms, un generador de Swing para crear GUI.
+>Entonces, si alguna vez creaste una GUI en Swing, Groovy te brinda un generador muy bueno para que puedas crearlas, lo cual es realmente genial.
+>También hay otros generadores aquí.
+>
+>Entonces, tenemos el generador de Swing.
+>
+>Si quieres crear archivos de compilación de Ant, puedes crearlos directamente en Groovy CLI.
+>
+>Hay un generador de gráficos de objetos bastante bueno y luego un generador de árboles de archivos para crear árboles de archivos.
+>Entonces, hay muchos más aquí.
+>También puedes escribir el tuyo propio.
+>Pero solo quería darte el enlace a la documentación.
+>
+>Así que sabías que no estabas limitado solo al generador de Json y al generador de marcado.
