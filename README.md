@@ -7712,9 +7712,9 @@ builder.books(){
     }
 }
 ```
-4. Regresamos al arcihvo **`html.groovy`**, para completar
+4. Regresamos al archivo **`html.groovy`**, para completar
 el método `builder.html()`, antes instanciamos la clase
-`Books` y luego completamos así el código:
+`Books` y luego ponemos este código:
 ```groovy
 import groovy.xml.MarkupBuilder
 
@@ -7759,7 +7759,7 @@ que veremos en pantalla:
 ![index.html](images/section11-step_101_html1.png "index.html")
 
 ### **3. Bonus** -> Usando un `FileWriter` escribe el contenido del `HTML` desde `MarkupBuilder` a un archivo.
-1. En la carpeta **"src"**, cramos la carpeta **"html"**.
+1. En la carpeta **"src"**, creamos la carpeta **"html"**.
 2. Agregamos una instanciación a `FileWriter` con el nombre
 `writer`, indicamos la ruta de almacenamiento y nombre de
 archivo con la respuesta:
@@ -7786,7 +7786,214 @@ de nombre `books.html` y lo vemos en un browser:
 >![html.groovy](images/section11-step_102_html.png "html.groovy")
 >
 >Pero en definitiva la que hice esta mucho mejor. Tal vez le
->quedó faltanto guardar en un archivo el resultado del archivo
->**`groovy.xml`**, pero fue mas elegante el uso de una
+>quedó faltando guardar en un archivo el resultado de
+>**`xml.groovy`**, pero fue mas elegante el uso de una
 >`class` con los valores para ambos procesos, sin repetir 
 >tanto código.
+
+## Paso 103. JSON Builder
+
+1. Usando el mismo [`IntelliJ`](#paso-15-hello-intellij), 
+en el mismo proyecto `builders-demo`, creamos una 
+`Groovy Script` de nombre `json`, dentro 
+de la carpeta **"src"**, completamos el script con esto:
+```groovy
+import groovy.json.JsonBuilder
+
+JsonBuilder builder = new JsonBuilder()
+
+builder.books(){
+
+}
+```
+2. Completamos el contenido del método `books()`:
+```groovy
+builder.books(){
+    book {
+        title 'Alicia en el Pais de las Maravillas'
+        isbn '978-84-37610-92-4'
+        author (first:'Lewis', last: 'Carroll', x :'@_Lewis_Carroll_' )
+        related 'Novela de fantasía', 'Escritor británico Charles Lutwidge Dodgson', 'Bajo el seudónimo de Lewis Carroll', 'Publicada en 1865'
+    }
+}
+
+println builder.toString()
+```
+3. Ejecutamos este _script_, pulimos el json en alguna
+herramienta de tipo _beautifer_ y esto es lo que se obtiene:
+```json
+{
+  "books": {
+    "book": {
+      "title": "Alicia en el Pais de las Maravillas",
+      "isbn": "978-84-37610-92-4",
+      "author": {
+        "first": "Lewis",
+        "last": "Carroll",
+        "x": "@_Lewis_Carroll_"
+      },
+      "related": [
+        "Novela de fantasía",
+        "Escritor británico Charles Lutwidge Dodgson",
+        "Bajo el seudónimo de Lewis Carroll",
+        "Publicada en 1865"
+      ]
+    }
+  }
+}
+
+Process finished with exit code 0
+```
+4. Agregamos otro `key` de nombre `book`, con la siguiente 
+información:
+```groovy
+builder.books(){
+    book {
+        title 'Alicia en el Pais de las Maravillas'
+        isbn '978-84-37610-92-4'
+        author (first:'Lewis', last: 'Carroll', x :'@_Lewis_Carroll_' )
+        related 'Novela de fantasía', 'Escritor británico Charles Lutwidge Dodgson', 'Bajo el seudónimo de Lewis Carroll', 'Publicada en 1865'
+    }
+    book {
+        title 'YO, JULIA'
+        isbn '978-84-08197-40-9'
+        author (first:'Santiago', last: 'Posterguillo', x :'@SPosteguillo' )
+        related 'Premio Planeta 2018 “Yo, Julia”.', 'Escritor Español', 'Autor de \'Los asesinos del emperador\' y de la trilogía de Publio Cornelio Escipión', 'Publicada en 2018'
+    }
+}
+```
+5. Al ejecutar esta es la respuesta obtenida, luego de 
+pasar por un _beautifer_:
+```json
+{
+  "books": {
+    "book": {
+      "title": "YO, JULIA",
+      "isbn": "978-84-08197-40-9",
+      "author": {
+        "first": "Santiago",
+        "last": "Posterguillo",
+        "x": "@SPosteguillo"
+      },
+      "related": [
+        "Premio Planeta 2018 “Yo, Julia”.",
+        "Escritor Español",
+        "Autor de 'Los asesinos del emperador' y de la trilogía de Publio Cornelio Escipión",
+        "Publicada en 2018"
+      ]
+    }
+  }
+}
+
+Process finished with exit code 0
+```
+>[!CAUTION]  
+>### Al usar dos veces la misma `key`, solo deja de respuesta el último, entonces se sugiere usar diferentes nombres.
+
+6. Cambio el nombre de ambas `key` de `book` por otros:
+```groovy
+builder.books(){
+    book001 {
+        title 'Alicia en el Pais de las Maravillas'
+        isbn '978-84-37610-92-4'
+        author (first:'Lewis', last: 'Carroll', x :'@_Lewis_Carroll_' )
+        related 'Novela de fantasía', 'Escritor británico Charles Lutwidge Dodgson', 'Bajo el seudónimo de Lewis Carroll', 'Publicada en 1865'
+    }
+    book002 {
+        title 'YO, JULIA'
+        isbn '978-84-08197-40-9'
+        author (first:'Santiago', last: 'Posterguillo', x :'@SPosteguillo' )
+        related 'Premio Planeta 2018 “Yo, Julia”.', 'Escritor Español', 'Autor de \'Los asesinos del emperador\' y de la trilogía de Publio Cornelio Escipión', 'Publicada en 2018'
+    }
+}
+```
+7. Ejecuto y paso por un _beautifer_ y obtengo esto:
+```json
+{
+  "books": {
+    "book001": {
+      "title": "Alicia en el Pais de las Maravillas",
+      "isbn": "978-84-37610-92-4",
+      "author": {
+        "first": "Lewis",
+        "last": "Carroll",
+        "x": "@_Lewis_Carroll_"
+      },
+      "related": [
+        "Novela de fantasía",
+        "Escritor británico Charles Lutwidge Dodgson",
+        "Bajo el seudónimo de Lewis Carroll",
+        "Publicada en 1865"
+      ]
+    },
+    "book002": {
+      "title": "YO, JULIA",
+      "isbn": "978-84-08197-40-9",
+      "author": {
+        "first": "Santiago",
+        "last": "Posterguillo",
+        "x": "@SPosteguillo"
+      },
+      "related": [
+        "Premio Planeta 2018 “Yo, Julia”.",
+        "Escritor Español",
+        "Autor de 'Los asesinos del emperador' y de la trilogía de Publio Cornelio Escipión",
+        "Publicada en 2018"
+      ]
+    }
+  }
+}
+
+Process finished with exit code 0
+```
+8. El `JsonBuilder` tiene un método de nombre 
+`toPrettyString()`, que vamos a utilizar en vez del simple
+`toString()` y al ejecutar obtenemos esto directamente sin 
+pasar por un _beautifer_ adicional:
+```json
+{
+    "books": {
+        "book001": {
+            "title": "Alicia en el Pais de las Maravillas",
+            "isbn": "978-84-37610-92-4",
+            "author": {
+                "first": "Lewis",
+                "last": "Carroll",
+                "x": "@_Lewis_Carroll_"
+            },
+            "related": [
+                "Novela de fantas\u00eda",
+                "Escritor brit\u00e1nico Charles Lutwidge Dodgson",
+                "Bajo el seud\u00f3nimo de Lewis Carroll",
+                "Publicada en 1865"
+            ]
+        },
+        "book002": {
+            "title": "YO, JULIA",
+            "isbn": "978-84-08197-40-9",
+            "author": {
+                "first": "Santiago",
+                "last": "Posterguillo",
+                "x": "@SPosteguillo"
+            },
+            "related": [
+                "Premio Planeta 2018 \u201cYo, Julia\u201d.",
+                "Escritor Espa\u00f1ol",
+                "Autor de 'Los asesinos del emperador' y de la trilog\u00eda de Publio Cornelio Escipi\u00f3n",
+                "Publicada en 2018"
+            ]
+        }
+    }
+}
+
+Process finished with exit code 0
+```
+9. Creamos la carpeta **"json"** dentro de la carpeta 
+**"src"**.
+10. Colocamos este código al final, para llevar el resultado
+a un archivo:
+```groovy
+new File('json/books.json').write(builder.toPrettyString())
+```
+11. Ejecutamos y abrimos el archivo **`books.json`**:  
+![books.json](images/section11-step_103_json.png "books.json")
