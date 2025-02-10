@@ -8153,3 +8153,42 @@ assert book.sections[0].chapters.size() == 3 // Referencia a la clase `Chapter`
 ## Quiz 8: Builders Quiz
 
 ![Quiz 8](images/section11-step_105_Quiz8.gif "Quiz 8")
+
+
+# Section 12: Working with REST Services
+
+## Paso 106. Intro
+
+>[!NOTE]  
+>Bienvenidos a la Sección 12, Trabajar con servicios `REST`, y seguiremos adelante.
+>
+>Al principio, iba a llamar a esto trabajar con servicios web, pero creo que realmente no vi la
+>necesidad de tener que lidiar con nada más en estos días.
+>
+>Estoy seguro de que hay sistemas heredados y, como saben, trabajamos con ellos en el trabajo todo el tiempo, donde hay que
+>lidiar con `SOAP`.
+>Pero creo que para las masas, nos centraremos en `REST`, así que intentaremos que este curso
+>sea lo más breve posible, aunque probablemente dure alrededor de 14 o 15 horas ahora.
+>Entonces.
+>
+>Trabajando con servicios `REST`, veremos `XML` y `JSON`.
+>Entonces, solo una revisión rápida sobre cómo podemos usar esos constructores para crear `XML` o `JSON`, pero también veremos
+>cómo podemos consumir eso.
+>
+>Entonces, si alguien nos envía `JSON` o `XML`, ¿cómo lo manejamos?
+>Y luego haremos un repaso rápido de nuestro `REST`.
+>Entonces, vamos a hablar sobre el método de solicitud `HTTP` o los verbos como get y post y qué significan y cómo los usamos, qué son los códigos de estado `HTTP` y dónde juegan en todo este
+>escenario.
+>
+>Hablaremos sobre la negociación de contenido.
+>Cuando comenzamos a trabajar con diferentes tipos de contenido, ¿cómo le preguntamos a un servidor o le decimos a un servidor qué le estamos
+>enviando? Luego, veremos cómo usar estas API basadas en `REST` en `Groovy`.
+>
+>Entonces, en realidad no hay nada integrado en el lenguaje para llamar a un punto final de `REST`, pero hay un gran proyecto de código abierto que realmente se ha convertido en uno de los estándares para usar `REST`.
+>Y es realmente genial y es muy fácil de usar.
+>
+>Entonces, veremos cómo incorporar ese proyecto a nuestro proyecto.
+>Y luego, ¿cómo lo usamos?
+>Y es muy fácil simplemente llamando a diferentes métodos, directamente desde tu código `Groovy`.
+>Entonces, veremos un ejercicio rápido para hacerlo por nuestra cuenta y eso
+>será todo.
