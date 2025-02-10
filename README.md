@@ -8192,3 +8192,151 @@ assert book.sections[0].chapters.size() == 3 // Referencia a la clase `Chapter`
 >Y es muy fácil simplemente llamando a diferentes métodos, directamente desde tu código `Groovy`.
 >Entonces, veremos un ejercicio rápido para hacerlo por nuestra cuenta y eso
 >será todo.
+
+## Paso 107. Working with XML
+
+>[!TIP]  
+>### Creamos la carpeta **"12-web-services"**, que usaremos en toda esta sección.
+
+1. Empezamos con [`IntelliJ`](#paso-15-hello-intellij), 
+creando un nuevo proyecto llamado `parsing`, de tipo 
+groovy en la misma carpeta **"12-web-services"**  
+![parsing-xml](images/section12-step_107_parsing-xml1.png "parsing-xml")
+2. Borramos el archivo **`Main.groovy`**.
+3. Creamos una `Groovy Script` de nombre `xml`, dentro 
+de la carpeta **"src"**, completamos el script con esto:
+```groovy
+import groovy.xml.MarkupBuilder
+
+MarkupBuilder builder = new MarkupBuilder()
+
+builder.sports {
+    sport(id:1){
+        name 'Baseball'
+    }
+    sport(id:2){
+        name 'Basketball'
+    }
+    sport(id:3){
+        name 'Football'
+    }
+    sport(id:4){
+        name 'Hokey'
+    }
+}
+```
+>[!NOTE]  
+>Una de las cosas que debemos saber hacer es leer y escribir datos.
+>En esta lección, veremos cómo leer y escribir datos XML.
+>
+>Para empezar, haremos un breve resumen de lo que hicimos en la sección del generador
+>para crear XML.
+>Tenemos aquí nuestro generador de marcado normal.
+>Tenemos nuestro generador en ejecución.
+>Un ejemplo muy trivial, tiene los deportes como nodo raíz.
+>Y luego, dentro de allí, tenemos un deporte para cada deporte.
+
+4. Añadimos otros elementos al objeto `builder` e 
+implementamos un `FileWriter`:
+```groovy
+import groovy.xml.MarkupBuilder
+
+FileWriter writer = new FileWriter('data/sports.xml')
+MarkupBuilder builder = new MarkupBuilder(writer)
+builder.doubleQuotes = true
+
+builder.sports {
+    ...
+}
+```
+5. Creamos dentro de la carpeta **"src"**, el directorio
+de nombre **"data"**.
+6. Ejecutamos este _script_ y revisamos el contenido de la
+ruta **"src/data"**:  
+![sports.xml](images/section12-step_107_parsing-xml2.png "sports.xml")
+7. Creamo otro `Groovy Script` de nombre `parsexml`, dentro 
+de la carpeta **"src"**, y completamos el script con esto:
+```groovy
+import groovy.xml.XmlSlurper
+
+def xml = '''
+    <sports>
+        <sport id="1">
+            <name>Football</name>
+        </sport>
+    </sports>
+'''
+
+def sports = new XmlSlurper().parseText(xml)
+```
+
+>[!NOTE]  
+>
+>[![groovy-lang/api -> groovy.xml -> XmlSlurper](images/section12-step_107_XmlSlurper-doc.png "groovy-lang/api -> groovy.xml -> XmlSlurper")](https://groovy-lang.org/api.html)
+>
+>Entonces, lo que podemos usar es algo llamado `XmlSlurper`.
+>Sé que es un nombre gracioso, `XmlSlurper` y Slurper tiene un montón de métodos diferentes.
+>
+>Entonces, antes de profundizar en eso, volvamos a la documentación y echemos un vistazo.
+>Entonces, la clase `XmlSlurper` se usa para analizar `XML` en un árbol de documentos que luego se puede recorrer de manera similar
+>a las expresiones `XPath`.
+>
+>Y entonces, si miramos aquí, hay un par de constructores diferentes.
+>Entonces, el constructor no vacío es el que estamos usando ahora.
+>Crea un servidor `XML` sin validación y sin reconocimiento de espacios de nombres.
+>
+>Entonces, hay ciertas situaciones en las que querría validar el `XML` o tener reconocimiento de espacios de nombres, lo cual
+>puede hacer con el constructor diferente y también puede pasar un lector `XML` o un analizador sexual aquí si lo necesita.
+>Entonces, simplemente estamos usando el constructor vacío y luego hay un montón de métodos diferentes realmente útiles
+>en él.
+>
+>No vamos a repasar todos estos, pero puedes revisar la documentación y aprender
+>cuáles son las diferentes capacidades de `XML` Slurper. Puedes hacer cosas como ignorar espacios en blanco y
+>luego tenemos todas estas anulaciones para analizar.
+>Entonces, digamos que queremos analizar un archivo, podríamos pasar un archivo, tal vez queremos un flujo de entrada real
+>o una cadena.
+>
+>Y luego está el texto de análisis.
+>Entonces, un método auxiliar para analizar el texto dado como `XML`.
+>Y eso es en realidad lo que vamos a usar.
+>Y en realidad, el resultado de eso es un resultado de ruta.}
+
+8. Agregamos esto al código y lo ejecutamos:
+```groovy
+println sports.getClass().getName()
+println sports.sport.name
+```
+* Este es el resultado en pantalla:
+```bash
+groovy.xml.slurpersupport.NodeChild
+Football
+
+Process finished with exit code 0
+```
+>[!NOTE]  
+>Entonces, como puede ver, tenemos una instancia de groovy dot util dot slurper support dot node child.
+>
+>Entonces, en realidad, tenemos un nodo, un nodo hijo aquí.
+>Entonces, nuevamente, una vez que tenemos esa raíz, podemos comenzar a recorrerla muy fácilmente.
+>No necesita escribir un montón de código realmente complicado para hacer algo tan simple como esto.
+9. Comentamos el código que hicimos.
+10. Ponemos este nuevo código con el uso directo del 
+archivo **`sports.xml`**, creado anteriomente:
+```groovy
+import groovy.xml.XmlSlurper
+
+/*
+...
+*/
+
+def sports = new XmlSlurper().parse('data/sports.xml')
+println sports
+println sports.sport[2].name
+```
+11. Ejecutamos y esto es lo que se obtiene:
+```bash
+BaseballBasketballFootballHokey
+Football
+
+Process finished with exit code 0
+```
