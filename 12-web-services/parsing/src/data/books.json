@@ -1,0 +1,34 @@
+{
+    "books": {
+        "book001": {
+            "title": "Alicia en el Pais de las Maravillas",
+            "isbn": "978-84-37610-92-4",
+            "author": {
+                "first": "Lewis",
+                "last": "Carroll",
+                "x": "@_Lewis_Carroll_"
+            },
+            "related": [
+                "Novela de fantas\u00eda",
+                "Escritor brit\u00e1nico Charles Lutwidge Dodgson",
+                "Bajo el seud\u00f3nimo de Lewis Carroll",
+                "Publicada en 1865"
+            ]
+        },
+        "book002": {
+            "title": "YO, JULIA",
+            "isbn": "978-84-08197-40-9",
+            "author": {
+                "first": "Santiago",
+                "last": "Posterguillo",
+                "x": "@SPosteguillo"
+            },
+            "related": [
+                "Premio Planeta 2018 \u201cYo, Julia\u201d.",
+                "Escritor Espa\u00f1ol",
+                "Autor de 'Los asesinos del emperador' y de la trilog\u00eda de Publio Cornelio Escipi\u00f3n",
+                "Publicada en 2018"
+            ]
+        }
+    }
+}

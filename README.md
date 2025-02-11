@@ -8340,3 +8340,157 @@ Football
 
 Process finished with exit code 0
 ```
+
+## Paso 108. Working with JSON
+
+>[!NOTE]  
+>
+>[![groovy-lang/api -> groovy.json -> JsonSlurper](images/section12-step_108_JsonSlurper-doc.png "groovy-lang/api -> groovy.json -> JsonSlurper")](https://groovy-lang.org/api.html)
+>
+>Al trabajar con servicios web, es importante entender cómo leer y escribir diferentes tipos
+>de datos.
+>
+>En esta lección, veremos cómo leer y escribir datos JSON.
+>Ya vimos cómo crear datos JSON en la sección de constructores, pero repasaremos
+>rápidamente cómo funciona esto aquí.
+>Luego veremos cómo leer esos datos.
+>Así como había un Slurper XML para leer datos XML, hay un Slurper JSON correspondiente en
+>el paquete Groovy JSON.
+>
+>Y realmente, para lo que se usa es para lo mismo: tomar texto, ya sea una cadena de texto o, por ejemplo, un archivo, y analizarlo para que podamos construir esos datos y movernos a través de ellos para encontrar
+>ejemplos específicos de datos o encontrar un nodo específico allí.
+>
+>A continuación, se incluye la documentación del Slurper JSON.
+>Puedes recorrerlo y leer un poco de qué se trata y luego ver todos los diferentes métodos que
+>están aquí.
+>Verás que hay métodos sobrecargados para analizar, de modo que podemos pasar un flujo de entrada a un lector.
+>Podríamos pasar un archivo en algún lugar.
+>Ahí está.
+>
+>Y luego también podemos analizar, por ejemplo, URL.
+>Entonces, si hubiera una URL que quisiéramos analizar que tuviera datos JSON, entonces también hay un método de análisis de texto que simplemente toma una cadena de texto, tal como había en el ejemplo de XML Slurper.
+>Entonces, volvamos a un proyecto aquí y esto debería parecer bastante familiar.
+
+1. Usando el  [`IntelliJ`](#paso-15-hello-intellij), 
+en el mismo proyecto `parsing`, creamos una 
+`Groovy Script` de nombre `json`, dentro 
+de la carpeta **"src"**, completamos el script con esto:
+```groovy
+import groovy.json.JsonBuilder
+
+JsonBuilder builder = new JsonBuilder()
+builder.books(){
+    book001 {
+        title 'Alicia en el Pais de las Maravillas'
+        isbn '978-84-37610-92-4'
+        author (first:'Lewis', last: 'Carroll', x :'@_Lewis_Carroll_' )
+        related 'Novela de fantasía', 'Escritor británico Charles Lutwidge Dodgson', 'Bajo el seudónimo de Lewis Carroll', 'Publicada en 1865'
+    }
+    book002 {
+        title 'YO, JULIA'
+        isbn '978-84-08197-40-9'
+        author (first:'Santiago', last: 'Posterguillo', x :'@SPosteguillo' )
+        related 'Premio Planeta 2018 “Yo, Julia”.', 'Escritor Español', 'Autor de \'Los asesinos del emperador\' y de la trilogía de Publio Cornelio Escipión', 'Publicada en 2018'
+    }
+}
+
+new File('data/books.json').write(builder.toPrettyString())
+```
+2. Ejecuto este _script_ , busco el archivo y esto es lo que
+obtengo:  
+![books.json](images/section12-step_108_parsing-json1.png "books.json")
+3. Creamos un `Groovy Script` de nombre `parseJSON`, y
+colocamos esto en el código:
+```groovy
+import groovy.json.JsonSlurper
+
+def books = '''
+{
+    "books": {
+        "book001": {
+            "title": "Alicia en el Pais de las Maravillas",
+            "isbn": "978-84-37610-92-4",
+            "author": {
+                "first": "Lewis",
+                "last": "Carroll",
+                "x": "@_Lewis_Carroll_"
+            },
+            "related": [
+                "Novela de fantas\\u00eda",
+                "Escritor brit\\u00e1nico Charles Lutwidge Dodgson",
+                "Bajo el seud\\u00f3nimo de Lewis Carroll",
+                "Publicada en 1865"
+            ]
+        }
+    }
+}
+'''
+
+JsonSlurper slurper = new JsonSlurper()
+def json = slurper.parseText(books)
+
+println json
+println json.getClass().getName()
+```
+4. Ejecutamos y este es el resultado:
+```bash
+[books:[book001:[title:Alicia en el Pais de las Maravillas, isbn:978-84-37610-92-4, author:[first:Lewis, last:Carroll, x:@_Lewis_Carroll_], related:[Novela de fantasía, Escritor británico Charles Lutwidge Dodgson, Bajo el seudónimo de Lewis Carroll, Publicada en 1865]]]]
+org.apache.groovy.json.internal.LazyMap
+
+Process finished with exit code 0
+```
+5. Comento los dos `println` y pongo otro con esto:  
+`println json.books.book001.title`  
+Ejecuto y obtengo esto:  
+`Alicia en el Pais de las Maravillas`
+6. Comentamos todo el código y empezamos de nuevo a escribir esto:
+```groovy
+import groovy.json.JsonSlurper
+
+/*
+...
+*/
+
+JsonSlurper slurper = new JsonSlurper()
+def json = slurper.parse(new File('data/books.json'))
+
+println json.books.book001
+println json.books.book002.title
+println json.books.book002.author
+println json.books.book002.related
+```
+7. Ejecuto y este es el resultado:
+```bash
+[title:Alicia en el Pais de las Maravillas, isbn:978-84-37610-92-4, author:[first:Lewis, last:Carroll, x:@_Lewis_Carroll_], related:[Novela de fantasía, Escritor británico Charles Lutwidge Dodgson, Bajo el seudónimo de Lewis Carroll, Publicada en 1865]]
+YO, JULIA
+[first:Santiago, last:Posterguillo, x:@SPosteguillo]
+[Premio Planeta 2018 “Yo, Julia”., Escritor Español, Autor de 'Los asesinos del emperador' y de la trilogía de Publio Cornelio Escipión, Publicada en 2018]
+
+Process finished with exit code 0
+```
+>[!NOTE]  
+>Ahora podemos empezar a tener el mismo tipo de estructura que teníamos antes, ¿no?
+>Tenemos ese mapa de datos de mapas, por lo que podemos recorrerlo fácilmente.
+>
+>Entonces, si quisiera, puedo decir imprimir línea.
+>Jason Dot books dot oops, dot current book.
+>Um, puedo entrar aquí y decir, dame el título, dame el autor, dame el relacionado.
+>Entonces, si sigo adelante y ejecuto esto, básicamente obtenemos una instancia de Slurper que pasa nuestro nuevo
+>archivo, que es el archivo que escribimos antes.
+>
+>Y solo lo estamos usando para obtener elementos específicos de ese archivo Json.
+>Entonces, aquí tenemos el título, aquí tenemos el autor con todos los atributos en él.
+>Si quisiéramos profundizar más, podemos decir, dame su nombre de usuario de Twitter.
+>Y en el último tenemos la lista de libros relacionados que estaban allí.
+>Así que eso es realmente todo lo que hay.
+>
+>Al igual que XML.
+>Esto es muy fácil de hacer.
+>Leer y escribir datos en Groovy, especialmente datos XML y JSON, es extremadamente fácil y especialmente a medida que
+>hoy en día comenzamos a trabajar con más servicios web, creando servicios, trabajando con clientes REST.
+>
+>Es tan bueno tener algo que funcione tan fácilmente.
+>Y sabes, si miras este código, probablemente puedas averiguar qué está sucediendo de inmediato.
+>No hay que buscar en los documentos de la API para averiguar qué diablos está sucediendo aquí.
+>Así que espero que haya sido de ayuda.
+ 
