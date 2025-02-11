@@ -8493,4 +8493,8 @@ Process finished with exit code 0
 >Y sabes, si miras este código, probablemente puedas averiguar qué está sucediendo de inmediato.
 >No hay que buscar en los documentos de la API para averiguar qué diablos está sucediendo aquí.
 >Así que espero que haya sido de ayuda.
+
+## Paso Quiz 9: Working with XML & JSON
+
+![](images/section12-step_108_Quiz9.gif "Quiz 9")
  
