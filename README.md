@@ -8629,3 +8629,9 @@ Process finished with exit code 0
 >Y entonces veremos un estado de 404 no encontrado allí.
 >Así que esa es solo una forma rápida de abrir una página web y echar un vistazo a los estados
 >que se devuelven para un recurso determinado.
+
+## Paso 111. Content Negotiation
+
+## Quiz 10: REST Concepts
+
+![Quiz 10: REST Concepts](images/section12-step_111Quiz10.gif "Quiz 10: REST Concepts ")
