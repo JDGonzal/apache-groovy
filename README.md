@@ -8497,4 +8497,135 @@ Process finished with exit code 0
 ## Paso Quiz 9: Working with XML & JSON
 
 ![](images/section12-step_108_Quiz9.gif "Quiz 9")
- 
+
+
+## Paso 109. HTTP Request Methods (Verbs)
+
+>[!NOTE]  
+>API.
+>
+>Es importante entender qué son los verbos HTTP y qué hacen.
+>Por eso, usamos verbos HTTP todo el tiempo y ni siquiera nos damos cuenta.
+>Por lo tanto, si abrimos un navegador y escribimos una dirección y luego presionamos Enter cuando se carga una página, en realidad estamos
+>usando el verbo HTTP `get`.
+>
+>Si voy a una página de contacto, estamos usando `get` nuevamente.
+>Pero si completo un formulario y hago clic en enviar, lo más probable es que estemos usando el verbo HTTP post.
+>Entonces, ¿qué son estos verbos y qué pueden hacer?
+>Bueno, en este gráfico tenemos un montón de métodos y rutas diferentes y algo así como
+>
+>![HTTP Verbs](images/section12-step_109_HTTP_Verbs.png "HTTPS Verbs")
+>
+>Hablemos de ellos.
+>
+>En el primero, el método Http es un `get`.
+>Por lo tanto, si visitáramos un recurso ubicado en la ruta barra post, eso indicaría a la aplicación
+>que obtenga todas las publicaciones en ese repositorio.
+>Si usáramos el método Http, `get` en la ruta barra `post` barra uno, eso le diría al servidor de la aplicación
+>que necesita obtener todas las publicaciones que tienen un ID de uno u obtener la publicación que tiene un ID de
+>uno.
+>Disculpe.
+>Entonces, eso es obtener una publicación específica.
+>
+>Si usamos el método Http `post` en la ruta barra `post` y le proporcionamos un cuerpo `Json` que contiene una
+>publicación.
+>Luego crearíamos una nueva publicación.
+>Si usamos el método, colocamos el mismo que usamos antes en las publicaciones slash one, entonces
+>actualizaríamos la publicación que tiene un ID de uno y nuevamente pasaríamos un objeto Json como cuerpo.
+>
+>Por último, si fuéramos a las publicaciones uno con el método `delete`, eliminaríamos esa publicación existente.
+>Así que puedes ver cómo esto comienza a ser realmente útil porque en.
+>Tratar.
+>
+>Y básicamente tenemos dos rutas diferentes aquí, ¿verdad?
+>Tenemos slash posts y luego, dependiendo del método que enviemos, realizaríamos dos acciones diferentes.
+>Ahora, si no hiciéramos eso, podrías tener una ruta de, digamos, slash get posts o slash list posts,
+>y luego tendrías una ruta de slash, create post y así sucesivamente.
+>Así que tendrías todos estos como locos como Uris por todos lados.
+>Mientras que esto lo hace muy.
+>
+>Es fácil observar y ver lo que está pasando y saber que, en función del verbo que pasamos, va a
+>hacer cosas diferentes.
+
+## Paso 110. HTTP Status Codes
+
+>[!NOTE]  
+>Otro tema importante en el mundo de la creación y el consumo de API web son los códigos de estado HTTP.
+>En la última lección, analizamos diferentes métodos de solicitud HTTP como get y post.
+>Cuando realizamos una solicitud utilizando uno de esos métodos, no queremos quedarnos en el limbo en cuanto al resultado
+>de nuestra solicitud.
+>Códigos de estado HTTP.
+>Nos ayudan a entender cuál es el estado de nuestra solicitud.
+>
+>Se dividen en los siguientes grupos.
+>* Tenemos códigos de estado del 100 al 200 que son básicamente informativos.
+>* El rango 200 es un estado de éxito.
+>* 300 generalmente implica algún tipo de redirección o nos dice que se ha movido algo.
+>* Los 400 generalmente se reservan para algún tipo de error, como un 404, que es, ya sabes, una página infame
+>no encontrada
+>* Y los 500 generalmente se dejan para errores del servidor.
+>
+>Analicemos algunos de los códigos de estado más comunes que verá en cada uno de estos grupos.
+>
+>Doscientos:
+>* 200 es un OK y básicamente indica que la solicitud se realizó correctamente.
+>* 201 nos permite saber que se creó algo.
+>* 204 básicamente indica que no hay contenido.
+>
+>![HTTP Status Code 2xx](images/section12-step_110_HTTP-StatusCode2xx.png "HTTP Status Code 2xx")
+>
+>Trescientos: 
+>* 300 Tenemos un 301.
+>Que se ha movido de forma permanente.
+>* El 304 básicamente dice que podemos solicitar lo que queremos y que podemos devolverte lo que estás solicitando.
+>Pero nada ha cambiado.
+>Por lo tanto, el 304 no se ha modificado.
+>* El 307 es una redirección temporal.
+>En este caso, la solicitud se puede repetir con otra URI.
+>Sin embargo, las solicitudes futuras aún pueden ir a esta, por lo que podemos recuperar ese recurso.
+>
+>![HTTP Status Code 3xx](images/section12-step_110_HTTP-StatusCode3xx.png "HTTP Status Code 3xx")
+>
+>Cuatrocientos:
+>* Por lo tanto, un 400 es una solicitud incorrecta.
+>El servidor no pudo entender la solicitud debido a una sintaxis incorrecta.
+>El cliente no pudo repetir esta solicitud sin cambiar algo en ella.
+>* Los códigos 401 y 403 se refieren a la autorización.
+>Básicamente, un 401 es una respuesta no autorizada y se debe utilizar en caso de autenticación incorrecta o faltante.
+>Mientras que una respuesta 403 prohibida se debe utilizar posteriormente cuando el usuario está autenticado pero no está autorizado
+>para realizar la operación de solicitud en un recurso determinado.
+>* Y, por último, el código 404 es un error no encontrado.
+>
+>![HTTP Status Code 4xx](images/section12-step_110_HTTP-StatusCode4xx.png "HTTP Status Code 4xx")
+>
+>Quinientos
+>* Y, por último, verás que el error 501 es un error interno del servidor 500.
+>El servidor encontró una condición inesperada que le impidió completar la solicitud y un
+>* 502 que es una puerta de enlace defectuosa.
+>
+>![HTTP Status Code 5xx](images/section12-step_110_HTTP-StatusCode5xx.png "HTTP Status Code 5xx")
+
+>[!WARNING]  
+>### El sitio o página [TheRealDanVega.com](www.therealdanvega.com), ya no existe.
+
+>[!NOTE]  
+>Bien, estoy aquí en mi sitio web y si estás en Chrome, si vas a inspeccionar Elemento y vamos
+>a la pestaña de red y simplemente actualizas el navegador aquí, vamos a ver un montón de información
+>aquí.
+>Tenemos una solicitud.
+>
+>Este es el nombre de la solicitud.
+>Puedes ver que el método aquí es `get`.
+>Y luego aquí está el código de estado `204`.
+>Entonces sabemos que es un OK.
+>Pudo obtener ese recurso.
+>
+>Aquí hay un `304` y básicamente dice que, bueno, este recurso en particular no ha sido modificado.
+>Entonces puedes ver todos los diferentes estados para los diferentes recursos en una página.
+>Digamos que vamos a una página que no se encontraría allí.
+>Podemos ver que es roja.
+>
+>Cualquier 400 o 500, creo que aparecerá como que algo salió mal aquí.
+>Y entonces veremos un estado de 404 no encontrado allí.
+>Así que esa es solo una forma rápida de abrir una página web y echar un vistazo a los estados
+>que se devuelven para un recurso determinado.
