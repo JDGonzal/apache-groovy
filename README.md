@@ -8635,3 +8635,139 @@ Process finished with exit code 0
 ## Quiz 10: REST Concepts
 
 ![Quiz 10: REST Concepts](images/section12-step_111Quiz10.gif "Quiz 10: REST Concepts ")
+
+
+## Paso 112. Using REST based APIs
+
+>[!WARNING]  
+>Este paso deja dos Recursos:
+>* [Http Builder ](https://github.com/jgritman/httpbuilder/)
+>* [~~Chuck Norris Internet Database~~](http://www.icndb.com/api/)
+>
+>Pero esta última ya no existe, dejo acá varias opciones para 
+>jugar y obterner respuestas de una API:
+>* [Animals and Nature](https://emojihub.yurace.pro/api/all/category/animals-and-nature)
+>* [Rick and Morty - Character](https://rickandmortyapi.com/api/character)
+>* [Pokemon Species](https://pokeapi.co/api/v2/pokemon-species/)
+
+1. Empezamos usando la carpeta ya existente de
+ **"12-web-services"**, para crear un proyecto con
+ [`IntelliJ`](#paso-15-hello-intellij) de nombre `rest`.  
+![New Project: rest](images/section12-step_112_rest1.png "New Project: rest")
+2. En la carpeta **"src"** borramos el archivo **`Main.groovy`**.
+3. Creamos dos `Groovy Script` en la carpeta **"src"**:
+    * `restclient`
+    * `simpleGET`
+4. En el archivo **`simpleGET.groovy`**, coloco este código:
+```groovy
+println 'https://groovy-lang.org'.toURL().text
+```
+* Le doy ejecutar y esta es la respuesta:  
+![](images/section12-step_112_rest2.png "")
+
+5. Vamos al archivo **`restclient.groovy`**, pongo 
+el código sugerido por el instructor, pero con los ajustes
+a un API que si esté funcionando:
+```groovy
+@Grab('org.codehouse.groovy.modules.http-builder:http-builder:0.7.1')
+
+import groovyx.net.http.RESTClient
+import groovyx.net.http.ContentType
+
+String base ='https://pokeapi.co/api/v2/'
+
+def restClient= new RESTClient(base)
+restClient.contentType = ContentType.JSON
+
+restClient.get(path: 'pokemon-species/'){response, json ->
+    println response.status
+    println json
+}
+```
+6. Ejecuto pero salen varios errores
+>[!TIP]  
+>### Consultando en Internet hallé la falla principal era la versión de groovy, que debe ser la `3.x`, entonces hice estos pasos:
+>1. En "`File`" seleccioné "`Project Structure...`".
+>2. Seleccioné "`Libraries`".
+>3. Borré la librería de `Groovy`, que estaba en la versión `4.x`.
+>4. Di clic en el botón `[OK]`.
+>5. En la parte superior aparece un error
+>```Diff
+>⚠️ Groovy SDK is not configured for module 'rest'
+>-Configure Goovy SDK
+>```
+>6. Al darle clic me lleva a una ventana para darle la
+>opción de "`Download`".
+>7. Seleccioné "`Configure...`".
+>8. En "`Version`", seleccioné la versión `3.x` y
+>clic en `[OK]`.
+>9. De nuevo clic en `[OK]`
+>10. Añadí el `@Grab` para `apache.ivy`, debajo del primer
+>`@Grab`:
+>```groovy
+>@Grab(group='org.apache.ivy', module='ivy', version='2.5.2')
+>```
+>11. Añadí en "`File`" -> "`Project Structure...`" -> "`Libraries`", otra "`From Maven...`"
+>12. Del tabulador `Grape` en el sitio  
+>[`MVN Repository, Apache Ivy » 2.5.2`](https://mvnrepository.com/artifact/org.apache.ivy/ivy/2.5.2),
+> copié el `group`.
+>13. Lo pegué en el cuadro de búsqueda y esperé hasta que
+>apareció la versión `2.5.2`
+>14. Clic a `[OK]` y de nuevo a `[OK]`.
+>15. Ejecuté y salió todo bien:
+>
+>![Versión de Groovy](images/section12-step_112_rest3.gif "Versión de Groovy")
+
+>[!TIP]  
+>Hice mas pruebas:
+>- Borrando la librería de `apache.ivy`, en 
+>"`Project Structure...`"
+>- Poniendo el `apache.ivy`, solo como un `@Grab`, 
+>
+>Pero finalmente funcionó de esta manera:
+>1. El código similar al del instructor:
+>```groovy
+>@Grab('org.codehouse.groovy.modules.http-builder:http-builder:0.7.1')
+>
+>import groovyx.net.http.RESTClient
+>import groovyx.net.http.ContentType
+>
+>String base ='https://pokeapi.co/api/v2/'
+>
+>def restClient= new RESTClient(base)
+>restClient.contentType = ContentType.JSON
+>
+>restClient.get(path: 'pokemon-species/'){response, json ->
+>    println response.status
+>    println json
+>}
+>```
+>2. Instalando las librerías de `apache.ivy` y
+>`codehaus.groovy.modules.http.builder`, en "`Project Structure...`"
+>3. Estas son las rutas de `MVN Repository`, para 
+>tomar el `Grape` o `@Grab`:
+>     * [Apache Ivy » 2.5.2](https://mvnrepository.com/artifact/org.apache.ivy/ivy/2.5.2)
+>     * [HTTP Client Framework For Groovy » 0.7.1](https://mvnrepository.com/artifact/org.codehaus.groovy.modules.http-builder/http-builder/0.7.1)
+>* Así sería el proceso en forma mas visual:  
+>![](images/section12-step_112_rest4.gif "")
+>
+>4. Al ejecutar esta es la respuesta:
+>```bash
+>200
+>[count:1025, next:https://pokeapi.co/api/v2/pokemon-species/?offset=20&limit=20, previous:null, results:[[name:bulbasaur, url:https://pokeapi.co/api/v2/pokemon-species/1/], [name:ivysaur, url:https://pokeapi.co/api/v2/pokemon-species/2/], [name:venusaur, url:https://pokeapi.co/api/v2/pokemon-species/3/], [name:charmander, url:https://pokeapi.co/api/v2/pokemon-species/4/], [name:charmeleon, url:https://pokeapi.co/api/v2/pokemon-species/5/], [name:charizard, url:https://pokeapi.co/api/v2/pokemon-species/6/], [name:squirtle, url:https://pokeapi.co/api/v2/pokemon-species/7/], [name:wartortle, url:https://pokeapi.co/api/v2/pokemon-species/8/], [name:blastoise, url:https://pokeapi.co/api/v2/pokemon-species/9/], [name:caterpie, url:https://pokeapi.co/api/v2/pokemon-species/10/], [name:metapod, url:https://pokeapi.co/api/v2/pokemon-species/11/], [name:butterfree, url:https://pokeapi.co/api/v2/pokemon-species/12/], [name:weedle, url:https://pokeapi.co/api/v2/pokemon-species/13/], [name:kakuna, url:https://pokeapi.co/api/v2/pokemon-species/14/], [name:beedrill, url:https://pokeapi.co/api/v2/pokemon-species/15/], [name:pidgey, url:https://pokeapi.co/api/v2/pokemon-species/16/], [name:pidgeotto, url:https://pokeapi.co/api/v2/pokemon-species/17/], [name:pidgeot, url:https://pokeapi.co/api/v2/pokemon-species/18/], [name:rattata, url:https://pokeapi.co/api/v2/pokemon-species/19/], [name:raticate, url:https://pokeapi.co/api/v2/pokemon-species/20/]]]
+>
+>Process finished with exit code 0
+>```
+
+7. Agrego otra variable de nombre `params`:
+```groovy
+def params = [firstName: 'Juan', lastName: 'Piza']
+```
+8. Lo incluyo en la opción `get`, como un `query`:
+```groovy
+restClient.get(path: 'pokemon-species/', query: params){response, json ->
+    ...
+}
+```
+9. Ejecuto, no hay cambios en la respuesta, pues este API
+no añade, pero es lo que hay.
