@@ -8771,3 +8771,324 @@ restClient.get(path: 'pokemon-species/', query: params){response, json ->
 ```
 9. Ejecuto, no hay cambios en la respuesta, pues este API
 no añade, pero es lo que hay.
+
+## 113. [Exercise] Using REST Based APIs
+>[!NOTE]  
+>Use a REST Service
+>
+>I want you to find a public REST service and try to use it. I would try and find one where you don't have to authenticate as it will be a little bit easier to consume. What public REST services did you find? What ones are your favorites?
+
+# Section 13: Working with the GDK
+
+## Paso 114. Intro
+
+>[!NOTE]  
+>Bienvenidos a la Sección 13, trabajando con el GCC.
+>GCC significa el kit de desarrollo Groovy.
+>
+>Y lo que realmente quería hacer era crear una sección donde se mostraran diferentes cosas
+>en el GCC que están disponibles para nosotros.
+>
+>Una de las razones por las que me encanta Groovy es porque hace que muchas cosas complejas sean muy fáciles.
+>Por eso pensé que esta era una buena manera de agrupar esos temas.
+>
+>### [The Groovy Development Kit](https://groovy-lang.org/groovy-dev-kit.html)
+>
+>Entonces, si miramos la documentación aquí, en realidad hay una sección para el kit de desarrollo Groovy,
+>y algunas de estas cosas aquí son de las que vamos a hablar.
+>
+>Entonces, cuando hablamos sobre el GCC, estamos hablando, por ejemplo, de trabajar con archivos y entrada y salida.
+>Entonces, vamos a aprender cómo crear archivos, manipularlos, crear y eliminar directorios trabajando
+>con el sistema de archivos, por así decirlo.
+>
+>* Veremos los subprocesos.
+>Los subprocesos son un poco complejos de usar en Java.
+>En Groovy, obtenemos algunas cosas interesantes del GCC que lo hacen realmente fácil de usar.
+>
+>* Veremos la programación de bases de datos con Groovy.
+>Entonces, si necesitamos conectarnos a una base de datos y hacer algo de SQL, ya sea creando algunas tablas o simplemente leyendo
+>datos de ella, veremos todo eso en esa lección y hablaremos sobre cómo conectarnos y
+>usar bases de datos.
+>
+>* Veremos las plantillas.
+>Las plantillas son realmente geniales, especialmente para cualquier tipo de texto de plantilla que deba reemplazarse, como, por ejemplo, para un correo electrónico que envía como notificación.
+>
+>* Y finalmente, veremos las fechas.
+>Las fechas en Groovy son realmente fáciles simplemente por la API que Groovy nos brinda.
+>Simplemente hace que trabajar con fechas sea realmente divertido y, a diferencia de otros lenguajes como Java, hace que sea mucho más fácil trabajar con ellas.
+>Entonces, también veremos las fechas y luego tendremos un cuestionario y tal vez un ejercicio.
+>
+>Todavía no estoy seguro, pero sí, espero que lo disfrutes.
+>Estos son algunos de los mejores ayudantes.
+>Espero que te diviertas.
+
+## Paso 115. Working with Files & I/O
+
+>[!NOTE]  
+>Cuando empiezas a escribir scripts o incluso aplicaciones completas, una de las cosas que eventualmente
+>vas a necesitar saber hacer es trabajar con el sistema de archivos.
+>
+>Java nos da la capacidad de hacerlo con los paquetes Java.io y Java Borneo.
+>Una cosa que siempre me pareció molesta con Java es que nosotros, como programadores, nos quedamos con la tarea propensa a errores de
+>limpiar y cerrar recursos.
+>En general.
+>
+>Hay muchos puntos débiles cuando se trabaja con archivos y E/S en Java.
+>Y, por supuesto, Groovy viene para facilitar esto.
+>El JDK nos proporciona un montón de métodos que nos permiten centrarnos en la lógica de la aplicación y no en
+>operaciones de bajo nivel.
+>
+>Así que estoy aquí en la documentación del JDK, y simplemente voy a bajar aquí y buscar archivo.
+>Y nuevamente, esto es todo lo que Groovy ha agregado a la API para nosotros.
+>Entonces, si miramos aquí, hay un montón de métodos de anexión que son realmente buenos.
+>Si solo quieres anexar texto a un archivo.
+>
+>Eh, veamos qué más tenemos aquí.
+>Hay formas de eliminar un directorio, crear un directorio temporal, eh, recorrer cada archivo
+>y cada directorio.
+>Y también puedes hacerlo de forma recursiva si lo necesitas.
+>Eh, y luego hay un montón de métodos realmente geniales que hacen que trabajar con archivos y directorios
+>sea mucho más fácil.
+>
+>Entonces, en este punto, solo quiero pasar a una demostración y comenzaremos a ver todas las características agradables
+>de trabajar con archivos y directorios.
+
+1. Empezamos por crear una carpeta de nombre **"13-gdk"**.
+2. Creamos un proyecto en esta nueva carpeta usando
+[`IntelliJ`](#paso-15-hello-intellij) de nombre `io`.  
+>![New Project: io](images/section13-step_114_io1.png "New Project: io")
+3. Como siempre en la carpeta **"src"** borramos el archivo
+**`Main.groovy`**.
+4. Creamos tres (3) `Groovy Script`:
+    * dirs
+    * files
+    * io
+5. Y un cuarto archivo de nombre **`test.txt`**.
+6. Nos ubicamos en el archivo **`files.groovy`**, y pongo este
+código inicial:
+```groovy
+// Create a new file
+def file = new File('dummy.txt')
+
+file.write('Este es un texto cualquiera\n')
+```
+* Ejecuto y esto es lo que obtengo:  
+![dummy.txt](images/section13-step_114_io2.png "dummy.txt")
+7. Agrego la función `append()`:
+```groovy
+// Add more Text
+file.append('y quiero continuar con otra línea\n')
+```
+* Ejecuto y obtengo esto:  
+![append dummy.txt](images/section13-step_114_io3.png "append dummy.txt")
+8. Añado código para leer el contenido y mostarlo en pantalla:
+```groovy
+// Read those lines
+List lines = file.readLines()
+lines.each {
+    println it
+}
+```
+* Ejecuto y este es el resultado:
+```text
+Este es un texto cualquiera
+y quiero continuar con otra línea
+
+Process finished with exit code 0
+```
+9. Seguimos en el archivo **`files.groovy`**, comentamos
+el `println` y ponemos este código:
+```groovy
+String currentDir = './'
+
+new File(currentDir).eachFile {
+    // Show all first
+    if (it.isFile()){
+        println it.name
+    }
+}
+```
+* Ejecutamos y este es el resultado:
+```bash
+dirs.groovy
+dummy.txt
+files.groovy
+io.groovy
+test.txt
+
+Process finished with exit code 0
+```
+10. Hacemos un par de ajustes:
+```groovy
+String currentDir = '../'
+
+new File(currentDir).eachFileRecurse {
+    // Show all first
+    if (it.isFile()){
+        println it.name
+    }
+}
+```
+* Y este el el resultado al ejecutar:
+```bash
+.gitignore
+.gitignore
+groovy_4_0_14.xml
+misc.xml
+modules.xml
+vcs.xml
+workspace.xml
+io.iml
+groovy-4.0.14-sources.jar
+groovy-4.0.14.jar
+...
+groovy-xml-4.0.14-sources.jar
+groovy-xml-4.0.14.jar
+dirs$_run_closure1.class
+dirs.class
+dummy.txt
+files$_run_closure1.class
+files.class
+io.class
+test.txt
+dirs.groovy
+dummy.txt
+files.groovy
+io.groovy
+test.txt
+
+Process finished with exit code 0
+```
+11. Comentamos los `println` existente y
+agregamos otro `File`, apuntando el directorio donde
+se ejecuta con `('.')`:
+```groovy
+new File('.').eachFile {
+    if (it.name.endsWith('.groovy')){
+        println it.name
+    }
+}
+```
+* Ejecuto y obtengo esto:
+```bash
+dirs.groovy
+files.groovy
+io.groovy
+
+Process finished with exit code 0
+```
+12. Nos pasamos al archivo **`dirs.groovy`** y ponemos este 
+código:
+```groovy
+String currentDir = '../../../'
+
+List hidden = []
+new File(currentDir).eachFile {
+    if(it.isDirectory()){
+        println it.name
+    }
+    if(it.isHidden()){
+        hidden << it.name
+    }
+}
+print 'Hidden: '
+println hidden
+```
+* Ejecutamos para ver esto:
+```bash
+.git
+.idea
+08-ObjectOrientedProgramming
+09-RuntimeMetaProgramming
+10-ast
+11-builders
+12-web-services
+13-gdk
+ASTTransformations
+ast_excercise
+classes
+Closures
+Collections-Excercise
+ControlStructures
+datatypes
+HelloWorld
+images
+scripts
+twitterdemo
+TwitterExercise
+Hidden: [.git]
+
+Process finished with exit code 0
+```
+13. Comentamos los `print` y `println`, para añadir este nuevo
+código:
+```groovy
+new File(currentDir).eachDir {
+    println it
+}
+```
+* Esta es la respuesta al ejecutar:
+```bash
+..\..\..\.git
+..\..\..\.idea
+..\..\..\08-ObjectOrientedProgramming
+..\..\..\09-RuntimeMetaProgramming
+..\..\..\10-ast
+..\..\..\11-builders
+..\..\..\12-web-services
+..\..\..\13-gdk
+..\..\..\ASTTransformations
+..\..\..\ast_excercise
+..\..\..\classes
+..\..\..\Closures
+..\..\..\Collections-Excercise
+..\..\..\ControlStructures
+..\..\..\datatypes
+..\..\..\HelloWorld
+..\..\..\images
+..\..\..\scripts
+..\..\..\twitterdemo
+..\..\..\TwitterExercise
+
+Process finished with exit code 0
+```
+14. Comentamos el `println`, y añadimos esto:
+```groovy
+def groovyCourseDir = new File(currentDir)
+println "${String.format("%.02f", groovyCourseDir.directorySize() / 1024 / 1024)} MB"
+```
+* Este sería el resultado, en mi caso:
+```bash
+374.18 MB
+
+Process finished with exit code 0
+```
+15. Creamos nuevos directorios:
+```groovy
+// Create New Directories
+new File ('dir1').mkdir()
+new File ('now/two/three').mkdirs()
+```
+* Ejeutamos y este es el resultado:  
+![New Directories](images/section13-step_114_io4.png "New Directories")
+
+16. Borrar un directorio:
+```groovy
+// Delete a Directory
+new File ('dir1').deleteDir()
+```
+17. Pasamos al archivo **`io.groovy`**, para hacer esto:
+```groovy
+print "Por favor Ingrese su deporte favorito: " // Se que dice `team` de `equipo`
+
+String sport = ''
+
+System.in.withReader {reader ->
+    sport = reader.readLine()
+}
+
+println ''
+println
+```
+* Se ejecuta, se completa al frente se la solicitud, y al 
+dar `[Enter]`, aparece la frase final.
