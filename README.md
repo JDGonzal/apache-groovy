@@ -9092,3 +9092,7 @@ println
 ```
 * Se ejecuta, se completa al frente se la solicitud, y al 
 dar `[Enter]`, aparece la frase final.
+
+## Paso Quiz 11: Working with Files & Directories
+
+![Quiz 11](images/section13-step_115Quiz11.gif "Quiz 11")
