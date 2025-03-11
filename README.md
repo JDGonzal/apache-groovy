@@ -9088,7 +9088,7 @@ System.in.withReader {reader ->
 }
 
 println ''
-println
+println " Tu deporte favorito es $sport"
 ```
 * Se ejecuta, se completa al frente se la solicitud, y al 
 dar `[Enter]`, aparece la frase final.
@@ -9096,3 +9096,147 @@ dar `[Enter]`, aparece la frase final.
 ## Paso Quiz 11: Working with Files & Directories
 
 ![Quiz 11](images/section13-step_115Quiz11.gif "Quiz 11")
+
+
+## Paso 116. Threads
+
+1. En la misma carpeta **"13-gdk"** , usando 
+[`IntelliJ`](#paso-15-hello-intellij) creamos el proyectode nombre `threads`, con al menos dos carpetas o `Package` de nombres, en la carpeta **"src"**:
+    * groovy
+    * java
+2. Borra el archivo de seimpre **`Main.groovy`**.
+3. Dentro de la carpeta **"src/groovy"**, tres archivos tipo
+`Groovy Script`:
+    * **`producer-consumer.groovy`**
+    * **`push-pop.groovy`**
+    * **`threads.groovy`**
+4. Dentro de la carpeta **"src/java"**, dos archivos tipo
+`Java Class`:
+    * **`Application.java`**
+    * **`RunnableDemo.java`**
+* Así se ve el proyecto hasta el momento:  
+![treads project](images/section13-step_116_threads1.png "treads project")
+
+5. Pongo esto en el archivo **`RunnableDemo.java`**:
+```java
+package java;
+
+public class RunnableDemo implements Runnable{
+    public RunnableDemo(){
+        // do stuff
+    }
+    @Override
+    public void run(){
+        // this is where our task would go
+    }
+}
+```
+6. Y esto en el archivo **`Application.java`**:
+```java
+package java;
+
+public class Application {
+    public static void main(String[] args){
+        RunnableDemo demo = new RunnableDemo();
+
+        Thread t = new Thread(demo);
+        t.start(); // calls run}
+        // Java 8
+        // Since Runnable is a functional interface we can make an instance with a lamda expression
+
+        // This is just the start of threads. I would encourage you to read u´on threads in Java if you want to learn more
+    }
+}
+```
+>[!NOTE]  
+>Entonces, aquí en la carpeta Java, tengo una demostración ejecutable, y para crear subprocesos en Java, necesitas
+>crear una clase que implemente la interfaz ejecutable.
+>Entonces, desde allí, tienes que anular el único método que tiene ejecutable, que se llama run.
+>Y aquí es donde realmente irá tu tarea.
+>Y necesitas tener cuidado con algunas cosas que estás haciendo allí y necesitas poder
+>capturar ciertas excepciones que se pueden lanzar.
+>Pero esta es tu clase principal.
+>
+>Entonces, dentro de tu aplicación, donde sea que estés usando esta clase.
+>Entonces, aquí en la línea seis, hemos creado una demostración ejecutable.
+>Demo es igual a nueva demostración ejecutable.
+>Lo que necesitamos hacer es crear un subproceso.
+>Entonces, estamos creando un nuevo subproceso y lo estamos pasando.
+>La clase que implementó Runnable.
+>Desde allí podemos llamar a un método start y todo sigue su curso.
+>
+>Ahora hice algunos comentarios aquí porque este proceso se simplifica un poco en Java 8.
+>Como Runnable es una interfaz funcional, podemos crear una instancia con una expresión lambda.
+>Así que obtienes mucho código más conciso en Java 8.
+>De nuevo, esto es solo el comienzo de los hilos.
+>Definitivamente te recomiendo que leas sobre los hilos en Java si quieres aprender más sobre ellos.
+
+7. Empezamos con el archivo **`threads.groovy`** con esto:
+```groovy
+package groovy
+
+def t = new Thread({/* do something */})
+t.start()
+```
+>[!NOTE]  
+>![Class Thread](images/section13-step_116_threds-doc.png "Class Thread")
+>
+>Quiero adentrarme en Gdk y observar la clase de subproceso.
+>
+>Entonces, cuando veas la clase de subproceso, verás algunos métodos estáticos.
+>Y nuevamente, métodos estáticos.
+>No creo que los hayamos cubierto demasiado todavía.
+>
+>Un método estático simplemente significa que podemos llamar a este método sin crear una instancia de la clase.
+>Entonces, vemos que hay un inicio.
+>Un inicio que acepta un nombre.
+>Y luego hay otros dos.
+>Iniciar daemon e iniciar daemon con un nombre.
+
+8. Otra forma es en el mismo archivo **`threads.groovy`**,
+con este código:
+```groovy
+Thread.start { /* do something */}
+Thread.start('thread-name') { /* do something */}
+
+Thread.startDaemon { /* do something */}
+Thread.startDaemon ('thread-name') { /* do something */}
+```
+9. Seguimos en el arhivo **`push-pop.groovy`**, con este
+código:
+```groovy
+package groovy
+
+List numbers =[]
+
+// push
+print 'push:\t\t '
+10.times{
+    print "${it}, "
+    numbers << it
+}
+println ''
+println "numbers:\t ${ numbers }"
+
+// pop
+print 'pop:\t\t '
+for (i in 9..0){
+    print "${i}, "
+    numbers.pop()
+}
+println ''
+println "numbers:\t ${ numbers }"
+```
+10. Ejecutamos y este es el resultado:
+```bash
+push:		 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
+numbers:	 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+pop:		 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 
+numbers:	 []
+
+Process finished with exit code 0
+```
+11. Pasamos al archivo **`producer-consumer.groovy`** con esto:
+```groovy
+
+```
