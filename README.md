@@ -9101,10 +9101,10 @@ dar `[Enter]`, aparece la frase final.
 ## Paso 116. Threads
 
 1. En la misma carpeta **"13-gdk"** , usando 
-[`IntelliJ`](#paso-15-hello-intellij) creamos el proyectode nombre `threads`, con al menos dos carpetas o `Package` de nombres, en la carpeta **"src"**:
+[`IntelliJ`](#paso-15-hello-intellij) creamos el proyecto de nombre `threads`, con al menos dos carpetas o `Package`, en la carpeta **"src"**:
     * groovy
     * java
-2. Borra el archivo de seimpre **`Main.groovy`**.
+2. Borra el archivo de siempre **`Main.groovy`**.
 3. Dentro de la carpeta **"src/groovy"**, tres archivos tipo
 `Groovy Script`:
     * **`producer-consumer.groovy`**
@@ -9238,5 +9238,142 @@ Process finished with exit code 0
 ```
 11. Pasamos al archivo **`producer-consumer.groovy`** con esto:
 ```groovy
+package groovy
 
+import java.util.concurrent.BlockingQueue
+import java.util.concurrent.LinkedBlockingQueue
+
+BlockingQueue sharedQueue = [] as LinkedBlockingQueue
+
+Thread.start ('push'){
+    10.times {
+        try{
+            println "${Thread.currentThread().name}\t: ${it}"
+            sharedQueue << it
+            sleep 100
+        } catch (InterruptedException ignore){
+            // do something with this
+        }
+    }
+}
+
+Thread.start('pop'){
+    for( i in 9..0){
+        sleep 200
+        println "${Thread.currentThread().name}\t: ${sharedQueue.take()}"
+    }
+}
 ```
+12. Al ejecutarlo obtenemos esto:
+```bash
+push	: 0
+push	: 1
+pop	: 0
+push	: 2
+push	: 3
+pop	: 1
+push	: 4
+push	: 5
+pop	: 2
+push	: 6
+push	: 7
+pop	: 3
+push	: 8
+push	: 9
+pop	: 4
+pop	: 5
+pop	: 6
+pop	: 7
+pop	: 8
+pop	: 9
+
+Process finished with exit code 0
+```
+
+## Paso 117a. Requisito previo tener MySQL local
+
+>[!IMPORTANT]  
+>### Instalación de MySQL Server de forma local
+>0. En esta ruta dejo el instalador de MySQL version 5.6.26
+>[MySQL](https://drive.google.com/drive/folders/1FUMpI6DMPVLwp3ByKq73mLN7tfJH5ZZv?usp=sharing)
+>
+>
+>1. Lo primero es "`I accept the license terms`" y el
+>botón `[Next]`:  
+>![paso 1](images/section13-step_117_MySQL-Install1.png "paso 1")
+>
+>
+>2. Luego dejo `Developer Default` y el botón `[Next]`:  
+>![paso 2](images/section13-step_117_MySQL-Install2.png "paso 2")
+>
+>
+>3. En la ventana de "`Check Requirements`", se presiona
+>el botón `[Execute]`:  
+>![paso 3](images/section13-step_117_MySQL-Install3.png "paso 3")
+>
+>
+>* Allí debe instalar varios productos que son en su mayoría 
+>de `Microsoft`.
+>
+>
+>4. En la ventana "`Installation`", darle al botón
+>`[Execute]`, y dejar que el proceso siga:  
+>![paso 4](images/section13-step_117_MySQL-Install4.png "paso 4")
+>
+>
+>5. En "`Product Configuration`", al botón `[Next]`:  
+>![paso 5](images/section13-step_117_MySQL-Install5.png "paso 5")
+>
+>
+>6. Empieza con "`Type and Networking`", activar el cuadro
+>de `Show Advanced Options` y luego `[Next]`:  
+>![paso 6](images/section13-step_117_MySQL-Install6.png "paso 6")
+>
+>
+>7. En "`Accounts and Roles`", pon una contraseña básica, 
+>por ejemplo `qwer1234`, presiona `[Add User]`, con el 
+>`Username` de `root` y la contraseña igual `qwer1234`:  
+>![paso 7](images/section13-step_117_MySQL-Install7.png "paso 7")
+>
+>
+>
+>
+>
+>
+>8. El resto de ventanas no tiene cambio, solo darle
+>`[Next]`, hasta llegar a la ventana "`Apply Server Configuration`", para el botón `[Finish]`:  
+>![paso 8](images/section13-step_117_MySQL-Install8.png "paso 8")
+>
+>
+>9. Probamos y llegamos al final para que se ejecute el 
+>`MySQL Workbench`, herramienta básica para interactuar con 
+>el Servidor de `MySQL`:  
+>![paso 9](images/section13-step_117_MySQL-Install9.png "paso 9")
+>
+>
+>### `MySQL Workbench` o cualquier herramienta para interactuar con el servidor de `MySQL`
+>
+>1. En mi caso dejo la herramienta por defecto la de 
+>`MySQL Workbench`:  
+>![MySQL Workbench 1](images/section13-step_117_MySQL-Workbench1.png "MySQL Workbench 1")
+>
+>2. Reescribo la contraseña para conectarme e ingresar:  
+>![MySQL Workbench 2](images/section13-step_117_MySQL-Workbench2.png "MySQL Workbench 2")
+>
+>3. Por defecto existe una base de datos de nombre
+>`sakila`, escribimos este comando en el cuadro de 
+>`Query 1`:
+>```sql
+>USE sakila;
+>SELECT * FROM actor;
+>```
+>
+>* Arriba el botón de ejecutar es como un "rayo"(⚡):  
+>![MySQL Workbench 3](images/section13-step_117_MySQL-Workbench3.png "MySQL Workbench 3")
+
+>[!TIP]  
+>Este es el video completo del proceso de instalación
+>y prueba de conexión al servidor con la herramienta de
+>`MySQL Workbench`:
+>
+>![MySQL full install](images/section13-step_117_MySQL-Install.gif "MySQL full install")
