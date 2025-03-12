@@ -9377,3 +9377,206 @@ Process finished with exit code 0
 >`MySQL Workbench`:
 >
 >![MySQL full install](images/section13-step_117_MySQL-Install.gif "MySQL full install")
+
+
+## Paso 117b. Database Programming with Groovy
+
+>[!NOTE]  
+>Trabajar con bases de datos en Java usando Jdbc puede ser extremadamente frustrante a veces.
+>
+>La mayoría de las veces, solo queremos crear una conexión a una base de datos y luego manipular datos o
+>incluso consultarlos.
+>Intentar lograr algo tan trivial como eso en Java requiere mucho código
+>complicado y detallado.
+>
+>Entra Groovy con lo que a menudo se describe como SQL Groovy.
+>Un Jdbc mejor.
+>En esta lección, aprenderemos cómo conectarnos a una base de datos, crear un esquema, insertar algunos datos
+>y consultarlos.
+>
+>![groovy.sql](images/section13-step_117_groovy_sql-doc.png "groovy.sql")
+>
+>Intentar lograr algo tan trivial como eso en Java requiere mucho código complicado y detallado.
+>Entra Groovy con lo que a menudo se describe como Groovy SQL.
+>Un Jdbc mejor.
+>
+>En esta lección, aprenderemos cómo conectarse a una base de datos, crear un esquema, insertar algunos datos
+>y consultarlos.
+>
+>Entonces, aquí estoy en la API Groovy y vamos a saltar hacia abajo y veremos el paquete Groovy SQL.
+>Y hay muchas cosas aquí para que las veas.
+>Pero principalmente hoy nos centraremos en la clase SQL.
+>Y por eso la clase SQL proporciona mucha funcionalidad.
+>
+>Cuando quieres conectarte a una base de datos, consultarla, insertar algunos datos, etcétera.
+>Y como ves aquí en la documentación, solo dice una fachada sobre las API Jdbc normales de Java.
+>De modo que realmente se trata de tomar ese JDBC con el que a veces resulta frustrante trabajar y hacerlo realmente fácil
+>con un conjunto de métodos útiles.
+
+1. En la misma carpeta **"13-gdk"** , usando 
+[`IntelliJ`](#paso-15-hello-intellij) creamos un nuevo 
+proyecto : 
+    * Tipo: `Java`.
+    * Nombre: `db`.
+    * Build system: `Gradle`.
+    * JDK: Cualquier versión de `1.8.x`.
+    * Gradle DSL: `Groovy`.
+    * Gradle distribution: `Local installation`.  
+    En mi caso está la `8.6`.
+    * Desactivo: `Use These settings for future projects`.
+    * GroupId: `com.domain_name`.
+
+![New Project: db](images/section13-step_117b_db1.png "New Project: db")
+
+2. Creamos dos nuevos `Directory`, dentro de **"src"**:
+    * `main/groovy`
+    * `test/groovy`
+
+3. Creamos dentro de **"main/groovy"**, el archivo 
+**`sakila.groovy`**.
+
+>[!WARNING]  
+>Puede salir un mensaje de `Groovy SDK is not configured for module 'db.main'`, presiona clic en `Configure Groovy SDK...`.
+>
+>A la ventana de `Setup Library`, Selecciono el botón de 
+>`[Create]` e instalo de mi local la versión `3.0.0`, 
+>![Setup Groovy](images/section13-step_117b_db2.png "Setup Groovy")
+
+4. Ponemos en **`sakila.groovy`**, este código:
+```groovy
+import groovy.sql.GroovyRowResult
+import groovy.sql.Sql
+
+String username = 'root'
+String password = 'qwer1234'
+
+def sql = Sql.newInstance('jdbc:mysql://localhost:3306/sakila', username, password, 'com.mysql.jdbc.Driver')
+println 'Connected!'
+
+// calling close manually
+sql.close()
+```
+
+5. Edito el archivo de la raíz del proyecto de nombre
+**`settings.gradle`**:
+```gradle
+rootProject.name = 'com.domain_name'
+```
+6. Editamos el archivo **`build.gradle`** de la raíz:
+```gradle
+group = 'com.domain_name'
+version = '1.0-SNAPSHOT'
+
+apply plugin: 'groovy'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all
+    implementation 'org.codehaus.groovy:groovy-all:3.0.7'
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    implementation 'mysql:mysql-connector-java:5.1.49'
+
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+```
+* De estas rutas tomé las dependencias:
+    * [Apache Groovy » 3.0.7](https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all/3.0.7)
+    * [MySQL Connector Java » 5.1.49](https://mvnrepository.com/artifact/mysql/mysql-connector-java/5.1.49)
+
+7. Me ubico en el archivo **`sakila.groovy`** y lo 
+ejecutamos 
+* Este proceso se demora un buen rato, por que está
+descargando las dependencias:  
+![Descargando dependencias](images/section13-step_117b_db3.png "Descargando dependencias")
+
+8. A veces aparecen errores, así que solamante:
+    * Despliego el `Gradle` (🐘).
+    * Le doy al botón de refresacar
+    * Vuelvo y ejecuto el **`sakila.groovy`** 
+* ![Refresh Gradle](images/section13-step_117b_db4.png "Refresh Gradle")
+
+9. Añado este código antes de `sql.close()`:
+```groovy
+// Delete `users` table before to start
+sql.execute('DROP TABLE IF EXISTS users;')
+
+def tableList = sql.rows('SHOW TABLES;')
+def count =0
+tableList.each {
+    count +=1
+}
+println "Total of tables are ${count}"
+
+// create schema
+sql.execute('''
+CREATE TABLE users(
+    id INT NOT NULL,
+    username VARCHAR(45) NOT NULL,
+    bio VARCHAR(45) NULL,
+    PRIMARY KEY (id)
+);
+''')
+
+tableList = sql.rows('SHOW TABLES;')
+count =0
+tableList.each {
+    count +=1
+}
+println "Total of tables are ${count}"
+```
+10. Ejecuto y este es el resultado obtenido:
+```bash
+Connected!
+Total of tables are 23
+Total of tables are 24
+
+Process finished with exit code 0
+```
+* Es decir aparece una nueva tabla 
+
+11. Un par de ejemplos de como se puede insertar datos
+en la tabla `users`:
+```groovy
+// create some data
+sql.execute('''
+    INSERT INTO users (id, username, bio) 
+    VALUES(1,'JPiza', 'QA Student');
+''')
+
+def sakilaUser = [id:2, username: 'foo', bio: 'foo']
+sql.execute("""
+    INSERT INTO users (id, username, bio) 
+    VALUES(${sakilaUser.id}, ${sakilaUser.username}, ${sakilaUser.bio});
+""")
+```
+12. Revisamos el contenido de la tabla `users`:
+```groovy
+// Checkig the `users` table
+List<GroovyRowResult> rows = sql.rows('SELECT * FROM users;')
+println rows
+```
+13. Al ejecutarlo esto es lo que aparece:
+```bash
+Connected!
+Total of tables are 23
+Total of tables are 24
+[[id:1, username:JPiza, bio:QA Student], [id:2, username:foo, bio:foo]]
+
+Process finished with exit code 0
+```
+14. Otra manera de consulta y mostrar sería:
+```groovy
+sql.eachRow('SELECT * FROM users;'){ row ->
+    println "Sakila: ${row.username}"
+}
+```
