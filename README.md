@@ -9580,3 +9580,133 @@ sql.eachRow('SELECT * FROM users;'){ row ->
     println "Sakila: ${row.username}"
 }
 ```
+
+## Paso 118. [Exercise] Reading from a db & Writing to a File
+
+>[!NOTE]  
+>[Ejercicio] Leer de una base de datos y escribir en un archivo
+>* Programación de bases de datos con Groovy
+>   * Crear un script que se conecte a cualquier tipo de base de datos
+>   * Crear una nueva tabla en esa base de datos con algunos campos
+>   * Escribir datos iniciales en esa tabla (solo se necesitan unas pocas filas)
+>
+>* Trabajar con archivos
+>   * Usar el mismo script para leer las filas de esa tabla
+>   * Tome el resultado de esa lectura y escriba estas filas en un archivo CSV
+
+## Paso 119. [Exercise Review] Reading from a db & Writing to a File
+
+1. En la misma carpeta **"13-gdk"** , usando 
+[`IntelliJ`](#paso-15-hello-intellij) creamos un nuevo 
+proyecto : 
+    * Tipo: `Java`.
+    * Nombre: `gdk-exercise`.
+    * Build system: `Gradle`.
+    * JDK: Cualquier versión de `1.8.x`.
+    * Gradle DSL: `Groovy`.
+    * Gradle distribution: `Local installation`.  
+    En mi caso está la `8.6`.
+    * Desactivo: `Use These settings for future projects`.
+    * GroupId: `com.domain_name`.
+
+![New Project: db](images/section13-step_119_gdk-exercise1.png "New Project: db")
+
+2. Creamos dos nuevos `Directory`, dentro de **"src"**:
+    * `main/groovy`
+    * `test/groovy`
+
+3. Creamos dentro de **"main/groovy"**, el archivo 
+**`app.groovy`**.
+
+>[!WARNING]  
+>Puede salir un mensaje de `Groovy SDK is not configured for module 'gdk-exercise.main'`, presiona clic en `Configure Groovy SDK...`.
+>
+>A la ventana de `Setup Library`, Selecciono el botón de 
+>`[Create]` e instalo de mi local la versión `3.0.0`, 
+>![Setup Groovy 3.0.0](images/section13-step_119_gdk-exercise2.gif "Setup Groovy 3.0.0")
+
+4. Abrimos el archivo **`build.gradle`** y le hacemos unos
+ajustes:
+```gradle
+group = 'com.domain_name'
+version = '1.0-SNAPSHOT'
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all
+    implementation 'org.codehaus.groovy:groovy-all:3.0.7'
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    implementation 'mysql:mysql-connector-java:5.1.49'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+```
+5. Añadimos código en el archio **`app.groovy`**:
+```groovy
+import groovy.sql.GroovyRowResult
+import groovy.sql.Sql
+
+String username = 'root'
+String password = 'qwer1234'
+
+def sql = Sql.newInstance('jdbc:mysql://localhost:3306/sakila', username, password, 'com.mysql.jdbc.Driver')
+println 'Connected!'
+
+// Delete `users` table before to start
+sql.execute('DROP TABLE IF EXISTS users;')
+
+// create schema
+sql.execute('''
+CREATE TABLE users(
+    id INT NOT NULL,
+    username VARCHAR(45) NOT NULL,
+    name VARCHAR(45) NULL,
+    PRIMARY KEY (id)
+);
+''')
+
+// create some data
+sql.execute('''
+    INSERT INTO users (id, username, name) 
+    VALUES
+    (1, 'jpiza', 'Juan Piza'),
+    (2, 'samuel', 'Samuel González'),
+    (3, 'timmy', 'Timoty González'),
+    (4, 'sofia', 'Sofía González'),
+    (5, 'milagros', 'Milagros Pérez');
+''')
+
+// calling close manually
+sql.close()
+```
+6. Ejecutamos y es muy probable que nos salga un error:
+* Abrimos el botón de `Gradle` `[🐘]`.
+* Luego el botón de refrescar `[♻️]`. 
+* Por último nos ubicamos de nuevo en el 
+archivo **`app.groovy`**, y le damos ejecutar `[▶️]`.
+
+![Gradle->Refresh](images/section13-step_119_gdk-exercise3.gif "Gradle->Refresh")
+
+7. Agrego antes de `sql.close()`, el código para 
+leer todos los registros de `users`, y guardarlos en el 
+archivo **`sakila.csv`**:
+```groovy
+// crate a new file to hold our users in and put in the header values
+def file = new File('sakila.csv')
+
+// adding the header
+file.write("id,username,name\n")
+
+// query, reading each row and writing in file
+sql.eachRow('SELECT * FROM users'){ row->
+    file.append("${row.id},${row.username},${row.name}\n")
+}
+```
+8. Ejecuto, Abro el archivo y esta es la imagen del archivo:  
+![sakila.csv](images/section13-step_119_gdk-exercise4.png "sakila.csv")
