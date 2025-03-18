@@ -10039,3 +10039,120 @@ println now.toZonedDateTime()
 THURSDAY
 2025-10-30T00:00-05:00[America/Bogota]
 ```
+
+# Section 14: Bonus
+
+## Paso 122. Contribute to Groovy
+
+>[!NOTE]  
+>Recursos:
+>* [Getting Involved](https://www.groovy-lang.org/contribute.html)
+>* [github:groovy](https://github.com/apache/groovy)
+>* [Invoke dynamic support](https://www.groovy-lang.org/indy.html)
+>
+>En esta lección, quiero hablar un poco sobre cómo contribuir al proyecto Groovy.
+>Ya hemos completado este curso.
+>Nos encanta todo lo que Groovy puede hacer.
+>Y una de las cosas que hace a Groovy tan especial es que es un proyecto gratuito y de código abierto.
+>
+>Así que si alguna vez has querido participar en un proyecto de código abierto que te gusta mucho y que te resulta útil, y quieres encontrar una manera de contribuir, esta es tu oportunidad.
+>Hoy vamos a repasar un par de cosas que puedes hacer para contribuir a la comunidad Groovy.
+>Estamos aquí en el sitio web principal y vamos a la pestaña de la comunidad.
+>Y justo debajo hay una sección de contribuciones, así que vayamos a contribuir.
+>
+>Así que, cuando la gente piensa en contribuir a proyectos de código abierto, siempre suele pensar primero en escribir código. Y aunque eso es algo que puedes hacer, hay muchas más cosas que puedes hacer para contribuir al lenguaje.
+>Aquí tienes una página completa con temas que podemos repasar.
+>Una cosa que puedes hacer es unirte a las listas de correo.
+>
+>Si empiezas a dominar Groovy y te has encontrado con problemas y sabes cómo solucionarlos, únete a la lista de correo, averigua si alguien tuvo un problema similar al tuyo y ayúdalo a resolverlo.
+>Todos hemos pasado por eso alguna vez y sabemos lo que se siente la impotencia de no saber cómo hacer algo.
+>Así que sigue adelante y ayúdalos.
+>Puedes hacerlo en la lista de correo.
+>O incluso si encuentras preguntas en StackOverflow, siempre es un placer ayudar a la gente de esa manera.
+>Otra cosa que puedes hacer es reportar problemas.
+>
+>Así que los ingenieros que forman parte del proyecto Groovy no pueden solucionar un problema si no saben que existe.
+>Si encuentras un problema, te unes a la lista de correo, pides ayuda y la gente parece pensar que es un error.
+>Entonces puedes reportarlo y solucionarlo tú mismo.
+>Reporta el problema para que lo sepan y puedan solucionarlo.
+>Otra cosa que puedes hacer es mejorar la documentación.
+>
+>Si ves algo incorrecto en la documentación, incluso algo tan simple como una falta de ortografía, puedes mejorarlo.
+>Aquí tienes información.
+>También hay una entrada de blog que te da detalles sobre cómo hacerlo.
+>Y finalmente, podemos contribuir con código.
+>Así que, si empiezas a escribir código Groovy con eficiencia y comprendes los diferentes paquetes y subproyectos (que forman parte del código fuente Groovy), podemos contribuir con código.
+>
+>Aquí hay información, pero también voy a pasar al repositorio principal de Groovy en GitHub.
+>También hay información aquí.
+>Lo primero que queremos hacer es revisar esto.
+>Necesitas saber un poco sobre Git si quieres contribuir, ya que vas a tener que enviar una solicitud de extracción.
+>
+>Pero solo vamos a entrar y simplemente obtendrás "clon", agregarás el repositorio que esté aquí y lo descargarás.
+>De hecho, ya lo descargué, así que voy aquí y podemos acceder a Groovy.
+>
+>Y ese es el proyecto principal de Groovy.
+>Si te fijas en eso...
+>Y luego mira aquí, todo es el mismo código fuente.
+>Una vez hecho esto, abriré ese proyecto en IntelliJ.
+>Así que tenemos un proyecto normal con el que podemos trabajar.
+>Esto es algo a lo que estamos acostumbrados.
+>
+>Aquí hay un archivo Build.gradle, y puede que al principio parezca un poco abrumador, pero no lo es.
+>En realidad, se trata de crear varios subproyectos diferentes.
+>Estos subproyectos son los diferentes tipos de paquetes con los que estamos acostumbrados a trabajar.
+>Sé que vimos plantillas en este curso en particular.
+>Si vamos a las plantillas de Groovy y a la carpeta de código fuente en Main, podemos ver que hay diferentes archivos fuente.
+>Hemos visto el motor de plantillas simple y aquí está el código fuente real de dicho motor.
+>
+>Si encontramos un error, podemos corregirlo y enviar una solicitud de extracción al proyecto principal para que se incluya.
+>Una vez que modifiques el código fuente, necesitarás una forma de compilarlo.
+>
+>Si vuelves a la documentación para compilarlo todo, podemos usar gradle clean dist. El comando descarga la versión correcta; no necesitas crear una distribución para compilar todo y ejecutar la prueba unitaria.
+>Deberías ejecutar gradle test.
+>Ejecutémoslo ahora mismo y lo borraré.
+>Vamos a revisarlo y usaremos el contenedor de Gradle.
+>
+>Escribiré gradle W clean dist.
+>
+>Y esto comenzará a compilar nuestro proyecto Groovy.
+>Esto llevará un tiempo.
+>La primera vez que lo hagas, simplemente porque hay mucho trabajo por hacer.
+>Bueno, si esto me toma un minuto, puedo adelantar el paso.
+>Muy bien, nuestra compilación está lista.
+>Y como decía un viejo amigo, nunca te involucras de verdad en un proyecto de código abierto.
+>Hasta que lo hayas creado desde cero.
+>
+>Fue divertido.
+>Básicamente, lo que sucedió es que se repasaron y crearon todos los subproyectos para nosotros y luego
+>crearon el proyecto completo.
+>
+>Si volvemos a IntelliJ, veremos una nueva carpeta llamada Target.
+>Y si buscamos en la sección "libs", habrá algunos archivos jar.
+>Veremos básicamente...
+>En este momento, al momento de esta grabación, la versión estable actual es la 2.4.6.
+>Verán que estamos trabajando con una versión instantánea.
+>Crea todo lo que necesitamos y luego crea todos los archivos jar que incluiremos.
+>
+>Luego verán estos Dash Indies.
+>
+>Si no están seguros de qué es "indie", también incluiré otro enlace con el video.
+>Y realmente independiente significa que es compatible con Invokedynamic.
+>En resumen, si usas la versión 1.7 o superior, deberías usar la versión independiente.
+>Simplemente añade compatibilidad con Invokedynamic.
+>
+>Si usas una versión anterior del JDK, como la 1.51.6, te conviene usar la versión sin compatibilidad independiente.
+>Te dejo este enlace para que puedas leerlo y obtener más información.
+>Eso es todo.
+>Crea nuestras distribuciones y ya estamos listos para empezar.
+>
+>Así que, tanto si quieres contribuir al proyecto como si simplemente quieres compilar el código fuente desde cero y empezar a experimentar con la instantánea, también puedes hacerlo.
+>Creo que eso es todo.
+>De nuevo, voy a incluir todos estos enlaces con el vídeo.
+>
+>Y para resumir, todos creen que contribuir a un proyecto de código abierto consiste en corregir errores o añadir código nuevo.
+>Y aunque eso ayudará, no lo es todo.
+>Siempre necesitamos ayuda, ya sabes, ayudando a la gente en las listas de correo o contribuyendo a la documentación, introduciendo elementos de Jira, cosas así.
+>Así que, si quieres contribuir a Groovy, el proyecto de código abierto, espero que este vídeo te haya sido útil y que te inspire a colaborar de alguna forma.
+>
+>Muchas gracias.
