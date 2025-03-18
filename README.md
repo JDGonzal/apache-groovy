@@ -9710,3 +9710,190 @@ sql.eachRow('SELECT * FROM users'){ row->
 ```
 8. Ejecuto, Abro el archivo y esta es la imagen del archivo:  
 ![sakila.csv](images/section13-step_119_gdk-exercise4.png "sakila.csv")
+
+## Paso 120. Templates
+
+>[!NOTE]  
+>Trabajar con plantillas es una de esas tareas que sabes que tendrás que hacer en algún momento, pero nunca sabes cómo.
+>En nuestro caso, una plantilla es básicamente texto.
+>
+>A diferencia del texto literal fijo, permite que ciertos marcadores de posición se reemplacen posteriormente con datos dinámicos.
+>Estás viendo una plantilla mientras ves este video.
+>Hay páginas web que tienen texto estático y otras, como esta, que incorporan contenido dinámico.
+>Algunas cosas para las que podríamos usar una plantilla son las páginas web.
+>Como dije, como acabo de mencionar,
+>
+>También podemos usarlas para páginas web, como en una capa de vista.
+>En MVC, podemos usar una plantilla para la presentación de nuestro modelo.
+>Podemos usar una plantilla para generar código.
+>
+>También podríamos usar una plantilla para algo como correos electrónicos, y ese es el ejemplo que usaremos en esta lección.
+>Estoy en la documentación de Groovy.
+>Ya no estoy en el JDK, sino en la API.
+>Si revisamos la API de Groovy, hay una sección completa aquí dedicada al texto de Groovy.
+>
+>![groovy.text](images/section13-step_120_TemplateDoc.png "groovy.text")
+>
+>Si pasamos al texto de puntos Groovy, veremos algunas clases.
+>Tenemos un motor de plantillas de cadena G, una plantilla de streaming simple y XML.
+>
+>Hoy analizaré el motor de plantillas simple básico.
+>Pueden ver que este proceso consiste en un archivo fuente de plantilla, sustituyendo variables y expresiones en marcadores de posición.
+>Esta documentación es muy útil para empezar.
+>No hay muchos métodos.
+>En serio.
+>El único que analizaremos es la plantilla "Create".
+>
+>También cabe destacar algunos constructores diferentes.
+>Los dos que analizaremos hoy son el motor de plantillas simple, y se puede pasar un atributo verboso que es verdadero o falso.
+>Por defecto, es falso.
+>Así que, profundicemos en este proyecto y analicemos esto.
+>Antes de empezar, quiero revisar estos marcadores de posición.
+
+1. En la misma carpeta **"13-gdk"** , usando 
+[`IntelliJ`](#paso-15-hello-intellij) creamos un nuevo 
+proyecto de tipo `Groovy`, con el nombre `templates`:  
+>![New Project: templates](images/section13-step_120_templates1.png "New Project: templates")
+2. De la parpeta **"src"**, borramos como siempre 
+**`Main.groovy`**.
+3. Tengo dos archivos de texto de nombres:
+    * **`dymamic-email.txt`**
+    * **`static-email.txt`**
+4. Dos `Groovy Script` de nombres:
+    * `placeholders`
+    * `simple`
+5. Esto es lo que va en el archivo **`placeholders.groovy`**:
+```groovy
+/*
+    Template Placeholders
+    $variable       Insert the value of the variable into the text
+    ${groovycode}   Evaluates single line groovy code and inserts the results into the text
+    <%=groovycode%> Evaluate the groovy code and insert the result into the text
+    <%groovycode%>  Evaluate the groovy code
+ */
+```
+6. En el archivo **`static-email.txt`**, iría esto:
+```txt
+Dear Juan Piza,
+This is your monthly notification of your Github activity.
+You currently have 27 repositories on Github and you had a total of
+ 36 commits in 3 repositories in this month.
+We wanted to let you know that these are the latest 3 repositories by activity:
+    > Repo 1
+    > Repo 2
+    > Repo 3
+
+We thank you for using Github and wish you another month of happy comitting.
+
+Thank You
+Github
+www.github.com
+```
+7. Pongamos estos comentarios de lo que se va a hacer en 
+el archivo **`simple.groovy`**:
+```groovy
+// Three (3) Components to build a dynamic template
+//  1. Engine (SimpleTemplateEngine)
+//  2. Template (the email)
+//  3. Data Bindings (The Data to insert into the dynamic portions of our email
+```
+8. Inicializamos un componente de nombre `SimpleTemplateEngine`
+y lo importamos:
+```groovy
+import groovy.text.SimpleTemplateEngine
+...
+SimpleTemplateEngine engine = new SimpleTemplateEngine()
+```
+9. Otro componente de nombre `Template`, usando el previo
+definido de `engine`:
+```groovy
+import groovy.text.Template
+...
+Template template = engine.createTemplate(new File('dymamic-email.txt'))
+```
+10. Copio el contenido de  **`static-email.txt`** a
+**`dynamy-email.txt`** y ahago estos cambios:
+```txt
+Dear $firstName $lastName,
+This is your monthly notification of your Github activity.
+You currently have ${repositories.size()} repositories on Github and you had a total of
+ $commits commits in ${lastRepositories.size()} repositories in this month.
+We wanted to let you know that these are the latest 3 repositories by activity:
+
+<% lastRepositories.each { repo ->
+    println "\t> $repo.name"}
+%>
+
+We thank you for using Github and wish you another month of happy comitting.
+
+Thank You
+Github
+www.github.com
+```
+11. Volvemos a **`simple.groovy`**, añadiendo esto:
+```groovy
+// data bindings
+Map bindings =[
+        firstName: 'Juan',
+        lastName: 'Piza',
+        commits: 36,
+        repositories: [
+                [name: 'Sudoku01', url: 'https://github.com/JDGonzal/Sudoku01', type: 'Public'],
+                [name: 'apache-groovy', url: 'https://github.com/JDGonzal/apache-groovy', type: 'Public'],
+                [name: 'pruebas-tecnicas', url: 'https://github.com/JDGonzal/pruebas-tecnicas', type: 'Public'],
+                [name: 'sonic-runner-game', url: 'https://github.com/JDGonzal/sonic-runner-game', type: 'Public'],
+                [name: 'bricks-ball-phaser', url: 'https://github.com/JDGonzal/bricks-ball-phaser', type: 'Public'],
+                [name: 'apple-game-phaser', url: 'https://github.com/JDGonzal/apple-game-phaser', type: 'Public'],
+                [name: 'super-mario-phaser', url: 'https://github.com/JDGonzal/super-mario-phaser', type: 'Public'],
+                [name: 'APIUdemyTFRT', url: 'https://github.com/JDGonzal/APIUdemyTFRT', type: 'Public'],
+                [name: 'SeleniumFreeRange', url: 'https://github.com/JDGonzal/SeleniumFreeRange', type: 'Public'],
+                [name: 'psl-workshop-api-testing-js', url: 'https://github.com/JDGonzal/psl-workshop-api-testing-js', type: 'Public'],
+                [name: 'casorio-20231021', url: 'https://github.com/JDGonzal/casorio-20231021', type: 'Private'],
+                [name: 'MERN-stack-mysql', url: 'https://github.com/JDGonzal/MERN-stack-mysql', type: 'Public'],
+                [name: 'react-typescript-zustand', url: 'https://github.com/JDGonzal/react-typescript-zustand', type: 'Public'],
+                [name: 'siro-node-express-reactjs-mysql', url: 'https://github.com/JDGonzal/siro-node-express-reactjs-mysql', type: 'Public'],
+                [name: 'design-video-store', url: 'https://github.com/JDGonzal/design-video-store', type: 'Public'],
+                [name: 'react_redux_CRUD', url: 'https://github.com/JDGonzal/react_redux_CRUD', type: 'Public'],
+                [name: 'GentelmanTestReact', url: 'https://github.com/JDGonzal/GentelmanTestReact', type: 'Public'],
+                [name: 'poke-qwik', url: 'https://github.com/JDGonzal/poke-qwik', type: 'Public'],
+                [name: 'react_n_typescript', url: 'https://github.com/JDGonzal/react_n_typescript', type: 'Public'],
+                [name: 'VMC-LeftHand01', url: 'https://github.com/JDGonzal/VMC-LeftHand01', type: 'Private'],
+                [name: 'memory-card-game', url: 'https://github.com/JDGonzal/memory-card-game', type: 'Public'],
+                [name: 'react-tasks-application', url: 'https://github.com/JDGonzal/react-tasks-application', type: 'Public'],
+                [name: 'cypress-training', url: 'https://github.com/JDGonzal/cypress-training', type: 'Public'],
+                [name: 'udemy-node-express-reactjs-mysql', url: 'https://github.com/JDGonzal/udemy-node-express-reactjs-mysql', type: 'Public'],
+                [name: 'bezkoder-react-redux-hooks-jwt-auth', url: 'https://github.com/JDGonzal/bezkoder-react-redux-hooks-jwt-auth', type: 'Public'],
+                [name: 'Testcafe20200907', url: 'https://github.com/JDGonzal/Testcafe20200907', type: 'Public'],
+                [name: 'joanesquivel-automationproject', url: 'https://github.com/JDGonzal/joanesquivel-automationproject', type: 'Public']
+        ],
+        lastRepositories: [
+                [name: 'Sudoku01', url: 'https://github.com/JDGonzal/Sudoku01', type: 'Public'],
+                [name: 'apache-groovy', url: 'https://github.com/JDGonzal/apache-groovy', type: 'Public'],
+                [name: 'pruebas-tecnicas', url: 'https://github.com/JDGonzal/pruebas-tecnicas', type: 'Public']
+        ]
+]
+
+println template.make(bindings)
+```
+13. Ejecuto y obtengo esto:
+```bash
+Dear Juan Piza,
+This is your monthly notification of your Github activity.
+You currently have 27 repositories on Github and you had a total of
+ 36 commits in 3 repositories in this month.
+We wanted to let you know that these are the latest 3 repositories by activity:
+
+	> Sudoku01
+	> apache-groovy
+	> pruebas-tecnicas
+
+
+We thank you for using Github and wish you another month of happy comitting.
+
+Thank You
+Github
+www.github.com
+
+
+Process finished with exit code 0
+```
