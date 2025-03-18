@@ -9754,7 +9754,7 @@ sql.eachRow('SELECT * FROM users'){ row->
 [`IntelliJ`](#paso-15-hello-intellij) creamos un nuevo 
 proyecto de tipo `Groovy`, con el nombre `templates`:  
 >![New Project: templates](images/section13-step_120_templates1.png "New Project: templates")
-2. De la parpeta **"src"**, borramos como siempre 
+2. De la carpeta **"src"**, borramos como siempre 
 **`Main.groovy`**.
 3. Tengo dos archivos de texto de nombres:
     * **`dymamic-email.txt`**
@@ -9896,4 +9896,146 @@ www.github.com
 
 
 Process finished with exit code 0
+```
+
+## Paso 121. Dates
+
+>[!NOTE]  
+>Recursos:
+>* [Class Date](https://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Date.html) 
+>* [Class SimpleDateFormat](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html)
+
+1. En la misma carpeta **"13-gdk"** , usando 
+[`IntelliJ`](#paso-15-hello-intellij) creamos un nuevo 
+proyecto de tipo `Groovy`, con el nombre `dates`:  
+>![New Project: dates](images/section13-step_121_dates1.png "New Project: dates")
+2. De la carpeta **"src"**, borramos como siempre 
+**`Main.groovy`**.
+3. Creamos un `Groovy Script` de nombre `dates`, y empezamos
+con este código:
+```groovy
+// create a new date
+Date today = new Date()
+println today
+println '-----------'
+```
+* Al ejecutar aparece la fecha de hoy:  
+`Day Month DD HH:mm:ss COT YYYY`
+
+4. Añado esto al código para una fecha definida:
+```groovy
+Date bday = new Date('12/19/2015')
+println bday
+println '-----------'
+```
+* La respuesta de sería:  
+`Sat Dec 19 00:00:00 COT 2015`
+5. Imprimo otro con `.format()`:  
+`println bday.format('M-d-Y')`  
+y la como se ve sería:  
+`12-19-2015`
+6. Uno con funciones de `add` sumar y `substract` restar:
+```groovy
+// add & substract
+Date oneWeekMore = bday.plus(7)
+Date oneWeekAgo = bday.minus(7)
+println oneWeekMore
+println oneWeekAgo
+println '-----------'
+```
+* Este sería lo esperado:
+```bash
+Sat Dec 26 00:00:00 COT 2015
+Sat Dec 12 00:00:00 COT 2015
+```
+7. Misma respuesta sería con este código:
+```groovy
+Date oneWeekMore = bday + 7
+Date oneWeekAgo = bday - 7
+```
+8. Dos funciones `.downto()` y `.upto()`:
+```groovy
+oneWeekMore.downto(bday){
+    println it
+}
+```
+* Después de la ejecución esta es la respuesta:  
+```bash
+Sat Dec 26 00:00:00 COT 2015
+Fri Dec 25 00:00:00 COT 2015
+Thu Dec 24 00:00:00 COT 2015
+Wed Dec 23 00:00:00 COT 2015
+Tue Dec 22 00:00:00 COT 2015
+Mon Dec 21 00:00:00 COT 2015
+Sun Dec 20 00:00:00 COT 2015
+Sat Dec 19 00:00:00 COT 2015
+```
+```groovy
+oneWeekAgo.upto(bday){
+    println it
+}
+```
+* Esto es lo que aparece:
+```bash
+Sat Dec 12 00:00:00 COT 2015
+Sun Dec 13 00:00:00 COT 2015
+Mon Dec 14 00:00:00 COT 2015
+Tue Dec 15 00:00:00 COT 2015
+Wed Dec 16 00:00:00 COT 2015
+Thu Dec 17 00:00:00 COT 2015
+Fri Dec 18 00:00:00 COT 2015
+Sat Dec 19 00:00:00 COT 2015
+```
+9. Si se requiere un rango sería este ejemplo:
+```groovy
+Range twoWeeks = oneWeekAgo..oneWeekMore
+twoWeeks.each {
+    print "${it.format('Y-M-d')}, "
+}
+println ''
+println '-----------'
+```
+>[!WARNING]  
+>Al ejecutarlo obtengo este error:
+>```diff
+>-Caught: org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object 'Sat Dec 12 00:00:00 COT 2015..Sat Dec 26 00:00:00 COT 2015' with class 'groovy.lang.ObjectRange' to class 'org.w3c.dom.ranges.Range' due to: groovy.lang.GroovyRuntimeException: Could not find matching constructor for: org.w3c.dom.ranges.Range(Date, Date, Date, Date, Date, Date, Date, Date, Date, Date, Date, Date, Date, Date, Date)
+>...
+>- org.codehaus.groovy.tools.GroovyStarter.main(GroovyStarter.java:37)
+>```
+>Así se soluciona:
+>```groovy
+>groovy.lang.Range<Date> twoWeeks = oneWeekAgo..oneWeekMore
+>```
+>y se debe realizar una importación:  
+>`import org.w3c.dom.ranges.Range`  
+>Para este resultado:
+>```bash
+>2015-12-12, 2015-12-13, 2015-12-14, 2015-12-15, 2015-12-16, 2015-12-17, 2015-12-18, 2015-12-19, 2015-12-20, 2015-12-21, 2015-12-22, 2015-12-23, 2015-12-24, 2015-12-25, 2015-12-26, 
+>```
+10. Otras funciones `.next()` y `.previous`:
+```groovy
+Date newYear = new Date('01/01/2027')
+println newYear.next()
+println newYear.previous()
+println '-----------'
+```
+* Para obtener esto:
+```bash
+Sat Jan 02 00:00:00 COT 2027
+Thu Dec 31 00:00:00 COT 2026
+```
+11. El `.toTimestamp()`:
+```groovy
+Date now = new Date('10/30/2025')
+println now.toTimestamp()
+println now.toLocalDateTime()
+println now.toDayOfWeek()
+println now.toZonedDateTime()
+```
+* Esto después de ejecutar:
+```bash
+2025-10-30 00:00:00.0
+2025-10-30T00:00
+THURSDAY
+2025-10-30T00:00-05:00[America/Bogota]
 ```
