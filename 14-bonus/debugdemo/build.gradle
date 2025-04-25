@@ -1,0 +1,20 @@
+group = 'com.domain_name'
+version = '1.0-SNAPSHOT'
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all
+    implementation 'org.codehaus.groovy:groovy-all:3.0.7'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}

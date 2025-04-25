@@ -10156,3 +10156,93 @@ THURSDAY
 >Así que, si quieres contribuir a Groovy, el proyecto de código abierto, espero que este vídeo te haya sido útil y que te inspire a colaborar de alguna forma.
 >
 >Muchas gracias.
+
+## Paso 123. Debugging in IntelliJ
+
+1. Creamos la carpeta **"14-bonus"** , usando 
+[`IntelliJ`](#paso-15-hello-intellij) creamos un nuevo 
+proyecto : 
+    * Tipo: `Java`.
+    * Nombre: `debugdemo`.
+    * Build system: `Gradle`.
+    * JDK: Cualquier versión de `1.8.x`.
+    * Gradle DSL: `Groovy`.
+    * Gradle distribution: `Local installation`.  
+    En mi caso está la `8.6`.
+    * Desactivo: `Use These settings for future projects`.
+    * GroupId: `com.domain_name`.
+
+![New Project: db](images/section14-step_123_debugdemo1.png "New Project: db")
+
+
+2. Creamos dos nuevos `Directory`, dentro de **"src"**:
+    * `main/groovy`
+    * `test/groovy`
+
+3. Creamos dentro de **"main/groovy"**, el archivo 
+**`app.groovy`**.
+
+>[!WARNING]  
+>Puede salir un mensaje de `Groovy SDK is not configured for module 'gdk-exercise.main'`, presiona clic en `Configure Groovy SDK...`.
+>
+>A la ventana de `Setup Library`, Selecciono el botón de 
+>`[Create]` e instalo de mi local la versión `3.0.0`,  
+>![Creation & Setup Groovy 3.0.0](images/section14-step_123_gdk-debugdemo2.gif "Creation & Setup Groovy 3.0.0")
+
+4. Abrimos el archivo **`build.gradle`** y le hacemos unos
+ajustes:
+```gradle
+group = 'com.domain_name'
+version = '1.0-SNAPSHOT'
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+      //https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all
+    implementation 'org.codehaus.groovy:groovy-all:3.0.7'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+```
+5. Borramos el archivo **`Main.java`** de la carpeta 
+**"src/main/java/com/domain_name"**.
+5. Creamos una `Groovy Class` en la carpeta 
+**"src/main/groovy"** de nombre `Person`, con este código:
+```groovy
+import groovy.transform.ToString
+
+@ToString
+class Person {
+    String first
+    String last
+    String email
+    Date dob
+}
+```
+6. En la misma carpeta, completamos el archivo
+ **`app.groovy`** con este código:
+```groovy
+Person p = new Person(first: 'Juan', last: 'Piza', email: 'jpiza@mail.com', dob: new Date())
+
+println p.toString()
+```
+7. Vamos a poner _break-points_ en el archivo 
+**`app.groovy`**, en las líneas 1 y 3:   
+![Break Points](images/section14-step_123_gdk-debugdemo3.png "Break Points")
+
+
+8. Y la vamos a ejecutar con el símbolo del _bug_ 
+![Debug](images/section14-step_123_gdk-debugdemo4.png "Debug")
+* En el menú de `Run`, también está el `Debug`.
+
+9. Al ejecutarlo podemos observar varios elementos:  
+![Debug process](images/section14-step_123_gdk-debugdemo5.gif "Debug process")
